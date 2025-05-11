@@ -1,6 +1,10 @@
 name: Enviar a Azure
 
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Enviar a Azure'
   push:
     branches:
       - main
