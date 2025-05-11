@@ -1,0 +1,55 @@
+name: Enviar a Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Instalar dependencias del frontend
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Compilar frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Enviar el frontend a Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: frontend_plantilla
+          slot-name: production
+          publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
+          package: ./frontend
+
+      - name: Instalar dependencias del backend
+        working-directory: ./backend
+        run: npm install
+
+      - name: Compilar backend (si es necesario)
+        working-directory: ./backend
+        run: npm run build || echo "No hay script de construcción"
+
+      - name: Enviar el backend a Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: backend_plantilla
+          slot-name: production
+          publish-profile: ${{ secrets.AZURE_BACKEND_PUBLISH_PROFILE }}
+          package: ./backend
