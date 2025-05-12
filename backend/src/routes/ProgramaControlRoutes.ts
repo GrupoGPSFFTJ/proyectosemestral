@@ -1,0 +1,21 @@
+import { Router } from "express";
+import { ProgramaControlController } from "../controllers/ProgramaControlController";
+import { ProgramaControlService } from "../services/ProgramaControlService";
+
+const router = Router();
+const programaService = new ProgramaControlService();
+const programaController = new ProgramaControlController(programaService);
+
+// CRUD básico
+router.post("/", (req, res) => programaController.createPrograma(req, res));
+router.get("/", (req, res) => programaController.getAllProgramas(req, res));
+router.get("/activos", (req, res) => programaController.getActiveProgramas(req, res));
+router.get("/:id", (req, res) => programaController.getProgramaById(req, res));
+router.put("/:id", (req, res) => programaController.updatePrograma(req, res));
+router.patch("/:id/toggle-status", (req, res) => programaController.toggleProgramaStatus(req, res));
+router.delete("/:id", (req, res) => programaController.deletePrograma(req, res));
+
+// Relaciones
+router.get("/:id/fichas", (req, res) => programaController.getFichasByPrograma(req, res));
+
+export default router;
