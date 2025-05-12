@@ -1,28 +1,22 @@
-import { Router, Request, Response, RequestHandler } from "express";
-import {
-  createFamilia,
-  getFamiliaById,
-  getAllFamilias,
-  updateFamilia,
-  deleteFamilia,
-  addMiembroToFamilia,
-  createPlanIntervencion,
-  addFactorRiesgo,
-  addFactorProtector
-} from "../controllers/FamiliaController";
+import { Router } from "express";
+import { FamiliaController } from "../controllers/FamiliaController";
+import { FamiliaService } from "../services/FamiliaService";
 
 const router = Router();
+const familiaService = new FamiliaService();
+const familiaController = new FamiliaController(familiaService);
 
-router.post("/", createFamilia);
-router.get("/", getAllFamilias);
-router.get("/:id", getFamiliaById);
-router.put("/:id", updateFamilia);
-router.delete("/:id", deleteFamilia);
+// CRUD Básico
+router.post("/", (req, res) => familiaController.createFamilia(req, res));
+router.get("/", (req, res) => familiaController.getAllFamilias(req, res));
+router.get("/:id", (req, res) => familiaController.getFamiliaById(req, res));
+router.put("/:id", (req, res) => familiaController.updateFamilia(req, res));
+router.delete("/:id", (req, res) => familiaController.deleteFamilia(req, res));
 
 // Relaciones
-router.post("/:id/miembros", addMiembroToFamilia as RequestHandler);
-router.post("/:id/planes-intervencion", createPlanIntervencion as RequestHandler);
-router.post("/:id/factores-riesgo", addFactorRiesgo as RequestHandler);
-router.post("/:id/factores-protectores", addFactorProtector as RequestHandler);
+router.post("/:id/miembros", (req, res) => familiaController.addMiembro(req, res));
+router.post("/:id/planes-intervencion", (req, res) => familiaController.addPlanIntervencion(req, res));
+router.post("/:id/factores-riesgo", (req, res) => familiaController.addFactorRiesgo(req, res));
+router.post("/:id/factores-protectores", (req, res) => familiaController.addFactorProtector(req, res));
 
 export default router;

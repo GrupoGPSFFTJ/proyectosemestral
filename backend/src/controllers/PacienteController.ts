@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source";
 import { Paciente } from "../entities/Paciente";
-import { FichaControl } from "../entities/FichaControl";
+import { FichaControl } from "../entities/FichaClinica";
 import { FichaOdontologica } from "../entities/FichaOdontologica";
 import { RegistroVacunacion } from "../entities/RegistroVacunacion";
 import { InscripcionPacam } from "../entities/InscripcionPacam";

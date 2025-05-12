@@ -8,6 +8,8 @@ import fichaClinicaRoutes from "./routes/FichaClinicaRoutes";
 import authRoutes from "./routes/AuthRoutes";
 import rolRoutes from "./routes/RolRoutes";
 import centroSaludRoutes from "./routes/CentroSaludRoutes";
+import usuarioRoutes from "./routes/UsuarioRoutes"
+import programaControlRoutes from "./routes/ProgramaControlRoutes"
 
 dotenv.config();
 
@@ -24,6 +26,8 @@ app.use("/api/fichas-clinicas", fichaClinicaRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/roles", rolRoutes);
 app.use("/api/centros-salud", centroSaludRoutes);
+app.use("/api/auth", usuarioRoutes);
+app.use("/api/programas-control", programaControlRoutes);
 
 // Initialize database connection
 AppDataSource.initialize()

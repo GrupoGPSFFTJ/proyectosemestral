@@ -11,7 +11,7 @@ router.post("/register", (req, res) => usuarioController.createUsuario(req, res)
 router.post("/login", (req, res) => usuarioController.login(req, res));
 
 // Gestión de usuarios
-router.get("/:id", (req, res) => usuarioController.getUsuarioById(req, res));
 router.post("/:id/roles", (req, res) => usuarioController.assignRoles(req, res));
+router.get("/:id", (req, res) => usuarioController.getUsuarioById(req, res));
 
 export default router;

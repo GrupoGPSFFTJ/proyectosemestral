@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { FichaControl } from "./FichaControl";
+import { FichaControl } from "./FichaClinica";
 import { FichaOdontologica } from "./FichaOdontologica";
 import { MiembroFamiliar } from "./MiembroFamiliar";
 import { RegistroVacunacion } from "./RegistroVacunacion";
