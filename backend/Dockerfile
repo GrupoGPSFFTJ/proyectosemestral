@@ -1,23 +1,37 @@
-FROM node:18-bullseye
+# Etapa de construcción
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Instala dependencias de compilación
-RUN apt-get update && \
-    apt-get install -y python3 make g++ && \
-    rm -rf /var/lib/apt/lists/*
-
-# Primero copia solo package.json para cachear las dependencias
+# Copiar archivos de configuración
 COPY package*.json ./
+COPY tsconfig.json ./
 
-# Instala bcrypt compilándolo desde fuente
-RUN npm install bcrypt --build-from-source && \
-    npm install
+# Instalar dependencias
+RUN npm install
 
+# Copiar el resto de los archivos
 COPY . .
 
-RUN npm run build || echo "No build step"
+# Compilar TypeScript a JavaScript
+RUN npm run build
 
-EXPOSE 3000
+# Etapa de producción
+FROM node:18-alpine
 
-CMD ["npm", "run", "start"]
+WORKDIR /app
+
+# Copiar solo lo necesario desde la etapa de builder
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+
+# Variables de entorno (puedes sobreescribirlas al ejecutar)
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Puerto expuesto
+EXPOSE $PORT
+
+# Comando de inicio
+CMD ["node", "dist/server.js"]
