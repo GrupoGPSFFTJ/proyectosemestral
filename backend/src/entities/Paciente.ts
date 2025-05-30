@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
 import { FichaControl } from "./FichaClinica";
 import { FichaOdontologica } from "./FichaOdontologica";
 import { MiembroFamiliar } from "./MiembroFamiliar";
@@ -50,6 +50,6 @@ export class Paciente {
   @OneToMany(() => InscripcionPacam, (inscripcion) => inscripcion.paciente)
   inscripciones_pacam!: InscripcionPacam[];
 
-  @OneToMany(() => CentroSalud, (centro) => centro.pacientes)
+  @ManyToOne(() => CentroSalud, (centro) => centro.pacientes)
   centro_salud!: CentroSalud;
 }
