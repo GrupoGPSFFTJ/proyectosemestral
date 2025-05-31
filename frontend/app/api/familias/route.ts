@@ -1,11 +1,20 @@
+// frontend/app/api/familias/route.ts
+
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 export async function GET() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  // Extraer variables de entorno
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Si no existen en build, retornamos un JSON vacío para que no falle
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.json({ familias: [] });
+  }
+
+  // Ahora sí creamos el cliente
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     const { data: filas, error } = await supabase
@@ -28,10 +37,14 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.json({ error: 'Variables de entorno no definidas' }, { status: 500 });
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     const { nombre, fechaCreacion } = await req.json();
