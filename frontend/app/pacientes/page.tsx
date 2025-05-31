@@ -3,7 +3,7 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 
 interface Paciente {
-  id: string;
+  id: number;
   nombre: string;
   rut: string;
   fechaNacimiento: string;
@@ -14,9 +14,8 @@ interface Paciente {
   telefono: string;
 }
 
-// Capitaliza cada palabra
 const capitalizeWords = (str: string) =>
-  str.replace(/\b\w+/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase());
+  str.replace(/\b\w+/g, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
 
 export default function PacientesPage() {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
@@ -33,22 +32,22 @@ export default function PacientesPage() {
 
   useEffect(() => {
     fetch('/api/pacientes')
-      .then(async res => {
+      .then(async (res) => {
         if (!res.ok) {
           console.error('API error:', res.status, await res.text());
           return null;
         }
         return res.json();
       })
-      .then(data => {
-        if (data?.pacientes) setPacientes(data.pacientes);
+      .then((data) => {
+        if (data?.pacientes) {
+          setPacientes(data.pacientes);
+        }
       })
-      .catch(console.error);
+      .catch((err) => console.error(err));
   }, []);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -96,7 +95,7 @@ export default function PacientesPage() {
           value={form.nombre}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 200px' }}
+          style={{ flex: '1 1 200px', padding: '0.5rem' }}
         />
         <input
           name="apellidoPaterno"
@@ -104,7 +103,7 @@ export default function PacientesPage() {
           value={form.apellidoPaterno}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 150px' }}
+          style={{ flex: '1 1 150px', padding: '0.5rem' }}
         />
         <input
           name="apellidoMaterno"
@@ -112,7 +111,7 @@ export default function PacientesPage() {
           value={form.apellidoMaterno}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 150px' }}
+          style={{ flex: '1 1 150px', padding: '0.5rem' }}
         />
         <input
           name="rut"
@@ -120,7 +119,7 @@ export default function PacientesPage() {
           value={form.rut}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 150px' }}
+          style={{ flex: '1 1 150px', padding: '0.5rem' }}
         />
         <input
           name="fechaNacimiento"
@@ -128,7 +127,7 @@ export default function PacientesPage() {
           value={form.fechaNacimiento}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 150px' }}
+          style={{ flex: '1 1 150px', padding: '0.5rem' }}
         />
         <input
           name="direccion"
@@ -136,14 +135,14 @@ export default function PacientesPage() {
           value={form.direccion}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 200px' }}
+          style={{ flex: '1 1 200px', padding: '0.5rem' }}
         />
         <select
           name="genero"
           value={form.genero}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 100px' }}
+          style={{ flex: '1 1 100px', padding: '0.5rem' }}
         >
           <option value="">Género</option>
           <option value="M">Masculino</option>
@@ -155,13 +154,15 @@ export default function PacientesPage() {
           value={form.telefono}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 150px' }}
+          style={{ flex: '1 1 150px', padding: '0.5rem' }}
         />
-        <button type="submit">Agregar</button>
+        <button type="submit" style={{ padding: '0.5rem 1rem' }}>
+          Agregar
+        </button>
       </form>
 
       <div className="pacientes-grid">
-        {pacientes.map(p => (
+        {pacientes.map((p) => (
           <div key={p.id} className="patient-card">
             <h3>
               {capitalizeWords(p.nombre)}{' '}

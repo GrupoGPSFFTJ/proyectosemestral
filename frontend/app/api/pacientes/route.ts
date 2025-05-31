@@ -1,26 +1,40 @@
-// frontend/app/api/pacientes/route.ts
-import pool from '@/lib/db';
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET() {
   try {
-    const { rows } = await pool.query(`
-      SELECT
-        id_paciente    AS id,
+    const { data: pacientes, error } = await supabase
+      .from('paciente')
+      .select(`
+        id_paciente,
         nombre,
         rut,
-        fecha_nacimiento AS "fechaNacimiento",
+        fecha_nacimiento,
         direccion,
-        apellido_paterno   AS "apellidoPaterno",
-        apellido_materno   AS "apellidoMaterno",
+        apellido_paterno,
+        apellido_materno,
         genero,
         telefono
-      FROM paciente
-      ORDER BY id_paciente
-    `);
-    return NextResponse.json({ pacientes: rows });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+      `)
+      .order('id_paciente', { ascending: true });
+
+    if (error) throw error;
+
+    const mapped = (pacientes || []).map((p) => ({
+      id: p.id_paciente,
+      nombre: p.nombre,
+      rut: p.rut,
+      fechaNacimiento: p.fecha_nacimiento,
+      direccion: p.direccion,
+      apellidoPaterno: p.apellido_paterno,
+      apellidoMaterno: p.apellido_materno,
+      genero: p.genero,
+      telefono: p.telefono,
+    }));
+
+    return NextResponse.json({ pacientes: mapped });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -37,38 +51,37 @@ export async function POST(req: Request) {
       telefono,
     } = await req.json();
 
-    const { rows } = await pool.query(
-      `
-      INSERT INTO paciente
-        (nombre, rut, fecha_nacimiento,
-         direccion, apellido_paterno, apellido_materno,
-         genero, telefono)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-      RETURNING
-        id_paciente        AS id,
+    const { data: created, error } = await supabase
+      .from('paciente')
+      .insert({
         nombre,
         rut,
-        fecha_nacimiento  AS "fechaNacimiento",
+        fecha_nacimiento: fechaNacimiento,
         direccion,
-        apellido_paterno   AS "apellidoPaterno",
-        apellido_materno   AS "apellidoMaterno",
-        genero,
-        telefono
-      `,
-      [
-        nombre,
-        rut,
-        fechaNacimiento,
-        direccion,
-        apellidoPaterno,
-        apellidoMaterno,
+        apellido_paterno: apellidoPaterno,
+        apellido_materno: apellidoMaterno,
         genero,
         telefono,
-      ]
-    );
+      })
+      .select()
+      .single(); 
 
-    return NextResponse.json(rows[0], { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) throw error;
+
+    const nuevoPaciente = {
+      id: (created as any).id_paciente,
+      nombre: (created as any).nombre,
+      rut: (created as any).rut,
+      fechaNacimiento: (created as any).fecha_nacimiento,
+      direccion: (created as any).direccion,
+      apellidoPaterno: (created as any).apellido_paterno,
+      apellidoMaterno: (created as any).apellido_materno,
+      genero: (created as any).genero,
+      telefono: (created as any).telefono,
+    };
+
+    return NextResponse.json(nuevoPaciente, { status: 201 });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
