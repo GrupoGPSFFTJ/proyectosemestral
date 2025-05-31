@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 
 export async function GET() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.json({ pacientes: [] });
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
   try {
-    const { data: pacientes, error } = await supabase
+    const { data: filas, error } = await supabase
       .from('paciente')
       .select(`
         id_paciente,
@@ -20,7 +29,7 @@ export async function GET() {
 
     if (error) throw error;
 
-    const mapped = (pacientes || []).map((p) => ({
+    const pacientes = (filas || []).map((p: any) => ({
       id: p.id_paciente,
       nombre: p.nombre,
       rut: p.rut,
@@ -32,21 +41,30 @@ export async function GET() {
       telefono: p.telefono,
     }));
 
-    return NextResponse.json({ pacientes: mapped });
+    return NextResponse.json({ pacientes });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.json({ error: 'Variables de entorno no definidas' }, { status: 500 });
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
   try {
     const {
       nombre,
+      apellidoPaterno,
+      apellidoMaterno,
       rut,
       fechaNacimiento,
       direccion,
-      apellidoPaterno,
-      apellidoMaterno,
       genero,
       telefono,
     } = await req.json();
@@ -55,16 +73,16 @@ export async function POST(req: Request) {
       .from('paciente')
       .insert({
         nombre,
+        apellido_paterno: apellidoPaterno,
+        apellido_materno: apellidoMaterno,
         rut,
         fecha_nacimiento: fechaNacimiento,
         direccion,
-        apellido_paterno: apellidoPaterno,
-        apellido_materno: apellidoMaterno,
         genero,
         telefono,
       })
-      .select()
-      .single(); 
+      .select('*')
+      .single();
 
     if (error) throw error;
 
