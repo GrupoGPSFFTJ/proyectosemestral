@@ -3,7 +3,6 @@ import { supabase } from '@/lib/supabaseClient';
 
 export async function GET() {
   try {
-    // Traer todas las filas de la tabla 'ficha_control'
     const { data: filas, error } = await supabase
       .from('ficha_control')
       .select(`
@@ -19,7 +18,6 @@ export async function GET() {
 
     if (error) throw error;
 
-    // Mapear la respuesta a la interfaz FichaClinica
     const fichas = (filas || []).map((f: any) => ({
       id: f.id_ficha_control,
       fechaControl: f.fecha_control,

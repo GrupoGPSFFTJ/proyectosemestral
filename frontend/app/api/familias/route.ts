@@ -1,21 +1,20 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 
 export async function GET() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
   try {
-    // Traer todas las filas de la tabla 'familia'
     const { data: filas, error } = await supabase
       .from('familia')
-      .select(`
-        id_familia,
-        nombre,
-        fecha_creacion
-      `)
+      .select(`id_familia, nombre, fecha_creacion`)
       .order('id_familia', { ascending: true });
 
     if (error) throw error;
 
-    // Mapear la respuesta a { id, nombre, fechaCreacion }
     const familias = (filas || []).map((f: any) => ({
       id: f.id_familia,
       nombre: f.nombre,
@@ -29,6 +28,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
   try {
     const { nombre, fechaCreacion } = await req.json();
 
@@ -43,7 +47,6 @@ export async function POST(req: Request) {
 
     if (error) throw error;
 
-    // Mapear la fila recién creada
     const nuevaFamilia = {
       id: (created as any).id_familia,
       nombre: (created as any).nombre,
