@@ -1,39 +1,57 @@
-// frontend/app/api/familias/route.ts
-import pool from '@/lib/db';
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET() {
   try {
-    const { rows } = await pool.query(`
-      SELECT
-        id_familia    AS id,
+    // Traer todas las filas de la tabla 'familia'
+    const { data: filas, error } = await supabase
+      .from('familia')
+      .select(`
+        id_familia,
         nombre,
-        fecha_creacion AS "fechaCreacion"
-      FROM familia
-      ORDER BY id_familia
-    `);
-    return NextResponse.json({ familias: rows });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+        fecha_creacion
+      `)
+      .order('id_familia', { ascending: true });
+
+    if (error) throw error;
+
+    // Mapear la respuesta a { id, nombre, fechaCreacion }
+    const familias = (filas || []).map((f: any) => ({
+      id: f.id_familia,
+      nombre: f.nombre,
+      fechaCreacion: f.fecha_creacion,
+    }));
+
+    return NextResponse.json({ familias });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
   try {
     const { nombre, fechaCreacion } = await req.json();
-    const { rows } = await pool.query(
-      `
-      INSERT INTO familia (nombre, fecha_creacion)
-      VALUES ($1, $2)
-      RETURNING
-        id_familia    AS id,
+
+    const { data: created, error } = await supabase
+      .from('familia')
+      .insert({
         nombre,
-        fecha_creacion AS "fechaCreacion"
-      `,
-      [nombre, fechaCreacion]
-    );
-    return NextResponse.json(rows[0], { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+        fecha_creacion: fechaCreacion,
+      })
+      .select('*')
+      .single();
+
+    if (error) throw error;
+
+    // Mapear la fila recién creada
+    const nuevaFamilia = {
+      id: (created as any).id_familia,
+      nombre: (created as any).nombre,
+      fechaCreacion: (created as any).fecha_creacion,
+    };
+
+    return NextResponse.json(nuevaFamilia, { status: 201 });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

@@ -12,28 +12,28 @@ export default function FamiliasPage() {
   const [familias, setFamilias] = useState<Familia[]>([]);
   const [form, setForm] = useState({ nombre: '', fechaCreacion: '' });
 
-  // 1) Carga inicial
+  // 1) Cargar listado de familias al montar
   useEffect(() => {
     fetch('/api/familias')
-      .then(async res => {
+      .then(async (res) => {
         if (!res.ok) {
           console.error('API familias GET error:', res.status, await res.text());
           return null;
         }
         return res.json();
       })
-      .then(data => {
-        if (data?.familias) setFamilias(data.familias);
+      .then((data) => {
+        if (data?.familias) {
+          setFamilias(data.familias);
+        }
       })
-      .catch(err => console.error('Fetch familias failed:', err));
+      .catch((err) => console.error('Fetch familias failed:', err));
   }, []);
 
-  // 2) Manejo de inputs
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 3) Envío del formulario
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const res = await fetch('/api/familias', {
@@ -54,10 +54,14 @@ export default function FamiliasPage() {
     <div>
       <h1>Familias</h1>
 
-      {/* Formulario */}
       <form
         onSubmit={handleSubmit}
-        style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}
+        style={{
+          display: 'flex',
+          gap: '0.5rem',
+          flexWrap: 'wrap',
+          marginBottom: '1rem',
+        }}
       >
         <input
           name="nombre"
@@ -75,20 +79,27 @@ export default function FamiliasPage() {
           required
           style={{ flex: '1 1 150px', padding: '0.5rem' }}
         />
-        <button type="submit">Agregar Familia</button>
+        <button type="submit" style={{ padding: '0.5rem 1rem' }}>
+          Agregar Familia
+        </button>
       </form>
 
-      {/* Tabla de Familias */}
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>ID</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Nombre</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Fecha Creación</th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              ID
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              Nombre
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              Fecha Creación
+            </th>
           </tr>
         </thead>
         <tbody>
-          {familias.map(f => (
+          {familias.map((f) => (
             <tr key={f.id}>
               <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>{f.id}</td>
               <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>{f.nombre}</td>

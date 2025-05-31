@@ -1,24 +1,38 @@
-// frontend/app/api/fichas-clinica/route.ts
-import pool from '@/lib/db';
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET() {
   try {
-    const { rows } = await pool.query(`
-      SELECT
-        id_ficha_control     AS id,
-        fecha_control        AS "fechaControl",
+    // Traer todas las filas de la tabla 'ficha_control'
+    const { data: filas, error } = await supabase
+      .from('ficha_control')
+      .select(`
+        id_ficha_control,
+        fecha_control,
         observacion,
-        id_paciente          AS "idPaciente",
-        id_programa_control  AS "idProgramaControl",
-        id_centro_salud      AS "idCentroSalud",
-        id_usuario_responsable AS "idUsuarioResponsable"
-      FROM ficha_control
-      ORDER BY id_ficha_control
-    `);
-    return NextResponse.json({ fichas: rows });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+        id_paciente,
+        id_programa_control,
+        id_centro_salud,
+        id_usuario_responsable
+      `)
+      .order('id_ficha_control', { ascending: true });
+
+    if (error) throw error;
+
+    // Mapear la respuesta a la interfaz FichaClinica
+    const fichas = (filas || []).map((f: any) => ({
+      id: f.id_ficha_control,
+      fechaControl: f.fecha_control,
+      observacion: f.observacion,
+      idPaciente: f.id_paciente,
+      idProgramaControl: f.id_programa_control,
+      idCentroSalud: f.id_centro_salud,
+      idUsuarioResponsable: f.id_usuario_responsable,
+    }));
+
+    return NextResponse.json({ fichas });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -33,33 +47,33 @@ export async function POST(req: Request) {
       idUsuarioResponsable,
     } = await req.json();
 
-    const { rows } = await pool.query(
-      `
-      INSERT INTO ficha_control
-        (fecha_control, observacion, id_paciente,
-         id_programa_control, id_centro_salud, id_usuario_responsable)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING
-        id_ficha_control     AS id,
-        fecha_control        AS "fechaControl",
+    const { data: created, error } = await supabase
+      .from('ficha_control')
+      .insert({
+        fecha_control: fechaControl,
         observacion,
-        id_paciente          AS "idPaciente",
-        id_programa_control  AS "idProgramaControl",
-        id_centro_salud      AS "idCentroSalud",
-        id_usuario_responsable AS "idUsuarioResponsable"
-      `,
-      [
-        fechaControl,
-        observacion,
-        idPaciente,
-        idProgramaControl,
-        idCentroSalud,
-        idUsuarioResponsable,
-      ]
-    );
+        id_paciente: idPaciente,
+        id_programa_control: idProgramaControl,
+        id_centro_salud: idCentroSalud,
+        id_usuario_responsable: idUsuarioResponsable,
+      })
+      .select('*')
+      .single();
 
-    return NextResponse.json(rows[0], { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) throw error;
+
+    const nuevaFicha = {
+      id: (created as any).id_ficha_control,
+      fechaControl: (created as any).fecha_control,
+      observacion: (created as any).observacion,
+      idPaciente: (created as any).id_paciente,
+      idProgramaControl: (created as any).id_programa_control,
+      idCentroSalud: (created as any).id_centro_salud,
+      idUsuarioResponsable: (created as any).id_usuario_responsable,
+    };
+
+    return NextResponse.json(nuevaFicha, { status: 201 });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

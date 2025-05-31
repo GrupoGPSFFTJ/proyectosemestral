@@ -23,19 +23,19 @@ export default function FichasClinicaPage() {
     idUsuarioResponsable: '',
   });
 
-  // Carga inicial
+  // 1) Carga inicial de fichas
   useEffect(() => {
     fetch('/api/fichas-clinica')
-      .then(async res => {
+      .then(async (res) => {
         if (!res.ok) throw new Error(await res.text());
         return res.json();
       })
-      .then(data => {
-        if (Array.isArray(data.fichas)) {
+      .then((data) => {
+        if (data?.fichas) {
           setFichas(data.fichas);
         }
       })
-      .catch(err => console.error('GET fichas error:', err));
+      .catch((err) => console.error('GET fichas error:', err));
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +95,7 @@ export default function FichasClinicaPage() {
           value={form.fechaControl}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 150px' }}
+          style={{ flex: '1 1 150px', padding: '0.5rem' }}
         />
         <input
           name="observacion"
@@ -103,7 +103,7 @@ export default function FichasClinicaPage() {
           value={form.observacion}
           onChange={handleChange}
           required
-          style={{ flex: '2 1 300px' }}
+          style={{ flex: '2 1 300px', padding: '0.5rem' }}
         />
         <input
           name="idPaciente"
@@ -112,7 +112,7 @@ export default function FichasClinicaPage() {
           value={form.idPaciente}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 120px' }}
+          style={{ flex: '1 1 120px', padding: '0.5rem' }}
         />
         <input
           name="idProgramaControl"
@@ -121,7 +121,7 @@ export default function FichasClinicaPage() {
           value={form.idProgramaControl}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 120px' }}
+          style={{ flex: '1 1 120px', padding: '0.5rem' }}
         />
         <input
           name="idCentroSalud"
@@ -130,7 +130,7 @@ export default function FichasClinicaPage() {
           value={form.idCentroSalud}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 120px' }}
+          style={{ flex: '1 1 120px', padding: '0.5rem' }}
         />
         <input
           name="idUsuarioResponsable"
@@ -139,25 +139,41 @@ export default function FichasClinicaPage() {
           value={form.idUsuarioResponsable}
           onChange={handleChange}
           required
-          style={{ flex: '1 1 140px' }}
+          style={{ flex: '1 1 140px', padding: '0.5rem' }}
         />
-        <button type="submit">Agregar</button>
+        <button type="submit" style={{ padding: '0.5rem 1rem' }}>
+          Agregar
+        </button>
       </form>
 
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>ID</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Fecha Control</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Observación</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>ID Paciente</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>ID Programa</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>ID Centro</th>
-            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>ID Usuario Resp.</th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              ID
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              Fecha Control
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              Observación
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              ID Paciente
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              ID Programa
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              ID Centro
+            </th>
+            <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>
+              ID Usuario Resp.
+            </th>
           </tr>
         </thead>
         <tbody>
-          {fichas.map(f => (
+          {fichas.map((f) => (
             <tr key={f.id}>
               <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>{f.id}</td>
               <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>
