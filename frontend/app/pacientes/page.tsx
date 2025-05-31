@@ -1,5 +1,6 @@
 import React from 'react';
-import { supabaseServer } from '@/utils/supabase/server';
+import { supabaseServer } from '@/utils/supabase/server'; 
+import PacienteForm from './PacienteForm'; 
 
 interface Paciente {
   id_paciente: number;
@@ -13,14 +14,12 @@ interface Paciente {
   telefono: string;
 }
 
-// 2) Utilidad para capitalizar palabras
 const capitalizeWords = (str: string) =>
   str.replace(/\b\w+/g, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
 
 export default async function Page() {
-  // 3) Consultamos Supabase (servidor)
   const { data: filas, error } = await supabaseServer
-    .from('paciente')      // ← Sin genérico aquí
+    .from('paciente')
     .select(`
       id_paciente,
       nombre,
@@ -34,7 +33,6 @@ export default async function Page() {
     `)
     .order('id_paciente', { ascending: true });
 
-  // 4) Si ocurre error, lo mostramos
   if (error) {
     return (
       <div style={{ padding: '2rem', color: 'red' }}>
@@ -44,14 +42,13 @@ export default async function Page() {
     );
   }
 
-  // 5) Convertimos el array recibido (any[]) a Paciente[], forzando el tipo
   const pacientes: Paciente[] = (filas || []) as Paciente[];
 
-  // 6) Renderizamos tarjetas con los datos
   return (
     <main style={{ padding: '2rem' }}>
       <h1>Pacientes</h1>
-      <div className="pacientes-grid">
+      <PacienteForm />
+      <div className="pacientes-grid" style={{ marginTop: '1rem' }}>
         {pacientes.length > 0 ? (
           pacientes.map((p) => (
             <div key={p.id_paciente} className="patient-card">
