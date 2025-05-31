@@ -19,10 +19,10 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          IMAGE_TAG=your-username/your-image-name:latest
+          IMAGE_TAG=fabiangpsproy/gps:latest
           docker build -t $IMAGE_TAG .
 
       - name: Push the Docker image
         run: |
-          IMAGE_TAG=your-username/your-image-name:latest
+          IMAGE_TAG=fabiangpsproy/gps:latest
           docker push $IMAGE_TAG
