@@ -136,13 +136,16 @@ export default function PacienteForm() {
         type="submit"
         style={{
           gridColumn: '1 / -1',
-          padding: '0.75rem',
+          padding: '0.5rem 1.4rem',
+          fontSize: '0.95rem', 
           background: '#0070f3',
           color: '#fff',
           border: 'none',
           borderRadius: '4px',
           cursor: 'pointer',
           marginTop: '0.5rem',
+          width: 'fit-content',
+          justifySelf: 'end', 
         }}
       >
         Agregar Paciente

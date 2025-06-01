@@ -78,11 +78,7 @@ export default async function Page() {  const supabaseUrl = process.env.NEXT_PUB
           pacientes.map((p) => (
             <div key={p.id_paciente} className="patient-card">
               <h3 style={{ margin: '0 0 0.5rem' }}>
-                {capitalizeWords(p.nombre)}{' '}
-                <small>
-                  {capitalizeWords(p.apellido_paterno)}{' '}
-                  {capitalizeWords(p.apellido_materno)}
-                </small>
+                {capitalizeWords(p.nombre)} {capitalizeWords(p.apellido_paterno)} {capitalizeWords(p.apellido_materno)}
               </h3>
               <p>
                 <strong>RUT:</strong> {p.rut}
