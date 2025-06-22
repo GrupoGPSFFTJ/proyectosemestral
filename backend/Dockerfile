@@ -1,37 +1,66 @@
-# Etapa de construcción
-FROM node:18-alpine AS builder
+FROM node:20-alpine
 
 WORKDIR /app
 
-# Copiar archivos de configuración
 COPY package*.json ./
-COPY tsconfig.json ./
+COPY nest-cli.json ./
+COPY tsconfig*.json ./
+COPY apps ./apps
+COPY libs ./libs
 
-# Instalar dependencias
-RUN npm install
+RUN npm ci --legacy-peer-deps
 
-# Copiar el resto de los archivos
-COPY . .
+# Build todos los servicios (asumiendo monorepo)
+RUN npm run build:all
 
-# Compilar TypeScript a JavaScript
-RUN npm run build
+# --- Build args para secrets ---
+ARG DB_HOST
+ARG DB_PORT
+ARG DB_USER
+ARG DB_PASS
+ARG DB_NAME
+ARG DB_POOL_MODE
 
-# Etapa de producción
-FROM node:18-alpine
+ARG PORT_CORE
+ARG PORT_CLINICAL
+ARG PORT_NUTRITION
+ARG PORT_ODONTO
+ARG PORT_PATIENT
+ARG PORT_PHARMACY
+ARG PORT_VACCINATION
+ARG PORT_GATEWAY
 
-WORKDIR /app
+ARG SCHEMA_CORE
+ARG SCHEMA_CLINICAL
+ARG SCHEMA_NUTRITION
+ARG SCHEMA_ODONTO
+ARG SCHEMA_PATIENT
+ARG SCHEMA_PHARMACY
+ARG SCHEMA_VACCINATION
 
-# Copiar solo lo necesario desde la etapa de builder
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
+# --- Variables de entorno para el contenedor ---
+ENV DB_HOST=$DB_HOST \
+    DB_PORT=$DB_PORT \
+    DB_USER=$DB_USER \
+    DB_PASS=$DB_PASS \
+    DB_NAME=$DB_NAME \
+    DB_POOL_MODE=$DB_POOL_MODE \
+    PORT_CORE=$PORT_CORE \
+    PORT_CLINICAL=$PORT_CLINICAL \
+    PORT_NUTRITION=$PORT_NUTRITION \
+    PORT_ODONTO=$PORT_ODONTO \
+    PORT_PATIENT=$PORT_PATIENT \
+    PORT_PHARMACY=$PORT_PHARMACY \
+    PORT_VACCINATION=$PORT_VACCINATION \
+    PORT_GATEWAY=$PORT_GATEWAY \
+    SCHEMA_CORE=$SCHEMA_CORE \
+    SCHEMA_CLINICAL=$SCHEMA_CLINICAL \
+    SCHEMA_NUTRITION=$SCHEMA_NUTRITION \
+    SCHEMA_ODONTO=$SCHEMA_ODONTO \
+    SCHEMA_PATIENT=$SCHEMA_PATIENT \
+    SCHEMA_PHARMACY=$SCHEMA_PHARMACY \
+    SCHEMA_VACCINATION=$SCHEMA_VACCINATION
 
-# Variables de entorno (puedes sobreescribirlas al ejecutar)
-ENV NODE_ENV=production
-ENV PORT=3000
+EXPOSE 3010
 
-# Puerto expuesto
-EXPOSE $PORT
-
-# Comando de inicio
-CMD ["node", "dist/server.js"]
+CMD ["npm", "run", "start:all"]
