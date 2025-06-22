@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -10,32 +10,69 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
+# Build output
 /build
+/dist
+/out
+/.next/
 
-# misc
-.DS_Store
-*.pem
+# Coverage & Testing
+/coverage
+/.nyc_output
 
-# debug
+# Debug & Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+lerna-debug.log*
+pnpm-debug.log*
+logs
+*.log
 
-# env files (can opt-in for committing if needed)
-.env*
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# vercel
-.vercel
+# Environment variables
+.env
+.env.development.local
+.env.local
+.env.production.local
+.env.test.local
 
-# typescript
+# Miscellaneous
+.DS_Store
+*.pem
+
+# OS
+pids
+*.pid
+*.pid.lock
+*.seed
+
+# Runtime data
+.temp
+.tmp
+
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Vercel
+.vercel
+
+# IDEs and editors
+/.idea
+.c9/
+.classpath
+.launch
+.project
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json

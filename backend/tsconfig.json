@@ -1,18 +1,53 @@
 {
-    "compilerOptions": {
-      "target": "es2018",
-      "module": "commonjs",
-      "outDir": "./dist",
-      "rootDir": "./src",
-      "strict": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "skipLibCheck": true,
-      "moduleResolution": "node",
-      "resolveJsonModule": true
-    },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/auth": [
+        "libs/auth/src"
+      ],
+      "@app/auth/*": [
+        "libs/auth/src/*"
+      ],
+      "@proyecto-gps/api-gateway": [
+        "apps/api-gateway/src"
+      ],
+      "@proyecto-gps/clinical-service/*": [
+        "apps/clinical-service/src/*"
+      ],
+      "@proyecto-gps/core-service/*": [
+        "apps/core-service/src/*"
+      ],
+      "@proyecto-gps/nutrition-service/*": [
+        "apps/nutrition-service/src/*"
+      ],
+      "@proyecto-gps/odonto-service/*": [
+        "apps/odonto-service/src/*"
+      ],
+      "@proyecto-gps/patient-service/*": [
+        "apps/patient-service/src/*"
+      ],
+      "@proyecto-gps/pharmacy-service/*": [
+        "apps/pharmacy-service/src/*"
+      ],
+      "@proyecto-gps/vaccination-service/*": [
+        "apps/vaccination-service/src/*"
+      ]
+    }
   }
-  
+}

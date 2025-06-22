@@ -1,47 +1,40 @@
-# ─────────────────────────────────────────────────────────────
-# ETAPA 1: Builder (instalar dependencias y compilar Next.js)
-# ─────────────────────────────────────────────────────────────
-FROM node:18-alpine AS builder
+# Usa una imagen oficial de Node.js como base
+FROM node:20-alpine AS builder
 
-# 1) Declara build‐args para Supabase
-ARG NEXT_PUBLIC_SUPABASE_URL
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+WORKDIR /app
 
-# 2) Convertir build‐args en variables de entorno
-ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+# Copia los archivos necesarios
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# 3) Definir directorio de trabajo
-WORKDIR /app/frontend
+COPY . .
 
-# 4) Copiar package.json y lockfile para aprovechar caché
-COPY frontend/package.json frontend/package-lock.json* ./
+# Recibe los secrets como argumentos de build
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_SESSION_DURATION
 
-# 5) Instalar dependencias
-RUN npm install
+# Los expone como variables de entorno en el contenedor
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SESSION_DURATION=$NEXT_PUBLIC_SESSION_DURATION
 
-# 6) Copiar el resto del código (layouts, páginas, utils, etc.)
-COPY frontend/ .
-
-# 7) Ejecutar la build en modo producción
+# Construye la aplicación Next.js
 RUN npm run build
 
-# ─────────────────────────────────────────────────────────────
-# ETAPA 2: Runner (solo archivos ya compilados)
-# ─────────────────────────────────────────────────────────────
-FROM node:18-alpine AS runner
+# Imagen final para producción
+FROM node:20-alpine
 
-# 1) Definir directorio de trabajo
-WORKDIR /app/frontend
+WORKDIR /app
 
-# 2) Copiar únicamente lo necesario desde el builder
-COPY --from=builder /app/frontend/.next ./.next
-COPY --from=builder /app/frontend/node_modules ./node_modules
-COPY --from=builder /app/frontend/package.json ./package.json
-COPY --from=builder /app/frontend/public ./public
+# Copia solo los archivos necesarios desde el builder
+COPY --from=builder /app/package.json /app/package-lock.json ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/src ./src
 
-# 3) Exponer puerto 3000
+# Instala dependencias de producción
+RUN npm ci --omit=dev
+
 EXPOSE 3000
 
-# 4) Iniciar el servidor de Next.js en modo producción
 CMD ["npm", "start"]

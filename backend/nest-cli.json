@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/core-service/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/core-service/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/core-service",
+  "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "auth": {
+      "type": "library",
+      "root": "libs/auth",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth/tsconfig.lib.json"
+      }
+    },
+    "clinical-service": {
+      "type": "application",
+      "root": "apps/clinical-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/clinical-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/clinical-service/tsconfig.app.json"
+      }
+    },
+    "core-service": {
+      "type": "application",
+      "root": "apps/core-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/core-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/core-service/tsconfig.app.json"
+      }
+    },
+    "nutrition-service": {
+      "type": "application",
+      "root": "apps/nutrition-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/nutrition-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/nutrition-service/tsconfig.app.json"
+      }
+    },
+    "odonto-service": {
+      "type": "application",
+      "root": "apps/odonto-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/odonto-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/odonto-service/tsconfig.app.json"
+      }
+    },
+    "patient-service": {
+      "type": "application",
+      "root": "apps/patient-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/patient-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/patient-service/tsconfig.app.json"
+      }
+    },
+    "pharmacy-service": {
+      "type": "application",
+      "root": "apps/pharmacy-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/pharmacy-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/pharmacy-service/tsconfig.app.json"
+      }
+    },
+    "vaccination-service": {
+      "type": "application",
+      "root": "apps/vaccination-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/vaccination-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/vaccination-service/tsconfig.app.json"
+      }
+    }
+  }
+}

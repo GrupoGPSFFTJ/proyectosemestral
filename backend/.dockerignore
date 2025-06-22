@@ -1,9 +1,11 @@
 node_modules
 dist
 .env
-*.log
-.DS_Store
-docker-compose.yml
-docker-compose.*.yml
+.env.*
+npm-debug.log
+Dockerfile
 .git
 .gitignore
+README.md
+.prettierrc
+eslint.config.mjs
