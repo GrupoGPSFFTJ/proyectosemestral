@@ -1,72 +1,135 @@
-# ──────────────────────────────────────────────────────────────────────
-# ETAPA 1: frontend-builder → instalar y compilar Next.js
-# ──────────────────────────────────────────────────────────────────────
-FROM node:20-alpine AS frontend-builder
-
-# 1.1) Definimos build-args para Supabase
-ARG NEXT_PUBLIC_SUPABASE_URL
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-# 1.2) Convertimos esos build-args en variables de entorno
-ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
-
-# 1.3) Directorio de trabajo para frontend
-WORKDIR /app/frontend
-
-# 1.4) Copiamos sólo package.json y package-lock.json para optimizar cache
-COPY frontend/package.json frontend/package-lock.json* ./
-
-# 1.5) Instalamos dependencias del frontend
-RUN npm install
-
-# 1.6) Copiamos el resto de la carpeta frontend
-COPY frontend/ ./
-
-# 1.7) Ejecutamos la build de Next.js
-RUN npm run build
-
-
-
-# ──────────────────────────────────────────────────────────────────────
-# ETAPA 2: backend-builder → instalar dependencias del backend
-# ──────────────────────────────────────────────────────────────────────
+# Stage 1: Build Backend (NestJS)
 FROM node:20-alpine AS backend-builder
 
-# 2.1) Directorio de trabajo para backend
 WORKDIR /app/backend
 
-# 2.2) Copiamos package.json y package-lock.json de backend
-COPY backend/package.json backend/package-lock.json* ./
+COPY backend/package*.json ./
+COPY backend/nest-cli.json ./
+COPY backend/tsconfig*.json ./
+COPY backend/apps ./apps
+COPY backend/libs ./libs
 
-# 2.3) Instalamos dependencias del backend
-RUN npm install
+RUN npm ci --legacy-peer-deps
+RUN npm run build:all
 
-# 2.4) Copiamos el resto de la carpeta backend
-COPY backend/ .
+# Stage 2: Build Frontend (Next.js)
+FROM node:20-alpine AS frontend-builder
 
+WORKDIR /app/frontend
 
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
 
-# ──────────────────────────────────────────────────────────────────────
-# ETAPA 3: runner → armamos la imagen final con backend + frontend compilado
-# ──────────────────────────────────────────────────────────────────────
-FROM node:20-alpine AS runner
+COPY frontend/ .
 
-# 3.1) Definimos el directorio raíz en contenedor
+# Build arguments for frontend
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_SESSION_DURATION
+
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SESSION_DURATION=$NEXT_PUBLIC_SESSION_DURATION
+
+RUN npm run build
+
+# Stage 3: Production - Combine both services
+FROM node:20-alpine
+
 WORKDIR /app
 
-# 3.2) Copiamos el backend ya instalado
-COPY --from=backend-builder /app/backend ./backend
+# Install process manager
+RUN npm install -g pm2
 
-# 3.3) Copiamos el frontend ya compilado (incluye la carpeta .next, public, etc.)
-COPY --from=frontend-builder /app/frontend ./
+# Copy backend files
+COPY --from=backend-builder /app/backend/package*.json ./backend/
+COPY --from=backend-builder /app/backend/nest-cli.json ./backend/
+COPY --from=backend-builder /app/backend/tsconfig*.json ./backend/
+COPY --from=backend-builder /app/backend/dist ./backend/dist
+COPY --from=backend-builder /app/backend/node_modules ./backend/node_modules
 
-# 3.4) Copiamos el script de inicio (start.sh) y le damos permiso
-COPY start.sh ./start.sh
-RUN chmod +x ./start.sh
+# Copy frontend files
+COPY --from=frontend-builder /app/frontend/package.json /app/frontend/package-lock.json ./frontend/
+COPY --from=frontend-builder /app/frontend/.next ./frontend/.next
+COPY --from=frontend-builder /app/frontend/public ./frontend/public
+COPY --from=frontend-builder /app/frontend/next.config.ts ./frontend/next.config.ts
+COPY --from=frontend-builder /app/frontend/src ./frontend/src
 
-# 3.5) Exponemos puertos (Next en 3000 y tu backend en 4000, ajústalo si es otro puerto)
-EXPOSE 3000 4000
+# Install frontend production dependencies
+WORKDIR /app/frontend
+RUN npm ci --omit=dev
 
-# 3.6) Comando por defecto: ejecutamos start.sh para levantar backend + frontend
-CMD ["./start.sh"]
+WORKDIR /app
+
+# Backend build arguments and environment variables
+ARG DB_HOST
+ARG DB_PORT
+ARG DB_USER
+ARG DB_PASS
+ARG DB_NAME
+ARG DB_POOL_MODE
+ARG PORT_CORE
+ARG PORT_CLINICAL
+ARG PORT_NUTRITION
+ARG PORT_ODONTO
+ARG PORT_PATIENT
+ARG PORT_PHARMACY
+ARG PORT_VACCINATION
+ARG PORT_GATEWAY
+ARG SCHEMA_CORE
+ARG SCHEMA_CLINICAL
+ARG SCHEMA_NUTRITION
+ARG SCHEMA_ODONTO
+ARG SCHEMA_PATIENT
+ARG SCHEMA_PHARMACY
+ARG SCHEMA_VACCINATION
+
+ENV DB_HOST=$DB_HOST \
+    DB_PORT=$DB_PORT \
+    DB_USER=$DB_USER \
+    DB_PASS=$DB_PASS \
+    DB_NAME=$DB_NAME \
+    DB_POOL_MODE=$DB_POOL_MODE \
+    PORT_CORE=$PORT_CORE \
+    PORT_CLINICAL=$PORT_CLINICAL \
+    PORT_NUTRITION=$PORT_NUTRITION \
+    PORT_ODONTO=$PORT_ODONTO \
+    PORT_PATIENT=$PORT_PATIENT \
+    PORT_PHARMACY=$PORT_PHARMACY \
+    PORT_VACCINATION=$PORT_VACCINATION \
+    PORT_GATEWAY=$PORT_GATEWAY \
+    SCHEMA_CORE=$SCHEMA_CORE \
+    SCHEMA_CLINICAL=$SCHEMA_CLINICAL \
+    SCHEMA_NUTRITION=$SCHEMA_NUTRITION \
+    SCHEMA_ODONTO=$SCHEMA_ODONTO \
+    SCHEMA_PATIENT=$SCHEMA_PATIENT \
+    SCHEMA_PHARMACY=$SCHEMA_PHARMACY \
+    SCHEMA_VACCINATION=$SCHEMA_VACCINATION
+
+# Create PM2 ecosystem file
+RUN echo '{ \
+  "apps": [ \
+    { \
+      "name": "backend", \
+      "script": "npm", \
+      "args": "run start:all", \
+      "cwd": "/app/backend", \
+      "env": { \
+        "NODE_ENV": "production" \
+      } \
+    }, \
+    { \
+      "name": "frontend", \
+      "script": "npm", \
+      "args": "start", \
+      "cwd": "/app/frontend", \
+      "env": { \
+        "NODE_ENV": "production" \
+      } \
+    } \
+  ] \
+}' > ecosystem.config.json
+
+# Expose both ports
+EXPOSE 3000 3010
+
+# Start both services with PM2
+CMD ["pm2-runtime", "start", "ecosystem.config.json"]
