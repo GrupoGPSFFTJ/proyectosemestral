@@ -10,7 +10,7 @@ async function bootstrap() {
   app.use(
     '/core',
     createProxyMiddleware({
-      target: 'http://localhost:3001',
+      target: 'https://core-service-efio.onrender.com/',
       changeOrigin: true,
       pathRewrite: { '^/core': '' },
     }),
@@ -19,7 +19,7 @@ async function bootstrap() {
   app.use(
     '/clinical',
     createProxyMiddleware({
-      target: 'http://localhost:3002',
+      target: 'https://clinical-service.onrender.com/',
       changeOrigin: true,
       pathRewrite: { '^/clinical': '' },
     }),
@@ -28,7 +28,7 @@ async function bootstrap() {
   app.use(
     '/nutrition',
     createProxyMiddleware({
-      target: 'http://localhost:3003',
+      target: 'https://nutrition-service.onrender.com/',
       changeOrigin: true,
       pathRewrite: { '^/nutrition': '' },
     }),
@@ -37,7 +37,7 @@ async function bootstrap() {
   app.use(
     '/odonto',
     createProxyMiddleware({
-      target: 'http://localhost:3004',
+      target: 'https://odonto-service.onrender.com/',
       changeOrigin: true,
       pathRewrite: { '^/odonto': '' },
     }),
@@ -46,7 +46,7 @@ async function bootstrap() {
   app.use(
     '/patient',
     createProxyMiddleware({
-      target: 'http://localhost:3005',
+      target: 'https://patient-service-o26h.onrender.com/',
       changeOrigin: true,
       pathRewrite: { '^/patient': '' },
     }),
@@ -55,7 +55,7 @@ async function bootstrap() {
   app.use(
     '/pharmacy',
     createProxyMiddleware({
-      target: 'http://localhost:3006',
+      target: 'https://pharmacy-service-x3d8.onrender.com/',
       changeOrigin: true,
       pathRewrite: { '^/pharmacy': '' },
     }),
@@ -64,7 +64,7 @@ async function bootstrap() {
   app.use(
     '/vaccination',
     createProxyMiddleware({
-      target: 'http://localhost:3007',
+      target: 'https://vaccination-service-jwpw.onrender.com/',
       changeOrigin: true,
       pathRewrite: { '^/vaccination': '' },
     }),
