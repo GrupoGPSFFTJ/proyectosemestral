@@ -28,6 +28,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push core-service
         run: |
@@ -50,6 +55,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push clinical-service
         run: |
@@ -72,6 +82,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push nutrition-service
         run: |
@@ -94,6 +109,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push odonto-service
         run: |
@@ -116,6 +136,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push patient-service
         run: |
@@ -138,6 +163,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push pharmacy-service
         run: |
@@ -160,6 +190,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push vaccination-service
         run: |
@@ -209,6 +244,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push Frontend
         run: |
