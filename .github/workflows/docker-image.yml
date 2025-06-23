@@ -8,10 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
+  # 1) Login a Docker Hub
   docker-login:
     runs-on: ubuntu-latest
     outputs:
-      docker_logged: ${{ steps.login.outcome }}
+      logged: ${{ steps.login.outcome }}
     steps:
       - uses: actions/checkout@v4
       - name: Login to Docker Hub
@@ -21,6 +22,7 @@ jobs:
             -u "${{ secrets.DOCKERHUB_USERNAME }}" \
             --password-stdin
 
+  # 2) Build & Push de todos los microservicios
   build-backend:
     needs: docker-login
     runs-on: ubuntu-latest
@@ -63,7 +65,6 @@ jobs:
             schema_arg: SCHEMA_VACCINATION
             schema: ${{ secrets.SCHEMA_VACCINATION }}
           - service: api-gateway
-            # El gateway no necesita SCHEMA, pones puertos vacíos
             port_arg: PORT_GATEWAY
             port: ${{ secrets.PORT_GATEWAY }}
             schema_arg: ""
@@ -74,34 +75,39 @@ jobs:
       - name: Build & Push ${{ matrix.service }}
         run: |
           IMAGE=fabiangpsproy/${{ matrix.service }}:latest
-          docker build \
-            -f backend/apps/${{ matrix.service }}/Dockerfile \
+
+          # Construimos desde backend/ para que COPY ../../ funcione
+          CMD="docker build -f backend/apps/${{ matrix.service }}/Dockerfile \
             --build-arg DB_HOST=${{ secrets.DB_HOST }} \
             --build-arg DB_PORT=${{ secrets.DB_PORT }} \
             --build-arg DB_USER=${{ secrets.DB_USER }} \
             --build-arg DB_PASS=${{ secrets.DB_PASS }} \
             --build-arg DB_NAME=${{ secrets.DB_NAME }} \
-            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
-            $(
-              if [ -n "${{ matrix.port_arg }}" ]; then
-                echo "--build-arg ${{ matrix.port_arg }}=${{ matrix.port }}"
-              fi
-            ) \
-            $(
-              if [ -n "${{ matrix.schema_arg }}" ]; then
-                echo "--build-arg ${{ matrix.schema_arg }}=${{ matrix.schema }}"
-              fi
-            ) \
-            -t $IMAGE \
-            backend/apps/${{ matrix.service }}
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }}"
+
+          # Añadimos sólo el build-arg de puerto si existe
+          if [ -n "${{ matrix.port_arg }}" ]; then
+            CMD="$CMD --build-arg ${{ matrix.port_arg }}=${{ matrix.port }}"
+          fi
+
+          # Añadimos sólo el build-arg de schema si existe
+          if [ -n "${{ matrix.schema_arg }}" ]; then
+            CMD="$CMD --build-arg ${{ matrix.schema_arg }}=${{ matrix.schema }}"
+          fi
+
+          # Finalizamos el comando con etiqueta y contexto
+          CMD="$CMD -t $IMAGE backend/"
+
+          # Ejecutamos build y push
+          eval $CMD
           docker push $IMAGE
 
+  # 3) Build & Push del frontend
   build-frontend:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Build & Push Frontend
         run: |
           IMAGE=fabiangpsproy/frontend:latest
