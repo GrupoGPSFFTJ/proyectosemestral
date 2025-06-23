@@ -24,7 +24,7 @@ jobs:
       - name: Build the Docker image
         run: |
           IMAGE_TAG=fabiangpsproy/gps:latest
-          docker build -t backend-app \
+          docker build -t $IMAGE_TAG \
           --build-arg DB_HOST=${{ secrets.DB_HOST }} \
           --build-arg DB_PORT=${{ secrets.DB_PORT }} \
           --build-arg DB_USER=${{ secrets.DB_USER }} \
