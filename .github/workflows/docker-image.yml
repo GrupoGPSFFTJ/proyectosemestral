@@ -23,8 +23,9 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          IMAGE_TAG=fabiangpsproy/gps:latest
-          docker build -t $IMAGE_TAG \
+          BACKEND_TAG=fabiangpsproy/backend:latest
+          FRONTEND_TAG=fabiangpsproy/frontend:latest
+          docker build -t $BACKEND_TAG \
           --build-arg DB_HOST=${{ secrets.DB_HOST }} \
           --build-arg DB_PORT=${{ secrets.DB_PORT }} \
           --build-arg DB_USER=${{ secrets.DB_USER }} \
@@ -45,11 +46,14 @@ jobs:
           --build-arg SCHEMA_ODONTO=${{ secrets.SCHEMA_ODONTO }} \
           --build-arg SCHEMA_PATIENT=${{ secrets.SCHEMA_PATIENT }} \
           --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
-          --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} \
+          --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} .
+          docker build -t frontend-app \
           --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
           --build-arg NEXT_PUBLIC_SESSION_DURATION=${{ secrets.NEXT_PUBLIC_SESSION_DURATION }} .
 
       - name: Push the Docker image
         run: |
-          IMAGE_TAG=fabiangpsproy/gps:latest
-          docker push $IMAGE_TAG
+          BACKEND_TAG=fabiangpsproy/backend:latest
+          FRONTEND_TAG=fabiangpsproy/frontend:latest
+          docker push $BACKEND_TAG
+          docker push $FRONTEND_TAG
