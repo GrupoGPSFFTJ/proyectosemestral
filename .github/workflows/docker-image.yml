@@ -45,7 +45,9 @@ jobs:
           --build-arg SCHEMA_ODONTO=${{ secrets.SCHEMA_ODONTO }} \
           --build-arg SCHEMA_PATIENT=${{ secrets.SCHEMA_PATIENT }} \
           --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
-          --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} .
+          --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} . \
+          --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
+          --build-arg NEXT_PUBLIC_SESSION_DURATION=${{ secrets.NEXT_PUBLIC_SESSION_DURATION }} .
 
       - name: Push the Docker image
         run: |
