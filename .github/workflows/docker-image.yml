@@ -8,56 +8,107 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  docker-login:
     runs-on: ubuntu-latest
-
+    outputs:
+      docker_logged: ${{ steps.login.outcome }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Log in to Docker Hub
+      - uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        id: login
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
             -u "${{ secrets.DOCKERHUB_USERNAME }}" \
             --password-stdin
 
-      - name: Build & push backend image
+  build-backend:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - service: core-service
+            port_arg: PORT_CORE
+            port: ${{ secrets.PORT_CORE }}
+            schema_arg: SCHEMA_CORE
+            schema: ${{ secrets.SCHEMA_CORE }}
+          - service: clinical-service
+            port_arg: PORT_CLINICAL
+            port: ${{ secrets.PORT_CLINICAL }}
+            schema_arg: SCHEMA_CLINICAL
+            schema: ${{ secrets.SCHEMA_CLINICAL }}
+          - service: nutrition-service
+            port_arg: PORT_NUTRITION
+            port: ${{ secrets.PORT_NUTRITION }}
+            schema_arg: SCHEMA_NUTRITION
+            schema: ${{ secrets.SCHEMA_NUTRITION }}
+          - service: odonto-service
+            port_arg: PORT_ODONTO
+            port: ${{ secrets.PORT_ODONTO }}
+            schema_arg: SCHEMA_ODONTO
+            schema: ${{ secrets.SCHEMA_ODONTO }}
+          - service: patient-service
+            port_arg: PORT_PATIENT
+            port: ${{ secrets.PORT_PATIENT }}
+            schema_arg: SCHEMA_PATIENT
+            schema: ${{ secrets.SCHEMA_PATIENT }}
+          - service: pharmacy-service
+            port_arg: PORT_PHARMACY
+            port: ${{ secrets.PORT_PHARMACY }}
+            schema_arg: SCHEMA_PHARMACY
+            schema: ${{ secrets.SCHEMA_PHARMACY }}
+          - service: vaccination-service
+            port_arg: PORT_VACCINATION
+            port: ${{ secrets.PORT_VACCINATION }}
+            schema_arg: SCHEMA_VACCINATION
+            schema: ${{ secrets.SCHEMA_VACCINATION }}
+          - service: api-gateway
+            # El gateway no necesita SCHEMA, pones puertos vacíos
+            port_arg: PORT_GATEWAY
+            port: ${{ secrets.PORT_GATEWAY }}
+            schema_arg: ""
+            schema: ""
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build & Push ${{ matrix.service }}
         run: |
-          BACKEND_TAG=fabiangpsproy/backend:latest
+          IMAGE=fabiangpsproy/${{ matrix.service }}:latest
           docker build \
-            -f backend/Dockerfile \
+            -f backend/apps/${{ matrix.service }}/Dockerfile \
             --build-arg DB_HOST=${{ secrets.DB_HOST }} \
             --build-arg DB_PORT=${{ secrets.DB_PORT }} \
             --build-arg DB_USER=${{ secrets.DB_USER }} \
             --build-arg DB_PASS=${{ secrets.DB_PASS }} \
             --build-arg DB_NAME=${{ secrets.DB_NAME }} \
             --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
-            --build-arg PORT_CORE=${{ secrets.PORT_CORE }} \
-            --build-arg PORT_CLINICAL=${{ secrets.PORT_CLINICAL }} \
-            --build-arg PORT_NUTRITION=${{ secrets.PORT_NUTRITION }} \
-            --build-arg PORT_ODONTO=${{ secrets.PORT_ODONTO }} \
-            --build-arg PORT_PATIENT=${{ secrets.PORT_PATIENT }} \
-            --build-arg PORT_PHARMACY=${{ secrets.PORT_PHARMACY }} \
-            --build-arg PORT_VACCINATION=${{ secrets.PORT_VACCINATION }} \
-            --build-arg PORT_GATEWAY=${{ secrets.PORT_GATEWAY }} \
-            --build-arg SCHEMA_CORE=${{ secrets.SCHEMA_CORE }} \
-            --build-arg SCHEMA_CLINICAL=${{ secrets.SCHEMA_CLINICAL }} \
-            --build-arg SCHEMA_NUTRITION=${{ secrets.SCHEMA_NUTRITION }} \
-            --build-arg SCHEMA_ODONTO=${{ secrets.SCHEMA_ODONTO }} \
-            --build-arg SCHEMA_PATIENT=${{ secrets.SCHEMA_PATIENT }} \
-            --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
-            --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} \
-            -t $BACKEND_TAG \
-            backend/
-          docker push $BACKEND_TAG
+            $(
+              if [ -n "${{ matrix.port_arg }}" ]; then
+                echo "--build-arg ${{ matrix.port_arg }}=${{ matrix.port }}"
+              fi
+            ) \
+            $(
+              if [ -n "${{ matrix.schema_arg }}" ]; then
+                echo "--build-arg ${{ matrix.schema_arg }}=${{ matrix.schema }}"
+              fi
+            ) \
+            -t $IMAGE \
+            backend/apps/${{ matrix.service }}
+          docker push $IMAGE
 
-      - name: Build & push frontend image
+  build-frontend:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build & Push Frontend
         run: |
-          FRONTEND_TAG=fabiangpsproy/frontend:latest
+          IMAGE=fabiangpsproy/frontend:latest
           docker build \
             -f frontend/Dockerfile \
             --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
             --build-arg NEXT_PUBLIC_SESSION_DURATION=${{ secrets.NEXT_PUBLIC_SESSION_DURATION }} \
-            -t $FRONTEND_TAG \
+            -t $IMAGE \
             frontend/
-          docker push $FRONTEND_TAG
+          docker push $IMAGE
