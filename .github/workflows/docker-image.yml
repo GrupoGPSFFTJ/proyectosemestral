@@ -182,6 +182,11 @@ jobs:
     needs: docker-login
     runs-on: ubuntu-latest
     steps:
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
       - uses: actions/checkout@v4
       - name: Build & Push api-gateway
         run: |
