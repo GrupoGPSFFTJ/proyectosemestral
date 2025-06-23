@@ -24,10 +24,28 @@ jobs:
       - name: Build the Docker image
         run: |
           IMAGE_TAG=fabiangpsproy/gps:latest
-          docker build \
-            --build-arg NEXT_PUBLIC_SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
-            --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY="${{ secrets.SUPABASE_ANON_KEY }}" \
-            -t $IMAGE_TAG .
+          docker build -t backend-app \
+          --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+          --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+          --build-arg DB_USER=${{ secrets.DB_USER }} \
+          --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+          --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+          --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+          --build-arg PORT_CORE=${{ secrets.PORT_CORE }} \
+          --build-arg PORT_CLINICAL=${{ secrets.PORT_CLINICAL }} \
+          --build-arg PORT_NUTRITION=${{ secrets.PORT_NUTRITION }} \
+          --build-arg PORT_ODONTO=${{ secrets.PORT_ODONTO }} \
+          --build-arg PORT_PATIENT=${{ secrets.PORT_PATIENT }} \
+          --build-arg PORT_PHARMACY=${{ secrets.PORT_PHARMACY }} \
+          --build-arg PORT_VACCINATION=${{ secrets.PORT_VACCINATION }} \
+          --build-arg PORT_GATEWAY=${{ secrets.PORT_GATEWAY }} \
+          --build-arg SCHEMA_CORE=${{ secrets.SCHEMA_CORE }} \
+          --build-arg SCHEMA_CLINICAL=${{ secrets.SCHEMA_CLINICAL }} \
+          --build-arg SCHEMA_NUTRITION=${{ secrets.SCHEMA_NUTRITION }} \
+          --build-arg SCHEMA_ODONTO=${{ secrets.SCHEMA_ODONTO }} \
+          --build-arg SCHEMA_PATIENT=${{ secrets.SCHEMA_PATIENT }} \
+          --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
+          --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} .
 
       - name: Push the Docker image
         run: |
