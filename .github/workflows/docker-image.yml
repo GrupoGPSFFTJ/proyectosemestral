@@ -2,9 +2,9 @@ name: CI del proyecto
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -24,97 +24,179 @@ jobs:
             --password-stdin
 
   # 2) Build & Push de todos los microservicios
-  build-backend:
+  build-core-service:
     needs: docker-login
     runs-on: ubuntu-latest
-
-    # cargamos aquí TODOS los secretos como env
-    env:
-      DB_HOST:       ${{ secrets.DB_HOST }}
-      DB_PORT:       ${{ secrets.DB_PORT }}
-      DB_USER:       ${{ secrets.DB_USER }}
-      DB_PASS:       ${{ secrets.DB_PASS }}
-      DB_NAME:       ${{ secrets.DB_NAME }}
-      DB_POOL_MODE:  ${{ secrets.DB_POOL_MODE }}
-      PORT_CORE:       ${{ secrets.PORT_CORE }}
-      SCHEMA_CORE:     ${{ secrets.SCHEMA_CORE }}
-      PORT_CLINICAL:   ${{ secrets.PORT_CLINICAL }}
-      SCHEMA_CLINICAL: ${{ secrets.SCHEMA_CLINICAL }}
-      PORT_NUTRITION:   ${{ secrets.PORT_NUTRITION }}
-      SCHEMA_NUTRITION: ${{ secrets.SCHEMA_NUTRITION }}
-      PORT_ODONTO:   ${{ secrets.PORT_ODONTO }}
-      SCHEMA_ODONTO: ${{ secrets.SCHEMA_ODONTO }}
-      PORT_PATIENT:   ${{ secrets.PORT_PATIENT }}
-      SCHEMA_PATIENT: ${{ secrets.SCHEMA_PATIENT }}
-      PORT_PHARMACY:   ${{ secrets.PORT_PHARMACY }}
-      SCHEMA_PHARMACY: ${{ secrets.SCHEMA_PHARMACY }}
-      PORT_VACCINATION:   ${{ secrets.PORT_VACCINATION }}
-      SCHEMA_VACCINATION: ${{ secrets.SCHEMA_VACCINATION }}
-      PORT_GATEWAY: ${{ secrets.PORT_GATEWAY }}
-
-    strategy:
-      matrix:
-        include:
-          - service: core-service
-            port_arg: PORT_CORE
-            schema_arg: SCHEMA_CORE
-          - service: clinical-service
-            port_arg: PORT_CLINICAL
-            schema_arg: SCHEMA_CLINICAL
-          - service: nutrition-service
-            port_arg: PORT_NUTRITION
-            schema_arg: SCHEMA_NUTRITION
-          - service: odonto-service
-            port_arg: PORT_ODONTO
-            schema_arg: SCHEMA_ODONTO
-          - service: patient-service
-            port_arg: PORT_PATIENT
-            schema_arg: SCHEMA_PATIENT
-          - service: pharmacy-service
-            port_arg: PORT_PHARMACY
-            schema_arg: SCHEMA_PHARMACY
-          - service: vaccination-service
-            port_arg: PORT_VACCINATION
-            schema_arg: SCHEMA_VACCINATION
-          - service: api-gateway
-            port_arg: PORT_GATEWAY
-            schema_arg: ""              # el gateway no usa schema
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build & Push ${{ matrix.service }}
+      - name: Build & Push core-service
         run: |
-          set -e
-          IMAGE=fabiangpsproy/${{ matrix.service }}:latest
+          IMAGE=fabiangpsproy/core-service:latest
+          docker build \
+            -f backend/apps/core-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_CORE=${{ secrets.PORT_CORE }} \
+            --build-arg SCHEMA_CORE=${{ secrets.SCHEMA_CORE }} \
+            -t $IMAGE \
+            backend/
+          docker push $IMAGE
 
-          # Nombre de la var que contiene el puerto y el schema en el env
-          VAR_PORT="${{ matrix.port_arg }}"
-          VAR_SCHEMA="${{ matrix.schema_arg }}"
+  build-clinical-service:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & Push clinical-service
+        run: |
+          IMAGE=fabiangpsproy/clinical-service:latest
+          docker build \
+            -f backend/apps/clinical-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_CLINICAL=${{ secrets.PORT_CLINICAL }} \
+            --build-arg SCHEMA_CLINICAL=${{ secrets.SCHEMA_CLINICAL }} \
+            -t $IMAGE \
+            backend/
+          docker push $IMAGE
 
-          # Obtenemos el valor real vía bash indirect expansion
-          PORT_VAL="${!VAR_PORT}"
-          DOCKER_CMD="docker build \
-            -f backend/apps/${{ matrix.service }}/Dockerfile \
-            --build-arg DB_HOST=${DB_HOST} \
-            --build-arg DB_PORT=${DB_PORT} \
-            --build-arg DB_USER=${DB_USER} \
-            --build-arg DB_PASS=${DB_PASS} \
-            --build-arg DB_NAME=${DB_NAME} \
-            --build-arg DB_POOL_MODE=${DB_POOL_MODE} \
-            --build-arg ${VAR_PORT}=${PORT_VAL}"
+  build-nutrition-service:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & Push nutrition-service
+        run: |
+          IMAGE=fabiangpsproy/nutrition-service:latest
+          docker build \
+            -f backend/apps/nutrition-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_NUTRITION=${{ secrets.PORT_NUTRITION }} \
+            --build-arg SCHEMA_NUTRITION=${{ secrets.SCHEMA_NUTRITION }} \
+            -t $IMAGE \
+            backend/
+          docker push $IMAGE
 
-          # Si el servicio define schema_arg, lo agregamos
-          if [ -n "$VAR_SCHEMA" ]; then
-            SCHEMA_VAL="${!VAR_SCHEMA}"
-            DOCKER_CMD="$DOCKER_CMD --build-arg ${VAR_SCHEMA}=${SCHEMA_VAL}"
-          fi
+  build-odonto-service:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & Push odonto-service
+        run: |
+          IMAGE=fabiangpsproy/odonto-service:latest
+          docker build \
+            -f backend/apps/odonto-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_ODONTO=${{ secrets.PORT_ODONTO }} \
+            --build-arg SCHEMA_ODONTO=${{ secrets.SCHEMA_ODONTO }} \
+            -t $IMAGE \
+            backend/
+          docker push $IMAGE
 
-          # Etiqueta y contexto
-          DOCKER_CMD="$DOCKER_CMD -t $IMAGE backend/"
+  build-patient-service:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & Push patient-service
+        run: |
+          IMAGE=fabiangpsproy/patient-service:latest
+          docker build \
+            -f backend/apps/patient-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_PATIENT=${{ secrets.PORT_PATIENT }} \
+            --build-arg SCHEMA_PATIENT=${{ secrets.SCHEMA_PATIENT }} \
+            -t $IMAGE \
+            backend/
+          docker push $IMAGE
 
-          # Construcción y push
-          eval $DOCKER_CMD
+  build-pharmacy-service:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & Push pharmacy-service
+        run: |
+          IMAGE=fabiangpsproy/pharmacy-service:latest
+          docker build \
+            -f backend/apps/pharmacy-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_PHARMACY=${{ secrets.PORT_PHARMACY }} \
+            --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
+            -t $IMAGE \
+            backend/
+          docker push $IMAGE
+
+  build-vaccination-service:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & Push vaccination-service
+        run: |
+          IMAGE=fabiangpsproy/vaccination-service:latest
+          docker build \
+            -f backend/apps/vaccination-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_VACCINATION=${{ secrets.PORT_VACCINATION }} \
+            --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} \
+            -t $IMAGE \
+            backend/
+          docker push $IMAGE
+
+  build-api-gateway:
+    needs: docker-login
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & Push api-gateway
+        run: |
+          IMAGE=fabiangpsproy/api-gateway:latest
+          docker build \
+            -f backend/apps/api-gateway/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_GATEWAY=${{ secrets.PORT_GATEWAY }} \
+            -t $IMAGE \
+            backend/
           docker push $IMAGE
 
   # 3) Build & Push del frontend
