@@ -48,22 +48,10 @@ export default function FichasOdontologicaPage() {
     });
 
     useEffect(() => {
-        apiService.getPacientes().then((data) => {
-            console.log('Pacientes:', data);
-            setPacientes(data);
-        });
-        apiService.getProgramasSaludOral().then((data) => {
-            console.log('Programas:', data);
-            setProgramas(data);
-        });
-        apiService.getCentrosSalud().then((data) => {
-            console.log('Centros:', data);
-            setCentros(data);
-        });
-        apiService.getFichasOdonto().then((data) => {
-            console.log('Fichas:', data);
-            setFichas(data);
-        });
+        apiService.getFichasOdonto().then(setFichas);
+        apiService.getPacientes().then(setPacientes);
+        apiService.getProgramasSaludOral().then(setProgramas);
+        apiService.getCentrosSalud().then(setCentros);
     }, []);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
