@@ -235,6 +235,13 @@ jobs:
             --build-arg DB_NAME=${{ secrets.DB_NAME }} \
             --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
             --build-arg PORT_GATEWAY=${{ secrets.PORT_GATEWAY }} \
+            --build-arg URL_CORE_SERVICE=${{ secrets.URL_CORE_SERVICE }} \
+            --build-arg URL_CLINICAL_SERVICE=${{ secrets.URL_CLINICAL_SERVICE }} \
+            --build-arg URL_NUTRITION_SERVICE=${{ secrets.URL_NUTRITION_SERVICE }} \
+            --build-arg URL_ODONTO_SERVICE=${{ secrets.URL_ODONTO_SERVICE }} \
+            --build-arg URL_PATIENT_SERVICE=${{ secrets.URL_PATIENT_SERVICE }} \
+            --build-arg URL_PHARMACY_SERVICE=${{ secrets.URL_PHARMACY_SERVICE }} \
+            --build-arg URL_VACCINATION_SERVICE=${{ secrets.URL_VACCINATION_SERVICE }} \
             -t $IMAGE \
             backend/
           docker push $IMAGE
