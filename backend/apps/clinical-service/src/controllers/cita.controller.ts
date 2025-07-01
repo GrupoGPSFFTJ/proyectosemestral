@@ -1,11 +1,19 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CitaService } from '../services/cita.service';
 import { Cita } from '../entities/cita.entity';
 
 @Controller('cita')
 export class CitaController {
-  constructor(private readonly citaService: CitaService) {
-  }
+  constructor(private readonly citaService: CitaService) {}
 
   @Post()
   create(@Body() data: Partial<Cita>): Promise<Cita> {

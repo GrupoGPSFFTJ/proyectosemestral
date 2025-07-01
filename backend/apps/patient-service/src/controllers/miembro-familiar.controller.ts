@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { MiembroFamiliarService } from '../services/miembro-familiar.service';
 import { MiembroFamiliar } from '../entities/miembro-familiar.entity';
 
@@ -6,8 +15,7 @@ import { MiembroFamiliar } from '../entities/miembro-familiar.entity';
 export class MiembroFamiliarController {
   constructor(
     private readonly miembroFamiliarService: MiembroFamiliarService,
-  ) {
-  }
+  ) {}
 
   @Post()
   create(@Body() miembroFamiliar: MiembroFamiliar) {

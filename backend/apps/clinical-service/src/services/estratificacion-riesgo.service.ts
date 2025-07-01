@@ -8,8 +8,7 @@ export class EstratificacionRiesgoService {
   constructor(
     @InjectRepository(EstratificacionRiesgo)
     private readonly repo: Repository<EstratificacionRiesgo>,
-  ) {
-  }
+  ) {}
 
   async create(
     data: Partial<EstratificacionRiesgo>,

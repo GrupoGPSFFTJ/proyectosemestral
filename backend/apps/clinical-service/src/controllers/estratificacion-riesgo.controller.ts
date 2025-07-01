@@ -1,11 +1,19 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { EstratificacionRiesgoService } from '../services/estratificacion-riesgo.service';
 import { EstratificacionRiesgo } from '../entities/estratificacion-riesgo.entity';
 
 @Controller('estratificacion-riesgo')
 export class EstratificacionRiesgoController {
-  constructor(private readonly svc: EstratificacionRiesgoService) {
-  }
+  constructor(private readonly svc: EstratificacionRiesgoService) {}
 
   @Post()
   create(

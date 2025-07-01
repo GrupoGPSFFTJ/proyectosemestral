@@ -1,11 +1,19 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { PacienteService } from '../services/paciente.service';
 import { Paciente } from '../entities/paciente.entity';
 
 @Controller('paciente')
 export class PacienteController {
-  constructor(private readonly pacienteService: PacienteService) {
-  }
+  constructor(private readonly pacienteService: PacienteService) {}
 
   @Post()
   create(@Body() paciente: Paciente) {

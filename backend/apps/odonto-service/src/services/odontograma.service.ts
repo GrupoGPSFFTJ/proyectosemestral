@@ -8,8 +8,7 @@ export class OdontogramaService {
   constructor(
     @InjectRepository(Odontograma)
     private readonly repo: Repository<Odontograma>,
-  ) {
-  }
+  ) {}
 
   create(data: Partial<Odontograma>): Promise<Odontograma> {
     const entity = this.repo.create(data);

@@ -1,11 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UsuarioRolService } from '../services/usuario-rol.service';
 import { UsuarioRol } from '../entities/usuario-rol.entity';
+import { Public } from '@app/auth';
 
 @Controller('usuario-rol')
 export class UsuarioRolController {
-  constructor(private readonly service: UsuarioRolService) {
-  }
+  constructor(private readonly service: UsuarioRolService) {}
 
   @Get()
   getAll(): Promise<UsuarioRol[]> {
@@ -21,6 +29,7 @@ export class UsuarioRolController {
   }
 
   @Post()
+  @Public()
   create(@Body() dto: Partial<UsuarioRol>): Promise<UsuarioRol> {
     return this.service.create(dto);
   }

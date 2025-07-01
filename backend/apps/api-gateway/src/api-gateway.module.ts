@@ -9,5 +9,4 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
 })
-export class ApiGatewayModule {
-}
+export class ApiGatewayModule {}

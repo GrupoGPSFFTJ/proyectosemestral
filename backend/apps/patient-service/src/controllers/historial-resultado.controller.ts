@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { HistorialResultadoService } from '../services/historial-resultado.service';
 import { HistorialResultado } from '../entities/historial-resultado.entity';
 
@@ -6,8 +15,7 @@ import { HistorialResultado } from '../entities/historial-resultado.entity';
 export class HistorialResultadoController {
   constructor(
     private readonly historialResultadoService: HistorialResultadoService,
-  ) {
-  }
+  ) {}
 
   @Post()
   create(@Body() historialResultado: HistorialResultado) {

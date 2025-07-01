@@ -8,8 +8,7 @@ export class DespachoMedicamentoService {
   constructor(
     @InjectRepository(DespachoMedicamento)
     private repo: Repository<DespachoMedicamento>,
-  ) {
-  }
+  ) {}
 
   create(data: Partial<DespachoMedicamento>): Promise<DespachoMedicamento> {
     const ent = this.repo.create(data);

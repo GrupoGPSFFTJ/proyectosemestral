@@ -1,11 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { DespachoMedicamentoService } from '../services/despacho-medicamento.service';
 import { DespachoMedicamento } from '../entities/despacho-medicamento.entity';
 
 @Controller('despacho-medicamento')
 export class DespachoMedicamentoController {
-  constructor(private readonly service: DespachoMedicamentoService) {
-  }
+  constructor(private readonly service: DespachoMedicamentoService) {}
 
   @Get()
   findAll(): Promise<DespachoMedicamento[]> {

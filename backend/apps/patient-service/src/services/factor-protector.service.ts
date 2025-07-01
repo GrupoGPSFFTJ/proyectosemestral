@@ -8,8 +8,7 @@ export class FactorProtectorService {
   constructor(
     @InjectRepository(FactorProtector)
     private factorProtectorRepository: Repository<FactorProtector>,
-  ) {
-  }
+  ) {}
 
   async create(factorProtector: FactorProtector): Promise<FactorProtector> {
     return await this.factorProtectorRepository.save(factorProtector);

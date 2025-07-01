@@ -9,11 +9,12 @@ import { RecetaMedicamentoController } from './controllers/receta-medicamento.co
 import { DespachoMedicamentoController } from './controllers/despacho-medicamento.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '@app/auth';
+import { AuthModule, JwtAuthGuard } from '@app/auth';
 import { Medicamento } from './entities/medicamento.entity';
 import { Receta } from './entities/receta.entity';
 import { RecetaMedicamento } from './entities/receta-medicamento.entity';
 import { DespachoMedicamento } from './entities/despacho-medicamento.entity';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { DespachoMedicamento } from './entities/despacho-medicamento.entity';
     RecetaService,
     RecetaMedicamentoService,
     DespachoMedicamentoService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class PharmacyModule {}

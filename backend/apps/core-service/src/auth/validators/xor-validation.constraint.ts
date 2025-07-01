@@ -1,9 +1,14 @@
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import {
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 import { LoginDto } from '../dto/login.dto';
 
 @ValidatorConstraint({ name: 'XorUsernameEmail', async: false })
 export class XorUsernameEmailConstraint
-  implements ValidatorConstraintInterface {
+  implements ValidatorConstraintInterface
+{
   validate(_: any, args: ValidationArguments): boolean {
     const dto = args.object as LoginDto;
     const hasUser = Boolean(dto.username);

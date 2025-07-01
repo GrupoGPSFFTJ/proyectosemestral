@@ -14,5 +14,4 @@ import { XorUsernameEmailConstraint } from './validators/xor-validation.constrai
   providers: [AuthService, UsuarioService, XorUsernameEmailConstraint],
   exports: [],
 })
-export class AuthModule {
-}
+export class AuthModule {}

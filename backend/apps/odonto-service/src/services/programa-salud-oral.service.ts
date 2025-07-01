@@ -8,8 +8,7 @@ export class ProgramaSaludOralService {
   constructor(
     @InjectRepository(ProgramaSaludOral)
     private readonly repo: Repository<ProgramaSaludOral>,
-  ) {
-  }
+  ) {}
 
   create(data: Partial<ProgramaSaludOral>): Promise<ProgramaSaludOral> {
     const entity = this.repo.create(data);

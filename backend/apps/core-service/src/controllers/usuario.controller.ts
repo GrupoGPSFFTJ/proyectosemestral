@@ -1,12 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
 import { UsuarioService } from '../services/usuario.service';
 import { Usuario } from '../entities/usuario.entity';
-import { JwtAuthGuard } from '@app/auth';
 
 @Controller('usuarios')
 export class UsuarioController {
-  constructor(private readonly service: UsuarioService) {
-  }
+  constructor(private readonly service: UsuarioService) {}
 
   @Get()
   getAll(): Promise<Usuario[]> {
@@ -19,13 +17,11 @@ export class UsuarioController {
   }
 
   @Get('user/:username')
-  @UseGuards(JwtAuthGuard)
   getByUser(@Param('username') username: string): Promise<Usuario> {
     return this.service.findByUser(username);
   }
 
   @Get('email/:email')
-  @UseGuards(JwtAuthGuard)
   getByEmail(@Param('email') email: string): Promise<Usuario> {
     return this.service.findByEmail(email);
   }
