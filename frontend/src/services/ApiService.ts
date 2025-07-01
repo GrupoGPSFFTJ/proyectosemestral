@@ -1,26 +1,26 @@
-import { ApiClient } from '@/lib/ApiClient';
+import {ApiClient} from '@/lib/ApiClient';
 
 const api = new ApiClient();
 
 export class ApiService {
     login(data: any): Promise<any> {
-        return api.post<any>('/core/auth/login', data);
+        return api.post<any>('/core/auth/login', data, false);
     }
 
     register(data: any): Promise<any> {
-        return api.post<any>('/core/auth/register', data);
+        return api.post<any>('/core/auth/register', data, false);
     }
 
     asignarRolUsuario(data: any): Promise<any> {
-        return api.post<any>('/core/usuario-rol', data);
+        return api.post<any>('/core/usuario-rol', data, false);
     }
 
     getUserByUsername(username: string): Promise<any> {
-        return api.get<any>(`/core/usuarios/user/${username}`, true);
+        return api.get<any>(`/core/usuarios/user/${username}`);
     }
 
     getUserByEmail(email: string): Promise<any> {
-        return api.get<any>(`/core/usuarios/email/${email}`, true);
+        return api.get<any>(`/core/usuarios/email/${email}`);
     }
 
     getCentrosSalud(): Promise<any[]> {
@@ -37,10 +37,6 @@ export class ApiService {
 
     getPacientes(): Promise<any[]> {
         return api.get<any[]>('/patient/paciente');
-    }
-
-    private getCount(schema: string, table: string): Promise<any[]> {
-        return api.get<any[]>(`/${schema}/${table}/count`);
     }
 
     getPacientesCount() {
@@ -173,6 +169,10 @@ export class ApiService {
 
     getRecMedByReceta(recetaId: number): Promise<any[]> {
         return api.get<any>(`/pharmacy/receta-medicamento/receta/${recetaId}`);
+    }
+
+    private getCount(schema: string, table: string): Promise<any[]> {
+        return api.get<any[]>(`/${schema}/${table}/count`);
     }
 }
 

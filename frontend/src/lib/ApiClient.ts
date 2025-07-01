@@ -4,7 +4,23 @@ export class ApiClient {
     private baseUrl = process.env.NEXT_PUBLIC_API_URL;
     private defaultHeaders = {'Content-Type': 'application/json'};
 
-    private getHeaders(withToken = false) {
+    get<T>(path: string, withToken = true): Promise<T> {
+        return this.request<T>('GET', path, undefined, withToken);
+    }
+
+    post<T>(path: string, body: any, withToken = true): Promise<T> {
+        return this.request<T>('POST', path, body, withToken);
+    }
+
+    put<T>(path: string, body: any, withToken = true): Promise<T> {
+        return this.request<T>('PUT', path, body, withToken);
+    }
+
+    delete<T>(path: string, withToken = true): Promise<T> {
+        return this.request<T>('DELETE', path, undefined, withToken);
+    }
+
+    private getHeaders(withToken = true) {
         const headers: Record<string, string> = {...this.defaultHeaders};
         if (withToken) {
             const token = localStorage.getItem('token');
@@ -17,7 +33,7 @@ export class ApiClient {
         method: HTTPMethod,
         path: string,
         body?: any,
-        withToken = false
+        withToken = true
     ): Promise<T> {
         const res = await fetch(`${this.baseUrl}${path}`, {
             method,
@@ -29,21 +45,5 @@ export class ApiClient {
             throw new Error(`API error ${res.status} ${res.statusText}: ${errorText}`);
         }
         return res.json();
-    }
-
-    get<T>(path: string, withToken = false): Promise<T> {
-        return this.request<T>('GET', path, undefined, withToken);
-    }
-
-    post<T>(path: string, body: any, withToken = false): Promise<T> {
-        return this.request<T>('POST', path, body, withToken);
-    }
-
-    put<T>(path: string, body: any, withToken = false): Promise<T> {
-        return this.request<T>('PUT', path, body, withToken);
-    }
-
-    delete<T>(path: string, withToken = false): Promise<T> {
-        return this.request<T>('DELETE', path, undefined, withToken);
     }
 }
