@@ -8,8 +8,7 @@ export class FactorRiesgoService {
   constructor(
     @InjectRepository(FactorRiesgo)
     private factorRiesgoRepository: Repository<FactorRiesgo>,
-  ) {
-  }
+  ) {}
 
   async create(factorRiesgo: FactorRiesgo): Promise<FactorRiesgo> {
     return await this.factorRiesgoRepository.save(factorRiesgo);

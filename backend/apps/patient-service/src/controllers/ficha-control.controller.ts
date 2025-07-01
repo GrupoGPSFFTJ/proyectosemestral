@@ -1,11 +1,19 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { FichaControlService } from '../services/ficha-control.service';
 import { FichaControl } from '../entities/ficha-control.entity';
 
 @Controller('ficha-control')
 export class FichaControlController {
-  constructor(private readonly fichaControlService: FichaControlService) {
-  }
+  constructor(private readonly fichaControlService: FichaControlService) {}
 
   @Post()
   create(@Body() fichaControl: FichaControl) {

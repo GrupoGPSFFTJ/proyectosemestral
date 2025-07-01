@@ -8,8 +8,7 @@ export class FamiliaService {
   constructor(
     @InjectRepository(Familia)
     private familiaRepository: Repository<Familia>,
-  ) {
-  }
+  ) {}
 
   async create(familia: Familia): Promise<Familia> {
     return await this.familiaRepository.save(familia);

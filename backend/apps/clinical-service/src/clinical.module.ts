@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuthModule } from '@app/auth';
+import { AuthModule, JwtAuthGuard } from '@app/auth';
 import { CitaController } from './controllers/cita.controller';
 import { EstratificacionRiesgoController } from './controllers/estratificacion-riesgo.controller';
 import { CitaService } from './services/cita.service';
@@ -11,6 +11,7 @@ import { Cita } from './entities/cita.entity';
 import { EstratificacionRiesgo } from './entities/estratificacion-riesgo.entity';
 import { EnumsService } from './services/enums.service';
 import { EnumsController } from './controllers/enums.controller';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -45,7 +46,11 @@ import { EnumsController } from './controllers/enums.controller';
     EstratificacionRiesgoController,
     EnumsController,
   ],
-  providers: [CitaService, EstratificacionRiesgoService, EnumsService],
+  providers: [
+    CitaService,
+    EstratificacionRiesgoService,
+    EnumsService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+  ],
 })
-export class ClinicalModule {
-}
+export class ClinicalModule {}

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '@app/auth';
+import { AuthModule, JwtAuthGuard } from '@app/auth';
 import { ProgramaNutricionalService } from './services/programa-nutricional.service';
 import { InscripcionPacamService } from './services/inscripcion-pacam.service';
 import { InformePacamService } from './services/informe-pacam.service';
@@ -14,6 +14,7 @@ import { ProgramaNutricional } from './entities/programa-nutricional.entity';
 import { InscripcionPacam } from './entities/inscripcion-pacam.entity';
 import { InformePacam } from './entities/informe-pacam.entity';
 import { ControlDesembolso } from './entities/control-desembolso.entity';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { ControlDesembolso } from './entities/control-desembolso.entity';
     InscripcionPacamService,
     InformePacamService,
     ControlDesembolsoService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class NutritionModule {}

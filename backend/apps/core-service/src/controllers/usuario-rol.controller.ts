@@ -1,11 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UsuarioRolService } from '../services/usuario-rol.service';
 import { UsuarioRol } from '../entities/usuario-rol.entity';
 
 @Controller('usuario-rol')
 export class UsuarioRolController {
-  constructor(private readonly service: UsuarioRolService) {
-  }
+  constructor(private readonly service: UsuarioRolService) {}
 
   @Get()
   getAll(): Promise<UsuarioRol[]> {

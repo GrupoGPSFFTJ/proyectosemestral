@@ -8,8 +8,7 @@ export class FichaControlService {
   constructor(
     @InjectRepository(FichaControl)
     private fichaControlRepository: Repository<FichaControl>,
-  ) {
-  }
+  ) {}
 
   async create(fichaControl: FichaControl): Promise<FichaControl> {
     return await this.fichaControlRepository.save(fichaControl);

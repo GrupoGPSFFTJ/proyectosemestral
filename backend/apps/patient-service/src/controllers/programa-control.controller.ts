@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ProgramaControlService } from '../services/programa-control.service';
 import { ProgramaControl } from '../entities/programa-control.entity';
 
@@ -6,8 +15,7 @@ import { ProgramaControl } from '../entities/programa-control.entity';
 export class ProgramaControlController {
   constructor(
     private readonly programaControlService: ProgramaControlService,
-  ) {
-  }
+  ) {}
 
   @Post()
   create(@Body() programaControl: ProgramaControl) {

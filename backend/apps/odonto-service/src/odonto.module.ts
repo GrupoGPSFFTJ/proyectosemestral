@@ -9,11 +9,12 @@ import { OdontogramaController } from './controllers/odontograma.controller';
 import { RadiografiaController } from './controllers/radiografia.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '@app/auth';
+import { AuthModule, JwtAuthGuard } from '@app/auth';
 import { ProgramaSaludOral } from './entities/programa-salud-oral.entity';
 import { FichaOdontologica } from './entities/ficha-odontologica.entity';
 import { Odontograma } from './entities/odontograma.entity';
 import { Radiografia } from './entities/radiografia.entity';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -59,7 +60,7 @@ import { Radiografia } from './entities/radiografia.entity';
     FichaOdontologicaService,
     OdontogramaService,
     RadiografiaService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
-export class OdontoModule {
-}
+export class OdontoModule {}

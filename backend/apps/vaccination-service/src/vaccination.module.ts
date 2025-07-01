@@ -9,11 +9,12 @@ import { RegistroVacunacionController } from './controllers/registro-vacunacion.
 import { AlertaInasistenciaController } from './controllers/alerta-inasistencia.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '@app/auth';
+import { AuthModule, JwtAuthGuard } from '@app/auth';
 import { Vacuna } from './entities/vacuna.entity';
 import { CalendarioVacuna } from './entities/calendario-vacuna.entity';
 import { RegistroVacunacion } from './entities/registro-vacunacion.entity';
 import { AlertaInasistencia } from './entities/alerta-inasistencia.entity';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { AlertaInasistencia } from './entities/alerta-inasistencia.entity';
     CalendarioVacunaService,
     RegistroVacunacionService,
     AlertaInasistenciaService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class VaccinationModule {}

@@ -8,8 +8,7 @@ export class RolService {
   constructor(
     @InjectRepository(Rol)
     private readonly repo: Repository<Rol>,
-  ) {
-  }
+  ) {}
 
   findAll(): Promise<Rol[]> {
     return this.repo.find();

@@ -20,6 +20,8 @@ import { UsuarioRolController } from './controllers/usuario-rol.controller';
 import { AuthModule } from './auth/auth.module';
 import { EnumsService } from './services/enums.service';
 import { EnumsController } from './controllers/enums.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from '@app/auth';
 
 @Module({
   imports: [
@@ -62,7 +64,7 @@ import { EnumsController } from './controllers/enums.controller';
     RolService,
     UsuarioRolService,
     EnumsService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
-export class CoreModule {
-}
+export class CoreModule {}

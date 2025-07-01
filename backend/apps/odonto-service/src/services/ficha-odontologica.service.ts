@@ -8,8 +8,7 @@ export class FichaOdontologicaService {
   constructor(
     @InjectRepository(FichaOdontologica)
     private readonly repo: Repository<FichaOdontologica>,
-  ) {
-  }
+  ) {}
 
   create(data: Partial<FichaOdontologica>): Promise<FichaOdontologica> {
     const entity = this.repo.create(data);

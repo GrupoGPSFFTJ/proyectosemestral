@@ -3,8 +3,7 @@ import { EnumsService } from '../services/enums.service';
 
 @Controller('enums')
 export class EnumsController {
-  constructor(private readonly enumsService: EnumsService) {
-  }
+  constructor(private readonly enumsService: EnumsService) {}
 
   @Get('usuario/estados')
   getCitaEstados() {

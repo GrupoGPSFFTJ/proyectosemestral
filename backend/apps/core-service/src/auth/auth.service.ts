@@ -25,13 +25,13 @@ export class AuthService {
     const nombre = user.nombre;
     const email = user.email;
     const access_token = this.jwtService.sign(payload);
-    return JSON.stringify({
+    return {
       id_usuario,
       username,
       nombre,
       email,
       access_token,
-    });
+    };
   }
 
   async register(dto: CreateUsuarioDto): Promise<Usuario> {

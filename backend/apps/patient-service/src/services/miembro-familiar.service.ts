@@ -8,8 +8,7 @@ export class MiembroFamiliarService {
   constructor(
     @InjectRepository(MiembroFamiliar)
     private miembroFamiliarRepository: Repository<MiembroFamiliar>,
-  ) {
-  }
+  ) {}
 
   async create(miembroFamiliar: MiembroFamiliar): Promise<MiembroFamiliar> {
     return await this.miembroFamiliarRepository.save(miembroFamiliar);

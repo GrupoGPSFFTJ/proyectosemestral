@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '@app/auth';
+import { AuthModule, JwtAuthGuard } from '@app/auth';
 import { Paciente } from './entities/paciente.entity';
 import { ProgramaControl } from './entities/programa-control.entity';
 import { Familia } from './entities/familia.entity';
@@ -34,6 +34,7 @@ import { FichaControlController } from './controllers/ficha-control.controller';
 import { HistorialResultadoController } from './controllers/historial-resultado.controller';
 import { EnumsController } from './controllers/enums.controller';
 import { EnumsService } from './services/enums.service';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -99,7 +100,7 @@ import { EnumsService } from './services/enums.service';
     HistorialResultadoService,
     PlanIntervencionService,
     EnumsService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
-export class PatientModule {
-}
+export class PatientModule {}
