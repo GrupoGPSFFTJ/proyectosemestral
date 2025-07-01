@@ -1,14 +1,14 @@
 'use client';
 
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useAuth } from './AuthContext';
-import { apiService } from '@/services/ApiService';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import {useAuth} from './AuthContext';
+import {apiService} from '@/services/ApiService';
 
-export function AuthGate({ children }: { children: React.ReactNode }) {
-    const { user } = useAuth();
+export function AuthGate({children}: { children: React.ReactNode }) {
+    const {user} = useAuth();
 
-    if (user === undefined) return <p style={{ color: 'white' }}>Cargando...</p>;
-    if (!user) return <AuthScreen />;
+    if (user === undefined) return <p style={{color: 'white'}}>Cargando...</p>;
+    if (!user) return <AuthScreen/>;
 
     return <>{children}</>;
 }
@@ -18,9 +18,9 @@ function AuthScreen() {
 
     return (
         <div style={styles.container}>
-            <div style={styles.overlay} />
+            <div style={styles.overlay}/>
             <div style={styles.card}>
-                {isRegistering ? <RegisterForm /> : <LoginForm />}
+                {isRegistering ? <RegisterForm/> : <LoginForm/>}
                 <div style={styles.registerSection}>
                     {isRegistering ? (
                         <>
@@ -42,10 +42,10 @@ function AuthScreen() {
 }
 
 export function LoginForm() {
-    const { login } = useAuth();
+    const {login} = useAuth();
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
-    const [useEmail, setUseEmail] = useState(true);
+    const [useEmail, setUseEmail] = useState(false);
     const [hover, setHover] = useState(false);
 
     const handleSubmit = (e: FormEvent) => {
@@ -110,7 +110,7 @@ export function LoginForm() {
 }
 
 function RegisterForm() {
-    const { register } = useAuth();
+    const {register} = useAuth();
     const [centros, setCentros] = useState<{ id_centro_salud: number; nombre: string }[]>([]);
     const [form, setForm] = useState({
         username: '',
@@ -127,7 +127,7 @@ function RegisterForm() {
     }, []);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({...form, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = (e: FormEvent) => {
@@ -143,15 +143,15 @@ function RegisterForm() {
             <h2 style={styles.title}>Registro</h2>
             <form onSubmit={handleSubmit} style={styles.form}>
                 <input name="username" placeholder="Usuario" value={form.username} onChange={handleChange} required
-                    style={styles.input} />
+                       style={styles.input}/>
                 <input name="password" type="password" placeholder="Contraseña" value={form.password}
-                    onChange={handleChange} required style={styles.input} />
+                       onChange={handleChange} required style={styles.input}/>
                 <input name="nombre" placeholder="Nombre completo" value={form.nombre} onChange={handleChange} required
-                    style={styles.input} />
+                       style={styles.input}/>
                 <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required
-                    style={styles.input} />
+                       style={styles.input}/>
                 <select name="id_centro_salud" value={form.id_centro_salud} onChange={handleChange} required
-                    style={styles.input}>
+                        style={styles.input}>
                     <option value="">Selecciona centro de salud</option>
                     {centros.map((c) => (
                         <option key={c.id_centro_salud} value={c.id_centro_salud}>{c.nombre}</option>

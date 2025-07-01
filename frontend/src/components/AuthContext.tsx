@@ -1,8 +1,8 @@
 'use client';
 
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { apiService } from "@/services/ApiService";
+import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {apiService} from "@/services/ApiService";
 
 interface AuthContextType {
     user: UserInfo | null | undefined;
@@ -46,7 +46,7 @@ const parseSessionDuration = (duration: string): number => {
     }
 };
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({children}: { children: ReactNode }) {
     const [user, setUser] = useState<UserInfo | null | undefined>(undefined);
     const router = useRouter();
 
@@ -86,23 +86,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const login = async (identifier: string, password: string, useEmail: boolean) => {
         try {
-            const payload: { username?: string; email?: string; password: string } = { password };
+            const payload: { username?: string; email?: string; password: string } = {password};
             if (useEmail) payload.email = identifier;
             else payload.username = identifier;
-
             const loginRes = await apiService.login(payload);
-            const token = loginRes.access_token;
-            localStorage.setItem('token', token);
+            localStorage.setItem('token', loginRes.access_token);
             localStorage.setItem('loginTime', Date.now().toString());
-            const userData = useEmail
-                ? await apiService.getUserByEmail(identifier)
-                : await apiService.getUserByUsername(identifier);
 
             const userInfo: UserInfo = {
-                id: userData.id_usuario,
-                username: userData.username,
-                nombre: userData.nombre,
-                email: userData.email
+                id: loginRes.id_usuario,
+                username: loginRes.username,
+                nombre: loginRes.nombre,
+                email: loginRes.email
             };
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
             setUser(userInfo);
@@ -119,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userInfo');
+        localStorage.removeItem('loginTime');
         setUser(null);
         router.push('/');
     };
@@ -128,13 +124,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const nuevoUsuario = await apiService.register(data);
             const idUsuario = nuevoUsuario.id_usuario;
 
-            const rolRes = await apiService.asignarRolUsuario({ id_usuario: idUsuario });
+            const rolRes = await apiService.asignarRolUsuario({id_usuario: idUsuario});
 
             if (!rolRes) {
                 alert('Usuario creado, pero error al asignar rol');
                 return;
             }
-
             alert('Usuario registrado y rol asignado correctamente');
             router.push('/');
         } catch (err: any) {
@@ -143,7 +138,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout }}>
+        <AuthContext.Provider value={{user, login, register, logout}}>
             {children}
         </AuthContext.Provider>
     );
