@@ -15,13 +15,23 @@ export class AuthService {
     private readonly users: UsuarioService,
     @InjectRepository(Usuario)
     private readonly repo: Repository<Usuario>,
-  ) {
-  }
+  ) {}
 
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto);
     const payload = { sub: user.id_usuario, username: user.username };
-    return { access_token: this.jwtService.sign(payload) };
+    const id_usuario = user.id_usuario;
+    const username = user.username;
+    const nombre = user.nombre;
+    const email = user.email;
+    const access_token = this.jwtService.sign(payload);
+    return JSON.stringify({
+      id_usuario,
+      username,
+      nombre,
+      email,
+      access_token,
+    });
   }
 
   async register(dto: CreateUsuarioDto): Promise<Usuario> {

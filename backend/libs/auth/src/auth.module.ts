@@ -13,7 +13,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (cfg: ConfigService) => ({
+      useFactory: () => ({
         secret: 'RegistroClinicoElectronico',
         signOptions: { expiresIn: '2h' },
       }),
