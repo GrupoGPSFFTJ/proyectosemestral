@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsuarioRolService } from '../services/usuario-rol.service';
 import { UsuarioRol } from '../entities/usuario-rol.entity';
+import { Public } from '@app/auth';
 
 @Controller('usuario-rol')
 export class UsuarioRolController {
@@ -28,6 +29,7 @@ export class UsuarioRolController {
   }
 
   @Post()
+  @Public()
   create(@Body() dto: Partial<UsuarioRol>): Promise<UsuarioRol> {
     return this.service.create(dto);
   }
