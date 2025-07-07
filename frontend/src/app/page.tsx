@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { apiService } from '@/services/ApiService'
+import { useAuth } from '../components/AuthContext'
 
 interface Card {
     label: string
@@ -13,9 +14,9 @@ interface Card {
 
 export default function DashboardPage() {
     const [cards, setCards] = useState<Card[]>([])
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [showArrow, setShowArrow] = useState(false)
     const cardsWrapperRef = useRef<HTMLDivElement>(null)
+    const { user } = useAuth ? useAuth() : { user: null };
 
     useEffect(() => {
         async function fetchCounts() {
@@ -76,31 +77,47 @@ export default function DashboardPage() {
 
     return (
         <>
-            <div style={styles.heroContainer}>
-                <h1 style={styles.mainTitle}>Sistema Clínico Integral</h1>
-                <p style={styles.subtitle}>
-                    Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias,
-                    fichas clínicas y odontológicas, control de vacunación, citas, recetas y más.
-                </p>
-                <div style={styles.downArrowContainer}>
-                    <span style={styles.downArrow}>↓</span>
+            <div style={styles.heroBg}>
+                <div style={styles.heroContainer}>
+                    <h1 style={styles.mainTitle}>Sistema Clínico Integral</h1>
+                    <p style={styles.subtitle}>
+                        {user ? (
+                            <>
+                                ¡Hola, <span style={{ color: '#0070f3', fontWeight: 600 }}>{user.nombre || user.username}</span>!<br />
+                                Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas clínicas y odontológicas, control de vacunación, citas, recetas y más.
+                            </>
+                        ) : (
+                            <>Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas clínicas y odontológicas, control de vacunación, citas, recetas y más.</>
+                        )}
+                    </p>
+                    <div style={styles.downArrowContainer}>
+                        <span style={styles.downArrow}>↓</span>
+                    </div>
                 </div>
             </div>
 
-            <div style={styles.cardsWrapper} ref={cardsWrapperRef}>
-                <div className="dashboard" style={styles.dashboardGrid}>
-                    {cards.map((card) => (
-                        <Link
-                            href={card.href}
-                            key={card.href}
-                            className="card"
-                            style={styles.cardLink}
-                        >
-                            <div style={styles.iconContainer}>{card.icon}</div>
-                            <h3 style={styles.cardLabel}>{card.label}</h3>
-                            <span style={styles.cardCount}>{card.count}</span>
-                        </Link>
-                    ))}
+            <div style={styles.cardsSection}>
+                <div style={styles.cardsWrapper} ref={cardsWrapperRef}>
+                    {showArrow && (
+                        <div style={styles.scrollArrow}>
+                            <span style={styles.arrowIcon}>→</span>
+                            <span style={styles.arrowText}>Desliza para ver más</span>
+                        </div>
+                    )}
+                    <div className="dashboard" style={styles.dashboardGrid}>
+                        {cards.map((card) => (
+                            <Link
+                                href={card.href}
+                                key={card.href}
+                                className="card"
+                                style={{ ...styles.cardLink, ...cardLinkGradient(card.label) }}
+                            >
+                                <div style={{ ...styles.iconContainer, ...iconGradient(card.label) }}>{card.icon}</div>
+                                <h3 style={styles.cardLabel}>{card.label}</h3>
+                                <span style={styles.cardCount}>{card.count}</span>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </div>
         </>
@@ -111,37 +128,109 @@ const bounce = {
     animation: 'bounceDown 1.5s infinite',
 }
 
+// Gradients for cards and icons
+function cardLinkGradient(label: string) {
+    switch (label) {
+        case 'Pacientes':
+            return { background: 'linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%)' };
+        case 'Familias':
+            return { background: 'linear-gradient(135deg, #fceabb 0%, #f8b500 100%)' };
+        case 'Fichas Clínicas':
+            return { background: 'linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%)' };
+        case 'Fichas Odontológicas':
+            return { background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' };
+        case 'Citas':
+            return { background: 'linear-gradient(135deg, #f9d423 0%, #ff4e50 100%)' };
+        case 'Recetas':
+            return { background: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)' };
+        case 'Medicamentos':
+            return { background: 'linear-gradient(135deg, #c2e9fb 0%, #81a4fd 100%)' };
+        case 'Despachos':
+            return { background: 'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)' };
+        default:
+            return {};
+    }
+}
+
+function iconGradient(label: string) {
+    switch (label) {
+        case 'Pacientes':
+            return { color: '#0070f3', textShadow: '0 2px 8px #b2ebf2' };
+        case 'Familias':
+            return { color: '#f8b500', textShadow: '0 2px 8px #fceabb' };
+        case 'Fichas Clínicas':
+            return { color: '#3a7bd5', textShadow: '0 2px 8px #e3eeff' };
+        case 'Fichas Odontológicas':
+            return { color: '#8f5fe8', textShadow: '0 2px 8px #e0c3fc' };
+        case 'Citas':
+            return { color: '#ff4e50', textShadow: '0 2px 8px #f9d423' };
+        case 'Recetas':
+            return { color: '#a6c1ee', textShadow: '0 2px 8px #fbc2eb' };
+        case 'Medicamentos':
+            return { color: '#81a4fd', textShadow: '0 2px 8px #c2e9fb' };
+        case 'Despachos':
+            return { color: '#f7971e', textShadow: '0 2px 8px #ffd200' };
+        default:
+            return {};
+    }
+}
+
 const styles: Record<string, React.CSSProperties> = {
+    heroBg: {
+        background: 'linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%)',
+        minHeight: 'calc(60vh - 56px)',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomLeftRadius: '2.5rem',
+        borderBottomRightRadius: '2.5rem',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.07)',
+    },
     heroContainer: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 'calc(100vh - 56px)',
-        padding: '0 1rem',
+        width: '100%',
+        padding: '2.5rem 1rem 1.5rem',
         textAlign: 'center',
-        backgroundColor: '#ffffff',
+        background: 'transparent',
     },
     mainTitle: {
-        fontSize: '6rem',
-        fontWeight: 700,
+        fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+        fontWeight: 800,
         margin: 0,
         color: '#111',
+        letterSpacing: '-0.03em',
+        textShadow: '0 2px 12px #e0eafc',
     },
     subtitle: {
         fontSize: '1.25rem',
-        color: '#555',
-        marginTop: '1rem',
-        maxWidth: '800px',
-        lineHeight: 1.6,
+        color: '#444',
+        marginTop: '1.2rem',
+        maxWidth: '700px',
+        lineHeight: 1.7,
+        fontWeight: 500,
+        background: 'rgba(255,255,255,0.7)',
+        borderRadius: '1rem',
+        padding: '1rem 1.5rem',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+    },
+    cardsSection: {
+        width: '100%',
+        background: 'linear-gradient(120deg, #f9f9f9 0%, #e0eafc 100%)',
+        minHeight: '40vh',
+        padding: '2.5rem 0 3rem',
+        marginTop: '-2rem',
     },
     cardsWrapper: {
-        backgroundColor: '#f9f9f9',
-        padding: '2rem 1rem',
-        minHeight: 'auto',
         position: 'relative',
         overflowX: 'auto',
         WebkitOverflowScrolling: 'touch',
+        padding: '0 1rem',
+        maxWidth: '1400px',
+        margin: '0 auto',
     },
     scrollArrow: {
         display: 'flex',
@@ -150,7 +239,7 @@ const styles: Record<string, React.CSSProperties> = {
         right: 10,
         top: '50%',
         transform: 'translateY(-50%)',
-        background: 'rgba(255,255,255,0.95)',
+        background: 'rgba(255,255,255,0.97)',
         borderRadius: '2rem',
         boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
         padding: '0.25rem 0.75rem',
@@ -170,10 +259,11 @@ const styles: Record<string, React.CSSProperties> = {
     },
     dashboardGrid: {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-        gap: '1.5rem',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+        gap: '2rem',
         maxWidth: '1200px',
         margin: '0 auto',
+        padding: '1rem 0',
     },
     cardLink: {
         display: 'flex',
@@ -182,34 +272,39 @@ const styles: Record<string, React.CSSProperties> = {
         textDecoration: 'none',
         cursor: 'pointer',
         height: '100%',
-        backgroundColor: '#ffffff',
-        borderRadius: '8px',
-        padding: '1.25rem',
-        border: '1px solid rgba(0, 0, 0, 0.08)',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        transition: 'transform 0.2s, box-shadow 0.2s',
+        borderRadius: '18px',
+        padding: '2.2rem 1.5rem 1.5rem',
+        border: 'none',
+        boxShadow: '0 4px 18px rgba(0, 0, 0, 0.10)',
+        transition: 'transform 0.22s, box-shadow 0.22s',
+        minHeight: '210px',
+        alignItems: 'flex-start',
     },
     cardLinkHover: {
-        transform: 'translateY(-5px)',
-        boxShadow: '0 6px 18px rgba(0, 0, 0, 0.12)',
+        transform: 'translateY(-7px) scale(1.025)',
+        boxShadow: '0 10px 32px rgba(0, 0, 0, 0.13)',
     },
     iconContainer: {
-        fontSize: '2.5rem',
-        marginBottom: '0.75rem',
-        color: '#0070f3',
+        fontSize: '3.2rem',
+        marginBottom: '1.1rem',
         alignSelf: 'flex-start',
+        filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.07))',
     },
     cardLabel: {
         margin: '0 0 0.5rem',
-        fontSize: '1.25rem',
-        fontWeight: 600,
-        color: '#111',
+        fontSize: '1.35rem',
+        fontWeight: 700,
+        color: '#222',
+        letterSpacing: '-0.01em',
     },
     cardCount: {
-        fontSize: '2rem',
-        fontWeight: 700,
+        fontSize: '2.2rem',
+        fontWeight: 800,
         color: '#0070f3',
         textAlign: 'right',
+        marginTop: '0.5rem',
+        alignSelf: 'flex-end',
+        textShadow: '0 2px 8px #e0eafc',
     },
     downArrowContainer: {
         display: 'flex',

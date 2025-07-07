@@ -3,6 +3,7 @@ import {ApiClient} from '@/lib/ApiClient';
 const api = new ApiClient();
 
 export class ApiService {
+
     login(data: any): Promise<any> {
         return api.post<any>('/core/auth/login', data, false);
     }
@@ -41,6 +42,13 @@ export class ApiService {
 
     getPacientesCount() {
         return this.getCount('patient', 'paciente');
+    }
+
+    updatePaciente(id: number, data: any): Promise<any> {
+        return api.put<any>(`/patient/paciente/${id}`, data);
+    }
+    deletePaciente(id: number): Promise<any> {
+        return api.delete<any>(`/patient/paciente/${id}`);
     }
 
     getFamiliasCount() {

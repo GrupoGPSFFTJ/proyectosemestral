@@ -97,12 +97,6 @@ export function NavBar() {
                             )}
                         </div>
                         <div style={styles.dropdownDivider}/>
-                        <button style={styles.dropdownItem}>
-                            <span>Notificaciones</span>
-                            <span style={styles.notificationDot}/>
-                        </button>
-                        <button style={styles.dropdownItem}>Configuración</button>
-                        <div style={styles.dropdownDivider}/>
                         <button
                             onClick={() => {
                                 logout();
