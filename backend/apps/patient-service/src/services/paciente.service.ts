@@ -34,9 +34,9 @@ export class PacienteService {
     return await this.pacienteRepository.save(paciente);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number): Promise<Paciente> {
     const paciente = await this.findOne(id);
-    await this.pacienteRepository.remove(paciente);
+    return this.pacienteRepository.remove(paciente);
   }
 
   async count(): Promise<number> {
