@@ -1,0 +1,17 @@
+/* Estilos personalizados para la página de despachos. Usa Tailwind en className siempre que sea posible. */
+
+.despachos-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.despachos-th {
+    text-align: left;
+    border-bottom: 2px solid #ccc;
+    padding: 0.5rem;
+}
+
+.despachos-td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}

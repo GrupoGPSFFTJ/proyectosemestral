@@ -30,7 +30,8 @@ export class CentroSaludService {
   }
 
   async remove(id: number) {
-    await this.findOne(id);
-    return this.repo.delete(id);
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

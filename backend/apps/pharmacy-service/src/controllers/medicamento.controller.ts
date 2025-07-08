@@ -43,7 +43,7 @@ export class MedicamentoController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string) {
     return this.service.remove(+id);
   }
 }

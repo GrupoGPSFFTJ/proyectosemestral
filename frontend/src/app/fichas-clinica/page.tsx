@@ -1,4 +1,5 @@
 'use client';
+import './styles.css';
 
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {apiService} from '@/services/ApiService';
@@ -49,19 +50,19 @@ export default function FichasClinicaPage() {
 
     useEffect(() => {
         apiService.getFichasControl()
-            .then((data) => setFichas(data || [])) // Usa un array vacío si data es undefined
+            .then((data) => setFichas(data))
             .catch((err) => console.error('ApiService fichas GET error:', err));
 
         apiService.getCentrosSalud()
-            .then((data) => setCentros(data || []))
+            .then((data) => setCentros(data))
             .catch(() => alert('Error al cargar centros de salud'));
 
         apiService.getPacientes()
-            .then((data) => setPacientes(data || []))
+            .then((data) => setPacientes(data))
             .catch(() => alert('Error al cargar pacientes'));
 
         apiService.getProgramaControl()
-            .then((data) => setProgramas(data || []))
+            .then((data) => setProgramas(data))
             .catch(() => alert('Error al cargar programas de control'));
     }, []);
 
@@ -104,12 +105,7 @@ export default function FichasClinicaPage() {
             <h1>Fichas Clínicas</h1>
             <form
                 onSubmit={handleSubmit}
-                style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '0.5rem',
-                    marginBottom: '1rem',
-                }}
+                className="fichas-form"
             >
                 <input
                     name="fecha_control"
@@ -118,7 +114,7 @@ export default function FichasClinicaPage() {
                     value={form.fecha_control}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 150px', padding: '0.5rem'}}
+                    className="fichas-input-fecha"
                 />
                 <input
                     name="observacion"
@@ -126,14 +122,14 @@ export default function FichasClinicaPage() {
                     value={form.observacion}
                     onChange={handleChange}
                     required
-                    style={{flex: '2 1 300px', padding: '0.5rem'}}
+                    className="fichas-input-observacion"
                 />
                 <select
                     name="id_paciente"
                     value={form.id_paciente}
                     onChange={handleChange}
                     required
-                    style={{flex: '2 1 300px', padding: '0.5rem'}}
+                    className="fichas-select-paciente"
                 >
                     <option value="">Selecciona paciente</option>
                     {pacientes.map((p) => (
@@ -150,7 +146,7 @@ export default function FichasClinicaPage() {
                     value={form.id_programa_control}
                     onChange={handleChange}
                     required
-                    style={{flex: '2 1 300px', padding: '0.5rem'}}
+                    className="fichas-select-programa"
                 >
                     <option value="">Selecciona programa</option>
                     {programas.map((pr) => (
@@ -167,7 +163,7 @@ export default function FichasClinicaPage() {
                     value={form.id_centro_salud}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 180px', padding: '0.5rem'}}
+                    className="fichas-select-centro"
                 >
                     <option value="">Selecciona centro de salud</option>
                     {centros.map((c) => (
@@ -179,35 +175,21 @@ export default function FichasClinicaPage() {
                         </option>
                     ))}
                 </select>
-                <button type="submit" style={{padding: '0.5rem 1rem'}}>
+                <button type="submit" className="fichas-btn">
                     Agregar
                 </button>
             </form>
 
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
+            <table className="fichas-table">
                 <thead>
                 <tr>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        ID
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Fecha Control
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Observación
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Paciente
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Programa
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Centro Salud
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Usuario Resp.
-                    </th>
+                    <th className="fichas-th">ID</th>
+                    <th className="fichas-th">Fecha Control</th>
+                    <th className="fichas-th">Observación</th>
+                    <th className="fichas-th">Paciente</th>
+                    <th className="fichas-th">Programa</th>
+                    <th className="fichas-th">Centro Salud</th>
+                    <th className="fichas-th">Usuario Resp.</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -223,27 +205,21 @@ export default function FichasClinicaPage() {
                     );
                     return (
                         <tr key={f.id_ficha_control}>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{f.id_ficha_control}</td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
-                                {new Date(f.fecha_control).toLocaleDateString('es-CL')}
-                            </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{f.observacion}</td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                            <td className="fichas-td">{f.id_ficha_control}</td>
+                            <td className="fichas-td">{new Date(f.fecha_control).toLocaleDateString('es-CL')}</td>
+                            <td className="fichas-td">{f.observacion}</td>
+                            <td className="fichas-td">
                                 {paciente
                                     ? `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}`
                                     : f.id_paciente}
                             </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                            <td className="fichas-td">
                                 {programa
                                     ? `${programa.nombre}`
                                     : f.id_programa_control}
                             </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
-                                {centro ? centro.nombre : f.id_centro_salud}
-                            </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
-                                {user?.nombre ?? f.id_usuario_responsable}
-                            </td>
+                            <td className="fichas-td">{centro ? centro.nombre : f.id_centro_salud}</td>
+                            <td className="fichas-td">{user?.nombre ?? f.id_usuario_responsable}</td>
                         </tr>
                     );
                 })}

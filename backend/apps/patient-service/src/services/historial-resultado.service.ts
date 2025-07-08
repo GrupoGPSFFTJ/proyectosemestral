@@ -46,8 +46,9 @@ export class HistorialResultadoService {
     return await this.repo.save(historialResultado);
   }
 
-  async remove(id: number): Promise<void> {
-    const historial = await this.findOne(id);
-    await this.repo.remove(historial);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

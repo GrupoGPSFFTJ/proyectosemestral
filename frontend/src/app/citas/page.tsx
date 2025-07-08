@@ -1,5 +1,7 @@
 'use client';
 
+import './styles.css';
+
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {apiService} from '@/services/ApiService';
 
@@ -62,15 +64,15 @@ export default function CitasPage() {
     });
 
     useEffect(() => {
-        apiService.getCitass().then(data => setCitas(data || []));
-        apiService.getPacientes().then(data => setPacientes(data || []));
-        apiService.getCentrosSalud().then(data => setCentros(data || []));
-        apiService.getUsuarios().then(data => setUsuarios(data || []));
+        apiService.getCitass().then(data => setCitas(data));
+        apiService.getPacientes().then(data => setPacientes(data));
+        apiService.getCentrosSalud().then(data => setCentros(data));
+        apiService.getUsuarios().then(data => setUsuarios(data));
         apiService.getCitaEstado().then((data) => {
-            setCitaEstados((data || []).map((e: any) => ({value: e, label: e})));
+            setCitaEstados(data.map((e: any) => ({value: e, label: e})));
         });
         apiService.getTipoCita().then((data) => {
-            setTiposCita((data || []).map((e: any) => ({value: e, label: e})));
+            setTiposCita(data.map((e: any) => ({value: e, label: e})));
         });
     }, []);
 
@@ -115,19 +117,14 @@ export default function CitasPage() {
             <h1>Citas</h1>
             <form
                 onSubmit={handleSubmit}
-                style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '0.5rem',
-                    marginBottom: '1rem',
-                }}
+                className="citas-form"
             >
                 <select
                     name="id_paciente"
                     value={form.id_paciente}
                     onChange={handleChange}
                     required
-                    style={{flex: '2 1 300px', padding: '0.5rem'}}
+                    className="citas-select paciente"
                 >
                     <option value="">Selecciona paciente</option>
                     {pacientes.map((p) => (
@@ -141,7 +138,7 @@ export default function CitasPage() {
                     value={form.id_usuario}
                     onChange={handleChange}
                     required
-                    style={{flex: '2 1 300px', padding: '0.5rem'}}
+                    className="citas-select medico"
                 >
                     <option value="">Selecciona médico</option>
                     {usuarios
@@ -158,7 +155,7 @@ export default function CitasPage() {
                     value={form.fecha}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 120px', padding: '0.5rem'}}
+                    className="citas-input fecha"
                 />
                 <input
                     name="hora"
@@ -166,14 +163,14 @@ export default function CitasPage() {
                     value={form.hora}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 100px', padding: '0.5rem'}}
+                    className="citas-input hora"
                 />
                 <select
                     name="tipo_cita"
                     value={form.tipo_cita}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 180px', padding: '0.5rem'}}
+                    className="citas-select tipo"
                 >
                     <option value="">Selecciona tipo de cita</option>
                     {tiposCita.map((t) => (
@@ -187,7 +184,7 @@ export default function CitasPage() {
                     value={form.id_centro_salud}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 180px', padding: '0.5rem'}}
+                    className="citas-select centro"
                 >
                     <option value="">Selecciona centro de salud</option>
                     {centros.map((c) => (
@@ -202,25 +199,25 @@ export default function CitasPage() {
                     value={form.observacion}
                     onChange={handleChange}
                     required
-                    style={{flex: '2 1 300px', padding: '0.5rem'}}
+                    className="citas-input observacion"
                 />
-                <button type="submit" style={{padding: '0.5rem 1rem'}}>
+                <button type="submit" className="citas-btn">
                     Agregar
                 </button>
             </form>
 
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
+            <table className="citas-table">
                 <thead>
                 <tr>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>ID</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Paciente</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Médico</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Fecha</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Hora</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Tipo de Cita</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Centro Salud</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Observación</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Estado</th>
+                    <th className="citas-th">ID</th>
+                    <th className="citas-th">Paciente</th>
+                    <th className="citas-th">Médico</th>
+                    <th className="citas-th">Fecha</th>
+                    <th className="citas-th">Hora</th>
+                    <th className="citas-th">Tipo de Cita</th>
+                    <th className="citas-th">Centro Salud</th>
+                    <th className="citas-th">Observación</th>
+                    <th className="citas-th">Estado</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -237,27 +234,27 @@ export default function CitasPage() {
 
                     return (
                         <tr key={c.id_cita}>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{c.id_cita}</td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                            <td className="citas-td">{c.id_cita}</td>
+                            <td className="citas-td">
                                 {paciente
                                     ? `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}`
                                     : c.id_paciente}
                             </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                            <td className="citas-td">
                                 {usuario
                                     ? `${usuario.nombre} ${usuario.apellido_paterno ?? ''} ${usuario.apellido_materno ?? ''}`
                                     : c.id_usuario}
                             </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{fecha}</td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{hora}</td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                            <td className="citas-td">{fecha}</td>
+                            <td className="citas-td">{hora}</td>
+                            <td className="citas-td">
                                 {tipo ? tipo.label : c.tipo_cita}
                             </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                            <td className="citas-td">
                                 {centro ? centro.nombre : c.id_centro_salud}
                             </td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{c.observacion}</td>
-                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                            <td className="citas-td">{c.observacion}</td>
+                            <td className="citas-td">
                                 {estado ? estado.label : c.estado}
                             </td>
                         </tr>

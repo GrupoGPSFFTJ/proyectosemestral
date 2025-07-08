@@ -39,8 +39,9 @@ export class PlanIntervencionService {
     return await this.repo.save(planIntervencion);
   }
 
-  async remove(id: number): Promise<void> {
-    const plan = await this.findOne(id);
-    await this.repo.remove(plan);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

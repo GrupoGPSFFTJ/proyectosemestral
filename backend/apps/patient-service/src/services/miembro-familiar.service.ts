@@ -39,8 +39,9 @@ export class MiembroFamiliarService {
     return await this.repo.save(miembroFamiliar);
   }
 
-  async remove(id: number): Promise<void> {
-    const miembro = await this.findOne(id);
-    await this.repo.remove(miembro);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

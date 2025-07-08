@@ -33,11 +33,10 @@ export class CitaService {
     return this.repo.save(cita);
   }
 
-  async remove(id: number): Promise<void> {
-    const result = await this.repo.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Cita con id ${id} no encontrada`);
-    }
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 
   async count(): Promise<number> {

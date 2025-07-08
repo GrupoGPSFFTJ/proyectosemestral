@@ -1,8 +1,8 @@
 'use client';
 
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import {useRouter} from 'next/navigation';
-import {apiService} from '@/services/ApiService';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { apiService } from '@/services/ApiService';
 
 interface PacienteFormProps {
     paciente?: any | null;
@@ -10,14 +10,14 @@ interface PacienteFormProps {
     onClose?: (updated?: boolean) => void;
 }
 
-export default function PacienteForm({paciente, show, onClose}: PacienteFormProps) {
+export default function PacienteForm({ paciente, show, onClose }: PacienteFormProps) {
     useRouter();
     const [generos, setGeneros] = useState<string[]>([]);
     const [, setShowModal] = useState(false);
 
     useEffect(() => {
         apiService.getGeneros()
-            .then(data => setGeneros(data || [])) // Si no hay datos, usa un arreglo vacío
+            .then(data => setGeneros(data)) // Ya no es necesario '|| []'
             .catch(err => console.error('Error al cargar géneros:', err));
     }, []);
 
@@ -59,7 +59,7 @@ export default function PacienteForm({paciente, show, onClose}: PacienteFormProp
     }, [paciente, show]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setForm({...form, [e.target.name]: e.target.value});
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: FormEvent) => {
@@ -149,7 +149,7 @@ export default function PacienteForm({paciente, show, onClose}: PacienteFormProp
                             ×
                         </button>
 
-                        <div style={{textAlign: 'center', marginBottom: '1rem'}}>
+                        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
                             <div style={{
                                 fontSize: '2rem',
                                 marginBottom: '0.5rem',

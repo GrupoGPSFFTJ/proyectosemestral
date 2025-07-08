@@ -34,8 +34,9 @@ export class TipoRelacionService {
     return await this.repo.save(tipoRelacion);
   }
 
-  async remove(id: number): Promise<void> {
-    const tipoRelacion = await this.findOne(id);
-    await this.repo.remove(tipoRelacion);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

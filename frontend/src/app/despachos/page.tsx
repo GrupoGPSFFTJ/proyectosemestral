@@ -1,5 +1,7 @@
 'use client';
 
+import './styles.css';
+
 import React, {useEffect, useState} from 'react';
 import {apiService} from '@/services/ApiService';
 
@@ -56,28 +58,24 @@ export default function DespachosPage() {
     return (
         <div>
             <h1>Despachos</h1>
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
+            <table className="despachos-table">
                 <thead>
                 <tr>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Medicamento</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Cantidad
-                        despachada
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Fecha de
-                        despacho
-                    </th>
+                    <th className="despachos-th">Medicamento</th>
+                    <th className="despachos-th">Cantidad despachada</th>
+                    <th className="despachos-th">Fecha de despacho</th>
                 </tr>
                 </thead>
                 <tbody>
                 {despachos.map((d, idx) => (
                     <tr key={d.id_despacho_medicamento ?? `${d.id_receta_med}-${idx}`}>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                        <td className="despachos-td">
                             {getNombreMedicamento(d.id_receta_med)}
                         </td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                        <td className="despachos-td">
                             {d.cantidad_despachada}
                         </td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                        <td className="despachos-td">
                             {d.fecha_despacho ? new Date(d.fecha_despacho).toLocaleDateString('es-CL') : ''}
                         </td>
                     </tr>

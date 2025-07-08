@@ -1,0 +1,52 @@
+/* Estilos personalizados para la página de citas. Usa Tailwind en className siempre que sea posible. */
+
+.citas-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.citas-select,
+.citas-input {
+    padding: 0.5rem;
+}
+
+.citas-select.paciente,
+.citas-select.medico,
+.citas-input.observacion {
+    flex: 2 1 300px;
+}
+
+.citas-select.tipo,
+.citas-select.centro {
+    flex: 1 1 180px;
+}
+
+.citas-input.fecha {
+    flex: 1 1 120px;
+}
+
+.citas-input.hora {
+    flex: 1 1 100px;
+}
+
+.citas-btn {
+    padding: 0.5rem 1rem;
+}
+
+.citas-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.citas-th {
+    text-align: left;
+    border-bottom: 2px solid #ccc;
+    padding: 0.5rem;
+}
+
+.citas-td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}

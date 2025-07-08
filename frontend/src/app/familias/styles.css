@@ -1,0 +1,38 @@
+/* Estilos personalizados para la página de familias. Usa Tailwind en className siempre que sea posible. */
+
+.familias-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.familias-input-nombre {
+    flex: 1 1 250px;
+    padding: 0.5rem;
+}
+
+.familias-input-fecha {
+    flex: 1 1 150px;
+    padding: 0.5rem;
+}
+
+.familias-btn {
+    padding: 0.5rem 1rem;
+}
+
+.familias-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.familias-th {
+    text-align: left;
+    border-bottom: 2px solid #ccc;
+    padding: 0.5rem;
+}
+
+.familias-td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}

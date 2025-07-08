@@ -2,6 +2,7 @@
 
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {apiService} from '@/services/ApiService';
+import './styles.css';
 
 // Interfaces
 interface Paciente {
@@ -57,10 +58,10 @@ export default function RecetasPage() {
     const handleCloseModal = () => setShowModal(false);
 
     useEffect(() => {
-        apiService.getPacientes().then(data => setPacientes(data || []));
-        apiService.getUsuarios().then(data => setUsuarios(data || []));
-        apiService.getMedicamentos().then(data => setMedicamentos(data || []));
-        apiService.getRecetas().then(data => setRecetas(data || []));
+        apiService.getPacientes().then(data => setPacientes(data));
+        apiService.getUsuarios().then(data => setUsuarios(data));
+        apiService.getMedicamentos().then(data => setMedicamentos(data));
+        apiService.getRecetas().then(data => setRecetas(data));
     }, []);
 
     const handleChange = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
@@ -180,63 +181,30 @@ export default function RecetasPage() {
     return (
         <div>
             <h1>Recetas</h1>
-            <button onClick={handleOpenModal} style={{marginBottom: '1rem'}}>
+            <button onClick={handleOpenModal} className="recetas-btn-crear">
                 Crear receta
             </button>
             {showModal && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    background: 'rgba(0,0,0,0.3)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 10
-                }}>
-                    <div
-                        style={{
-                            background: '#fff',
-                            padding: 32,
-                            borderRadius: 12,
-                            minWidth: 700,
-                            maxWidth: 900,
-                            boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '1.5rem',
-                            position: 'relative'
-                        }}
-                    >
+                <div className="recetas-modal-bg">
+                    <div className="recetas-modal">
                         <button
                             onClick={handleCloseModal}
-                            style={{
-                                position: 'absolute',
-                                top: 16,
-                                right: 16,
-                                background: 'transparent',
-                                border: 'none',
-                                fontSize: 22,
-                                cursor: 'pointer',
-                                color: '#888'
-                            }}
+                            className="recetas-modal-close"
                             title="Cerrar"
                         >
                             ×
                         </button>
-                        <h2 style={{margin: 0, textAlign: 'center'}}>Nueva Receta</h2>
-                        <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', gap: '1.2rem'}}>
-                            <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap'}}>
-                                <div style={{flex: 1, minWidth: 220}}>
-                                    <label style={{fontWeight: 500}}>Paciente</label>
+                        <h2 className="recetas-modal-title">Nueva Receta</h2>
+                        <form onSubmit={handleSubmit} className="recetas-form">
+                            <div className="recetas-form-row">
+                                <div className="recetas-form-col">
+                                    <label className="recetas-label">Paciente</label>
                                     <select
                                         name="id_paciente"
                                         value={form.id_paciente}
                                         onChange={handleChange}
                                         required
-                                        style={{width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ccc'}}
+                                        className="recetas-select"
                                     >
                                         <option value="">Selecciona paciente</option>
                                         {pacientes.map((p) => (
@@ -246,14 +214,14 @@ export default function RecetasPage() {
                                         ))}
                                     </select>
                                 </div>
-                                <div style={{flex: 1, minWidth: 220}}>
-                                    <label style={{fontWeight: 500}}>Médico</label>
+                                <div className="recetas-form-col">
+                                    <label className="recetas-label">Médico</label>
                                     <select
                                         name="id_medico"
                                         value={form.id_medico}
                                         onChange={handleChange}
                                         required
-                                        style={{width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ccc'}}
+                                        className="recetas-select"
                                     >
                                         <option value="">Selecciona médico</option>
                                         {usuarios.map((u) => (
@@ -265,50 +233,30 @@ export default function RecetasPage() {
                                 </div>
                             </div>
                             <div>
-                                <label style={{fontWeight: 500}}>Indicaciones generales</label>
+                                <label className="recetas-label">Indicaciones generales</label>
                                 <textarea
                                     name="indicacion"
                                     placeholder="Indicaciones generales"
                                     value={form.indicacion}
                                     onChange={handleChange}
                                     rows={2}
-                                    style={{
-                                        width: '100%',
-                                        padding: 8,
-                                        borderRadius: 6,
-                                        border: '1px solid #ccc',
-                                        resize: 'vertical'
-                                    }}
+                                    className="recetas-textarea"
                                 />
                             </div>
                             <div>
                                 <h3 style={{margin: '0 0 0.5rem 0'}}>Medicamentos</h3>
-                                <div style={{display: 'flex', flexDirection: 'column', gap: '0.7rem'}}>
+                                <div className="recetas-medicamentos-list">
                                     {form.items.map((item, idx) => (
                                         <div
                                             key={idx}
-                                            style={{
-                                                display: 'grid',
-                                                gridTemplateColumns: '2fr 1fr 1.2fr 1fr 1fr 40px',
-                                                gap: '0.7rem',
-                                                alignItems: 'center',
-                                                background: '#f7f7fa',
-                                                padding: '0.7rem 0.5rem',
-                                                borderRadius: 8,
-                                                marginBottom: 8,
-                                            }}
+                                            className="recetas-medicamento-item"
                                         >
                                             <select
                                                 name="id_medicamento"
                                                 value={item.id_medicamento}
                                                 onChange={e => handleItemChange(idx, e)}
                                                 required
-                                                style={{
-                                                    width: '100%',
-                                                    padding: 6,
-                                                    borderRadius: 6,
-                                                    border: '1px solid #ccc'
-                                                }}
+                                                className="recetas-select"
                                             >
                                                 <option value="">Medicamento</option>
                                                 {medicamentos.map(m => (
@@ -325,24 +273,14 @@ export default function RecetasPage() {
                                                 value={item.dosis_cantidad}
                                                 onChange={e => handleItemChange(idx, e)}
                                                 required
-                                                style={{
-                                                    width: '100%',
-                                                    padding: 6,
-                                                    borderRadius: 6,
-                                                    border: '1px solid #ccc'
-                                                }}
+                                                className="recetas-input"
                                             />
                                             <select
                                                 name="dosis_unidad"
                                                 value={item.dosis_unidad}
                                                 onChange={e => handleItemChange(idx, e)}
                                                 required
-                                                style={{
-                                                    width: '100%',
-                                                    padding: 6,
-                                                    borderRadius: 6,
-                                                    border: '1px solid #ccc'
-                                                }}
+                                                className="recetas-select"
                                             >
                                                 <option value="">Unidad</option>
                                                 {UNIDADES_DOSIS.map(u => (
@@ -357,12 +295,7 @@ export default function RecetasPage() {
                                                 value={item.frecuencia_horas}
                                                 onChange={e => handleItemChange(idx, e)}
                                                 required
-                                                style={{
-                                                    width: '100%',
-                                                    padding: 6,
-                                                    borderRadius: 6,
-                                                    border: '1px solid #ccc'
-                                                }}
+                                                className="recetas-input"
                                             />
                                             <input
                                                 name="duracion_dias"
@@ -372,31 +305,12 @@ export default function RecetasPage() {
                                                 value={item.duracion_dias}
                                                 onChange={e => handleItemChange(idx, e)}
                                                 required
-                                                style={{
-                                                    width: '100%',
-                                                    padding: 6,
-                                                    borderRadius: 6,
-                                                    border: '1px solid #ccc'
-                                                }}
+                                                className="recetas-input"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemoveItem(idx)}
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    color: '#fff',
-                                                    background: '#e74c3c',
-                                                    border: 'none',
-                                                    borderRadius: 6,
-                                                    width: 32,
-                                                    height: 32,
-                                                    fontWeight: 'bold',
-                                                    fontSize: 18,
-                                                    cursor: 'pointer',
-                                                    padding: 0,
-                                                }}
+                                                className="recetas-medicamento-remove"
                                                 title="Eliminar"
                                             >
                                                 ×
@@ -407,49 +321,22 @@ export default function RecetasPage() {
                                 <button
                                     type="button"
                                     onClick={handleAddItem}
-                                    style={{
-                                        marginTop: 12,
-                                        padding: '8px 18px',
-                                        background: '#3498db',
-                                        color: '#fff',
-                                        border: 'none',
-                                        borderRadius: 6,
-                                        fontWeight: 500,
-                                        cursor: 'pointer'
-                                    }}
+                                    className="recetas-medicamento-add"
                                 >
                                     Agregar medicamento
                                 </button>
                             </div>
-                            <div style={{display: 'flex', gap: '0.5rem', marginTop: 8, justifyContent: 'flex-end'}}>
+                            <div className="recetas-form-actions">
                                 <button
                                     type="submit"
-                                    style={{
-                                        padding: '10px 28px',
-                                        background: '#27ae60',
-                                        color: '#fff',
-                                        border: 'none',
-                                        borderRadius: 6,
-                                        fontWeight: 600,
-                                        fontSize: 16,
-                                        cursor: 'pointer'
-                                    }}
+                                    className="recetas-form-submit"
                                 >
                                     Crear receta
                                 </button>
                                 <button
                                     type="button"
                                     onClick={handleCloseModal}
-                                    style={{
-                                        padding: '10px 18px',
-                                        background: '#eee',
-                                        color: '#444',
-                                        border: 'none',
-                                        borderRadius: 6,
-                                        fontWeight: 500,
-                                        fontSize: 16,
-                                        cursor: 'pointer'
-                                    }}
+                                    className="recetas-form-cancel"
                                 >
                                     Cancelar
                                 </button>
@@ -459,49 +346,40 @@ export default function RecetasPage() {
                 </div>
             )}
 
-            <table style={{width: '100%', borderCollapse: 'collapse', marginTop: 32}}>
+            <table className="recetas-table">
                 <thead>
                 <tr>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>ID</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Paciente</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Médico</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Fecha Emisión
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Indicaciones</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Medicamentos</th>
+                    <th className="recetas-th">ID</th>
+                    <th className="recetas-th">Paciente</th>
+                    <th className="recetas-th">Médico</th>
+                    <th className="recetas-th">Fecha Emisión</th>
+                    <th className="recetas-th">Indicaciones</th>
+                    <th className="recetas-th">Medicamentos</th>
                 </tr>
                 </thead>
                 <tbody>
                 {recetas.map((r: any) => (
                     <tr key={r.id_receta}>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{r.id_receta}</td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                        <td className="recetas-td">{r.id_receta}</td>
+                        <td className="recetas-td">
                             {
                                 pacientes.find(p => p.id_paciente === r.id_paciente)
                                     ? `${pacientes.find(p => p.id_paciente === r.id_paciente)?.nombre} ${pacientes.find(p => p.id_paciente === r.id_paciente)?.apellido_paterno ?? ''} ${pacientes.find(p => p.id_paciente === r.id_paciente)?.apellido_materno ?? ''}`
                                     : ''
                             }
                         </td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                        <td className="recetas-td">
                             {
                                 usuarios.find(u => u.id_usuario === r.id_medico)
                                     ? `${usuarios.find(u => u.id_usuario === r.id_medico)?.nombre} ${usuarios.find(u => u.id_usuario === r.id_medico)?.apellido_paterno ?? ''} ${usuarios.find(u => u.id_usuario === r.id_medico)?.apellido_materno ?? ''}`
                                     : ''
                             }
                         </td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{r.fecha_emision}</td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{r.indicacion}</td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                        <td className="recetas-td">{r.fecha_emision}</td>
+                        <td className="recetas-td">{r.indicacion}</td>
+                        <td className="recetas-td">
                             <button
-                                style={{
-                                    padding: '6px 14px',
-                                    background: '#3498db',
-                                    color: '#fff',
-                                    border: 'none',
-                                    borderRadius: 6,
-                                    fontWeight: 500,
-                                    cursor: 'pointer'
-                                }}
+                                className="recetas-verdetalle-btn"
                                 onClick={() => handleVerDetalle(r)}
                             >
                                 Ver detalle
@@ -514,71 +392,23 @@ export default function RecetasPage() {
 
             {/* Modal de detalle de receta */}
             {showDetalle && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    background: 'rgba(0,0,0,0.3)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 20
-                }}>
-                    <div style={{
-                        background: '#fff',
-                        padding: 32,
-                        borderRadius: 12,
-                        minWidth: 400,
-                        maxWidth: 500,
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
-                        position: 'relative'
-                    }}>
+                <div className="recetas-detalle-modal-bg">
+                    <div className="recetas-detalle-modal">
                         <button
                             onClick={handleCerrarDetalle}
-                            style={{
-                                position: 'absolute',
-                                top: 16,
-                                right: 16,
-                                background: 'transparent',
-                                border: 'none',
-                                fontSize: 22,
-                                cursor: 'pointer',
-                                color: '#888'
-                            }}
+                            className="recetas-detalle-close"
                             title="Cerrar"
                         >
                             ×
                         </button>
-                        <h2 style={{margin: '0 0 1rem 0', textAlign: 'center'}}>{detalleTitulo}</h2>
-                        <table style={{width: '100%', borderCollapse: 'collapse'}}>
+                        <h2 className="recetas-detalle-title">{detalleTitulo}</h2>
+                        <table className="recetas-detalle-table">
                             <thead>
                             <tr>
-                                <th style={{
-                                    textAlign: 'left',
-                                    borderBottom: '2px solid #ccc',
-                                    padding: '0.5rem'
-                                }}>Nombre
-                                </th>
-                                <th style={{
-                                    textAlign: 'left',
-                                    borderBottom: '2px solid #ccc',
-                                    padding: '0.5rem'
-                                }}>Dosis
-                                </th>
-                                <th style={{
-                                    textAlign: 'left',
-                                    borderBottom: '2px solid #ccc',
-                                    padding: '0.5rem'
-                                }}>Frecuencia
-                                </th>
-                                <th style={{
-                                    textAlign: 'left',
-                                    borderBottom: '2px solid #ccc',
-                                    padding: '0.5rem'
-                                }}>Duración (días)
-                                </th>
+                                <th className="recetas-detalle-th">Nombre</th>
+                                <th className="recetas-detalle-th">Dosis</th>
+                                <th className="recetas-detalle-th">Frecuencia</th>
+                                <th className="recetas-detalle-th">Duración (días)</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -586,22 +416,10 @@ export default function RecetasPage() {
                                 const med = medicamentos.find(m => m.id_medicamento === item.id_medicamento);
                                 return (
                                     <tr key={idx}>
-                                        <td style={{
-                                            padding: '0.5rem',
-                                            borderBottom: '1px solid #eee'
-                                        }}>{med ? med.nombre : item.id_medicamento}</td>
-                                        <td style={{
-                                            padding: '0.5rem',
-                                            borderBottom: '1px solid #eee'
-                                        }}>{item.dosis}</td>
-                                        <td style={{
-                                            padding: '0.5rem',
-                                            borderBottom: '1px solid #eee'
-                                        }}>{item.frecuencia}</td>
-                                        <td style={{
-                                            padding: '0.5rem',
-                                            borderBottom: '1px solid #eee'
-                                        }}>{item.duracion_dias}</td>
+                                        <td className="recetas-detalle-td">{med ? med.nombre : item.id_medicamento}</td>
+                                        <td className="recetas-detalle-td">{item.dosis}</td>
+                                        <td className="recetas-detalle-td">{item.frecuencia}</td>
+                                        <td className="recetas-detalle-td">{item.duracion_dias}</td>
                                     </tr>
                                 );
                             })}

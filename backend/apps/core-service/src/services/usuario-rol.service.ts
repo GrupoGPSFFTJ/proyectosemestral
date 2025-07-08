@@ -29,13 +29,13 @@ export class UsuarioRolService {
 
   async update(id_usuario: number, id_rol: number, dto: Partial<UsuarioRol>) {
     await this.findOne(id_usuario, id_rol);
-    // para clave compuesta: eliminar y volver a crear
     await this.repo.delete({ id_usuario, id_rol });
     return this.repo.save(this.repo.create(dto));
   }
 
   async remove(id_usuario: number, id_rol: number) {
-    await this.findOne(id_usuario, id_rol);
-    return this.repo.delete({ id_usuario, id_rol });
+    const entity = await this.findOne(id_usuario, id_rol);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

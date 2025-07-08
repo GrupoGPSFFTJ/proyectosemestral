@@ -39,8 +39,9 @@ export class FactorProtectorService {
     return await this.repo.save(factorProtector);
   }
 
-  async remove(id: number): Promise<void> {
-    const factor = await this.findOne(id);
-    await this.repo.remove(factor);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

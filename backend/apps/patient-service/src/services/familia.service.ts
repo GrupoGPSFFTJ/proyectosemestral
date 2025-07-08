@@ -34,9 +34,10 @@ export class FamiliaService {
     return await this.repo.save(familia);
   }
 
-  async remove(id: number): Promise<void> {
-    const familia = await this.findOne(id);
-    await this.repo.remove(familia);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 
   async count(): Promise<number> {

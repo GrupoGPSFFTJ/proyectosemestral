@@ -44,7 +44,7 @@ export class CitaController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.citaService.remove(id);
   }
 }

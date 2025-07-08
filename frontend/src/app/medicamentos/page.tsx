@@ -1,5 +1,7 @@
 'use client';
 
+import './styles.css';
+
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {apiService} from '@/services/ApiService';
 
@@ -17,7 +19,7 @@ export default function MedicamentosPage() {
     });
 
     useEffect(() => {
-        apiService.getMedicamentos().then((data) => setMedicamentos(data || []));
+        apiService.getMedicamentos().then((data) => setMedicamentos(data));
     }, []);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,7 +40,7 @@ export default function MedicamentosPage() {
     return (
         <div>
             <h1>Medicamentos</h1>
-            <form onSubmit={handleSubmit} style={{marginBottom: '1rem', display: 'flex', gap: '0.5rem'}}>
+            <form onSubmit={handleSubmit} className="medicamentos-form">
                 <input
                     name="nombre"
                     placeholder="Nombre del medicamento"
@@ -55,20 +57,20 @@ export default function MedicamentosPage() {
                 />
                 <button type="submit">Agregar Medicamento</button>
             </form>
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
+            <table className="medicamentos-table">
                 <thead>
                 <tr>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>ID</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Nombre</th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Descripción</th>
+                    <th className="medicamentos-th">ID</th>
+                    <th className="medicamentos-th">Nombre</th>
+                    <th className="medicamentos-th">Descripción</th>
                 </tr>
                 </thead>
                 <tbody>
                 {medicamentos.map(m => (
                     <tr key={m.id_medicamento}>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{m.id_medicamento}</td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{m.nombre}</td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{m.descripcion}</td>
+                        <td className="medicamentos-td">{m.id_medicamento}</td>
+                        <td className="medicamentos-td">{m.nombre}</td>
+                        <td className="medicamentos-td">{m.descripcion}</td>
                     </tr>
                 ))}
                 </tbody>

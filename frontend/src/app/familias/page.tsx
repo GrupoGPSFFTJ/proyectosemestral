@@ -1,4 +1,5 @@
 'use client';
+import './styles.css';
 
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {apiService} from '@/services/ApiService';
@@ -45,12 +46,7 @@ export default function FamiliasPage() {
 
             <form
                 onSubmit={handleSubmit}
-                style={{
-                    display: 'flex',
-                    gap: '0.5rem',
-                    flexWrap: 'wrap',
-                    marginBottom: '1rem',
-                }}
+                className="familias-form"
             >
                 <input
                     name="nombre"
@@ -58,7 +54,7 @@ export default function FamiliasPage() {
                     value={form.nombre}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 250px', padding: '0.5rem'}}
+                    className="familias-input-nombre"
                 />
                 <input
                     name="fecha_creacion"
@@ -66,35 +62,27 @@ export default function FamiliasPage() {
                     value={form.fecha_creacion}
                     onChange={handleChange}
                     required
-                    style={{flex: '1 1 150px', padding: '0.5rem'}}
+                    className="familias-input-fecha"
                 />
-                <button type="submit" style={{padding: '0.5rem 1rem'}}>
+                <button type="submit" className="familias-btn">
                     Agregar Familia
                 </button>
             </form>
 
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
+            <table className="familias-table">
                 <thead>
                 <tr>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        ID
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Nombre
-                    </th>
-                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>
-                        Fecha Creación
-                    </th>
+                    <th className="familias-th">ID</th>
+                    <th className="familias-th">Nombre</th>
+                    <th className="familias-th">Fecha Creación</th>
                 </tr>
                 </thead>
                 <tbody>
                 {familias.map((f) => (
                     <tr key={f.id_familia}>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{f.id_familia}</td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{f.nombre}</td>
-                        <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
-                            {new Date(f.fecha_creacion).toLocaleDateString('es-CL')}
-                        </td>
+                        <td className="familias-td">{f.id_familia}</td>
+                        <td className="familias-td">{f.nombre}</td>
+                        <td className="familias-td">{new Date(f.fecha_creacion).toLocaleDateString('es-CL')}</td>
                     </tr>
                 ))}
                 </tbody>
