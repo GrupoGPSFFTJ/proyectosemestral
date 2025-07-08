@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Link from 'next/link'
-import { apiService } from '@/services/ApiService'
-import { useAuth } from '../components/AuthContext'
+import {apiService} from '@/services/ApiService'
+import {useAuth} from '@/components/AuthContext'
 
 interface Card {
     label: string
@@ -16,7 +16,7 @@ export default function DashboardPage() {
     const [cards, setCards] = useState<Card[]>([])
     const [showArrow, setShowArrow] = useState(false)
     const cardsWrapperRef = useRef<HTMLDivElement>(null)
-    const { user } = useAuth ? useAuth() : { user: null };
+    const {user} = useAuth();
 
     useEffect(() => {
         async function fetchCounts() {
@@ -41,14 +41,14 @@ export default function DashboardPage() {
             ]);
 
             setCards([
-                { label: 'Pacientes', count: pacientes, href: '/pacientes', icon: '🩺' },
-                { label: 'Familias', count: familias, href: '/familias', icon: '👨‍👩‍👧‍👦' },
-                { label: 'Fichas Clínicas', count: fichasClinicas, href: '/fichas-clinica', icon: '📋' },
-                { label: 'Fichas Odontológicas', count: fichasOdonto, href: '/fichas-odontologica', icon: '🦷' },
-                { label: 'Citas', count: citas, href: '/citas', icon: '📅' },
-                { label: 'Recetas', count: recetas, href: '/recetas', icon: '📝' },
-                { label: 'Medicamentos', count: medicamentos, href: '/medicamentos', icon: '💊' },
-                { label: 'Despachos', count: despachos, href: '/despachos', icon: '📦' },
+                {label: 'Pacientes', count: pacientes, href: '/pacientes', icon: '🩺'},
+                {label: 'Familias', count: familias, href: '/familias', icon: '👨‍👩‍👧‍👦'},
+                {label: 'Fichas Clínicas', count: fichasClinicas, href: '/fichas-clinica', icon: '📋'},
+                {label: 'Fichas Odontológicas', count: fichasOdonto, href: '/fichas-odontologica', icon: '🦷'},
+                {label: 'Citas', count: citas, href: '/citas', icon: '📅'},
+                {label: 'Recetas', count: recetas, href: '/recetas', icon: '📝'},
+                {label: 'Medicamentos', count: medicamentos, href: '/medicamentos', icon: '💊'},
+                {label: 'Despachos', count: despachos, href: '/despachos', icon: '📦'},
             ]);
         }
 
@@ -83,11 +83,14 @@ export default function DashboardPage() {
                     <p style={styles.subtitle}>
                         {user ? (
                             <>
-                                ¡Hola, <span style={{ color: '#0070f3', fontWeight: 600 }}>{user.nombre || user.username}</span>!<br />
-                                Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas clínicas y odontológicas, control de vacunación, citas, recetas y más.
+                                ¡Hola, <span
+                                style={{color: '#0070f3', fontWeight: 600}}>{user.nombre || user.username}</span>!<br/>
+                                Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas
+                                clínicas y odontológicas, control de vacunación, citas, recetas y más.
                             </>
                         ) : (
-                            <>Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas clínicas y odontológicas, control de vacunación, citas, recetas y más.</>
+                            <>Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas
+                                clínicas y odontológicas, control de vacunación, citas, recetas y más.</>
                         )}
                     </p>
                     <div style={styles.downArrowContainer}>
@@ -110,9 +113,9 @@ export default function DashboardPage() {
                                 href={card.href}
                                 key={card.href}
                                 className="card"
-                                style={{ ...styles.cardLink, ...cardLinkGradient(card.label) }}
+                                style={{...styles.cardLink, ...cardLinkGradient(card.label)}}
                             >
-                                <div style={{ ...styles.iconContainer, ...iconGradient(card.label) }}>{card.icon}</div>
+                                <div style={{...styles.iconContainer, ...iconGradient(card.label)}}>{card.icon}</div>
                                 <h3 style={styles.cardLabel}>{card.label}</h3>
                                 <span style={styles.cardCount}>{card.count}</span>
                             </Link>
@@ -132,21 +135,21 @@ const bounce = {
 function cardLinkGradient(label: string) {
     switch (label) {
         case 'Pacientes':
-            return { background: 'linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%)' };
+            return {background: 'linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%)'};
         case 'Familias':
-            return { background: 'linear-gradient(135deg, #fceabb 0%, #f8b500 100%)' };
+            return {background: 'linear-gradient(135deg, #fceabb 0%, #f8b500 100%)'};
         case 'Fichas Clínicas':
-            return { background: 'linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%)' };
+            return {background: 'linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%)'};
         case 'Fichas Odontológicas':
-            return { background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' };
+            return {background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'};
         case 'Citas':
-            return { background: 'linear-gradient(135deg, #f9d423 0%, #ff4e50 100%)' };
+            return {background: 'linear-gradient(135deg, #f9d423 0%, #ff4e50 100%)'};
         case 'Recetas':
-            return { background: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)' };
+            return {background: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)'};
         case 'Medicamentos':
-            return { background: 'linear-gradient(135deg, #c2e9fb 0%, #81a4fd 100%)' };
+            return {background: 'linear-gradient(135deg, #c2e9fb 0%, #81a4fd 100%)'};
         case 'Despachos':
-            return { background: 'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)' };
+            return {background: 'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)'};
         default:
             return {};
     }
@@ -155,21 +158,21 @@ function cardLinkGradient(label: string) {
 function iconGradient(label: string) {
     switch (label) {
         case 'Pacientes':
-            return { color: '#0070f3', textShadow: '0 2px 8px #b2ebf2' };
+            return {color: '#0070f3', textShadow: '0 2px 8px #b2ebf2'};
         case 'Familias':
-            return { color: '#f8b500', textShadow: '0 2px 8px #fceabb' };
+            return {color: '#f8b500', textShadow: '0 2px 8px #fceabb'};
         case 'Fichas Clínicas':
-            return { color: '#3a7bd5', textShadow: '0 2px 8px #e3eeff' };
+            return {color: '#3a7bd5', textShadow: '0 2px 8px #e3eeff'};
         case 'Fichas Odontológicas':
-            return { color: '#8f5fe8', textShadow: '0 2px 8px #e0c3fc' };
+            return {color: '#8f5fe8', textShadow: '0 2px 8px #e0c3fc'};
         case 'Citas':
-            return { color: '#ff4e50', textShadow: '0 2px 8px #f9d423' };
+            return {color: '#ff4e50', textShadow: '0 2px 8px #f9d423'};
         case 'Recetas':
-            return { color: '#a6c1ee', textShadow: '0 2px 8px #fbc2eb' };
+            return {color: '#a6c1ee', textShadow: '0 2px 8px #fbc2eb'};
         case 'Medicamentos':
-            return { color: '#81a4fd', textShadow: '0 2px 8px #c2e9fb' };
+            return {color: '#81a4fd', textShadow: '0 2px 8px #c2e9fb'};
         case 'Despachos':
-            return { color: '#f7971e', textShadow: '0 2px 8px #ffd200' };
+            return {color: '#f7971e', textShadow: '0 2px 8px #ffd200'};
         default:
             return {};
     }

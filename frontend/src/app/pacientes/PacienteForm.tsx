@@ -1,8 +1,8 @@
 'use client';
 
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { apiService } from '@/services/ApiService';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {apiService} from '@/services/ApiService';
 
 interface PacienteFormProps {
     paciente?: any | null;
@@ -10,14 +10,14 @@ interface PacienteFormProps {
     onClose?: (updated?: boolean) => void;
 }
 
-export default function PacienteForm({ paciente, show, onClose }: PacienteFormProps) {
-    const router = useRouter();
+export default function PacienteForm({paciente, show, onClose}: PacienteFormProps) {
+    useRouter();
     const [generos, setGeneros] = useState<string[]>([]);
-    const [showModal, setShowModal] = useState(false);
+    const [, setShowModal] = useState(false);
 
     useEffect(() => {
         apiService.getGeneros()
-            .then(data => setGeneros(data))
+            .then(data => setGeneros(data || [])) // Si no hay datos, usa un arreglo vacío
             .catch(err => console.error('Error al cargar géneros:', err));
     }, []);
 
@@ -59,7 +59,7 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
     }, [paciente, show]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({...form, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e: FormEvent) => {
@@ -78,10 +78,6 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
             console.error(err);
             alert('Error al guardar paciente: ' + err.message);
         }
-    };
-
-    const handleOpenModal = () => {
-        if (onClose) onClose();
     };
     const handleCloseModal = () => {
         if (onClose) onClose();
@@ -152,10 +148,10 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                         >
                             ×
                         </button>
-                        
-                        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-                            <div style={{ 
-                                fontSize: '2rem', 
+
+                        <div style={{textAlign: 'center', marginBottom: '1rem'}}>
+                            <div style={{
+                                fontSize: '2rem',
                                 marginBottom: '0.5rem',
                                 background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                                 width: '64px',
@@ -169,15 +165,15 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                             }}>
                                 👤
                             </div>
-                            <h2 style={{ 
-                                margin: 0, 
+                            <h2 style={{
+                                margin: 0,
                                 fontSize: '1.5rem',
                                 fontWeight: '700',
                                 color: '#0f172a'
                             }}>
                                 Nuevo Paciente
                             </h2>
-                            <p style={{ 
+                            <p style={{
                                 margin: '0.5rem 0 0 0',
                                 color: '#64748b',
                                 fontSize: '0.95rem'
@@ -185,7 +181,7 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 Completa la información del paciente
                             </p>
                         </div>
-                        
+
                         <form
                             onSubmit={handleSubmit}
                             style={{
@@ -201,9 +197,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.nombre}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -218,9 +214,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.apellido_paterno}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -235,9 +231,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.apellido_materno}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -252,9 +248,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.rut}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -269,9 +265,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.fecha_nacimiento}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -285,9 +281,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.genero}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -309,9 +305,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.telefono}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -326,9 +322,9 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 value={form.direccion}
                                 onChange={handleChange}
                                 required
-                                style={{ 
-                                    padding: '0.75rem', 
-                                    borderRadius: '8px', 
+                                style={{
+                                    padding: '0.75rem',
+                                    borderRadius: '8px',
                                     border: '2px solid #e2e8f0',
                                     fontSize: '0.95rem',
                                     transition: 'border-color 0.2s ease',
@@ -339,10 +335,10 @@ export default function PacienteForm({ paciente, show, onClose }: PacienteFormPr
                                 onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
                             />
                             <div style={{
-                                gridColumn: '1 / -1', 
-                                display: 'flex', 
-                                gap: '1rem', 
-                                justifyContent: 'flex-end', 
+                                gridColumn: '1 / -1',
+                                display: 'flex',
+                                gap: '1rem',
+                                justifyContent: 'flex-end',
                                 marginTop: '1rem',
                                 paddingTop: '1rem',
                                 borderTop: '1px solid #e2e8f0'

@@ -57,10 +57,10 @@ export default function RecetasPage() {
     const handleCloseModal = () => setShowModal(false);
 
     useEffect(() => {
-        apiService.getPacientes().then(setPacientes);
-        apiService.getUsuarios().then(setUsuarios);
-        apiService.getMedicamentos().then(setMedicamentos);
-        apiService.getRecetas().then(setRecetas);
+        apiService.getPacientes().then(data => setPacientes(data || []));
+        apiService.getUsuarios().then(data => setUsuarios(data || []));
+        apiService.getMedicamentos().then(data => setMedicamentos(data || []));
+        apiService.getRecetas().then(data => setRecetas(data || []));
     }, []);
 
     const handleChange = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {

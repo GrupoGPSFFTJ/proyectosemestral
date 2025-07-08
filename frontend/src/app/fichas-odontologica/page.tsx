@@ -1,8 +1,8 @@
 'use client';
 
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { apiService } from '@/services/ApiService';
-import { useAuth } from '@/components/AuthContext';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import {apiService} from '@/services/ApiService';
+import {useAuth} from '@/components/AuthContext';
 
 interface FichaOdontologica {
     id_ficha_odontologica: number;
@@ -34,7 +34,7 @@ interface CentroSalud {
 }
 
 export default function FichasOdontologicaPage() {
-    const { user } = useAuth();
+    const {user} = useAuth();
     const [fichas, setFichas] = useState<FichaOdontologica[]>([]);
     const [pacientes, setPacientes] = useState<Paciente[]>([]);
     const [programas, setProgramas] = useState<ProgramaSaludOral[]>([]);
@@ -48,14 +48,25 @@ export default function FichasOdontologicaPage() {
     });
 
     useEffect(() => {
-        apiService.getFichasOdonto().then(setFichas);
-        apiService.getPacientes().then(setPacientes);
-        apiService.getProgramasSaludOral().then(setProgramas);
-        apiService.getCentrosSalud().then(setCentros);
+        apiService.getFichasControl()
+            .then((data) => setFichas(data || [])) // Asigna un array vacío si data es undefined
+            .catch((err) => console.error('ApiService fichas GET error:', err));
+
+        apiService.getCentrosSalud()
+            .then((data) => setCentros(data || [])) // Valida respuesta de API
+            .catch(() => alert('Error al cargar centros de salud'));
+
+        apiService.getPacientes()
+            .then((data) => setPacientes(data || [])) // Valida respuesta de API
+            .catch(() => alert('Error al cargar pacientes'));
+
+        apiService.getProgramasSaludOral()
+            .then((data) => setProgramas(data || [])) // Valida respuesta de API
+            .catch(() => alert('Error al cargar programas de control'));
     }, []);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({...form, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e: FormEvent) => {
@@ -106,7 +117,7 @@ export default function FichasOdontologicaPage() {
                     value={form.fecha_control}
                     onChange={handleChange}
                     required
-                    style={{ flex: '1 1 150px', padding: '0.5rem' }}
+                    style={{flex: '1 1 150px', padding: '0.5rem'}}
                 />
                 <input
                     name="observacion"
@@ -114,18 +125,18 @@ export default function FichasOdontologicaPage() {
                     value={form.observacion}
                     onChange={handleChange}
                     required
-                    style={{ flex: '2 1 300px', padding: '0.5rem' }}
+                    style={{flex: '2 1 300px', padding: '0.5rem'}}
                 />
                 <select
                     name="id_paciente"
                     value={form.id_paciente}
                     onChange={handleChange}
                     required
-                    style={{ flex: '2 1 300px', padding: '0.5rem' }}
+                    style={{flex: '2 1 300px', padding: '0.5rem'}}
                 >
                     <option value="">Selecciona paciente</option>
                     {pacientes.map((p) => (
-                        <option key={p.id_paciente} value={p.id_paciente}>
+                        <option key={`paciente-${p.id_paciente}`} value={p.id_paciente}>
                             {`${p.rut}, ${p.nombre} ${p.apellido_paterno} ${p.apellido_materno}`}
                         </option>
                     ))}
@@ -135,83 +146,85 @@ export default function FichasOdontologicaPage() {
                     value={form.id_programa_salud_oral}
                     onChange={handleChange}
                     required
-                    style={{ flex: '2 1 300px', padding: '0.5rem' }}
+                    style={{flex: '2 1 300px', padding: '0.5rem'}}
                 >
                     <option value="">Selecciona programa salud oral</option>
-                    {programas.map((pr) => (
-                        <option key={pr.id_programa_salud_oral} value={pr.id_programa_salud_oral}>
-                            {`${pr.codigo}, ${pr.nombre}`}
-                        </option>
-                    ))}
+                    {programas
+                        .map((pr) => (
+                            <option key={`programa-${pr.id_programa_salud_oral}`} value={pr.id_programa_salud_oral}>
+                                {`${pr.codigo}, ${pr.nombre}`}
+                            </option>
+                        ))}
+
                 </select>
                 <select
                     name="id_centro_salud"
                     value={form.id_centro_salud}
                     onChange={handleChange}
                     required
-                    style={{ flex: '1 1 180px', padding: '0.5rem' }}
+                    style={{flex: '1 1 180px', padding: '0.5rem'}}
                 >
                     <option value="">Selecciona centro de salud</option>
                     {centros.map((c) => (
-                        <option key={c.id_centro_salud} value={c.id_centro_salud}>
+                        <option key={`centro-${c.id_centro_salud}`} value={c.id_centro_salud}>
                             {c.nombre}
                         </option>
                     ))}
                 </select>
-                <button type="submit" style={{ padding: '0.5rem 1rem' }}>
+                <button type="submit" style={{padding: '0.5rem 1rem'}}>
                     Agregar
                 </button>
             </form>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table style={{width: '100%', borderCollapse: 'collapse'}}>
                 <thead>
-                    <tr>
-                        <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>ID</th>
-                        <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Fecha Control
-                        </th>
-                        <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Observación</th>
-                        <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Paciente</th>
-                        <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Programa Salud
-                            Oral
-                        </th>
-                        <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Centro Salud</th>
-                        <th style={{ textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem' }}>Usuario Resp.
-                        </th>
-                    </tr>
+                <tr>
+                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>ID</th>
+                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Fecha Control
+                    </th>
+                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Observación</th>
+                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Paciente</th>
+                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Programa Salud
+                        Oral
+                    </th>
+                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Centro Salud</th>
+                    <th style={{textAlign: 'left', borderBottom: '2px solid #ccc', padding: '0.5rem'}}>Usuario Resp.
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
-                    {fichas.map((f) => {
-                        const paciente = pacientes.find((p) => Number(p.id_paciente) === Number(f.id_paciente));
-                        const programa = programas.find((pr) => Number(pr.id_programa_salud_oral) === Number(f.id_programa_salud_oral));
-                        const centro = centros.find((c) => Number(c.id_centro_salud) === Number(f.id_centro_salud));
-                        return (
-                            <tr key={f.id_ficha_odontologica}>
-                                <td style={{
-                                    padding: '0.5rem',
-                                    borderBottom: '1px solid #eee'
-                                }}>{f.id_ficha_odontologica}</td>
-                                <td style={{
-                                    padding: '0.5rem',
-                                    borderBottom: '1px solid #eee'
-                                }}>{new Date(f.fecha_control).toLocaleDateString('es-CL')}</td>
-                                <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>{f.observacion}</td>
-                                <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>
-                                    {paciente
-                                        ? `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}`
-                                        : f.id_paciente}
-                                </td>
-                                <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>
-                                    {programa ? programa.nombre : f.id_programa_salud_oral}
-                                </td>
-                                <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>
-                                    {centro ? centro.nombre : f.id_centro_salud}
-                                </td>
-                                <td style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>
-                                    {user?.nombre ?? f.id_usuario_responsable}
-                                </td>
-                            </tr>
-                        );
-                    })}
+                {fichas.map((f) => {
+                    const paciente = pacientes.find((p) => Number(p.id_paciente) === Number(f.id_paciente));
+                    const programa = programas.find((pr) => Number(pr.id_programa_salud_oral) === Number(f.id_programa_salud_oral));
+                    const centro = centros.find((c) => Number(c.id_centro_salud) === Number(f.id_centro_salud));
+                    return (
+                        <tr key={f.id_ficha_odontologica}>
+                            <td style={{
+                                padding: '0.5rem',
+                                borderBottom: '1px solid #eee'
+                            }}>{f.id_ficha_odontologica}</td>
+                            <td style={{
+                                padding: '0.5rem',
+                                borderBottom: '1px solid #eee'
+                            }}>{new Date(f.fecha_control).toLocaleDateString('es-CL')}</td>
+                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>{f.observacion}</td>
+                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                                {paciente
+                                    ? `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}`
+                                    : f.id_paciente}
+                            </td>
+                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                                {programa ? programa.nombre : f.id_programa_salud_oral}
+                            </td>
+                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                                {centro ? centro.nombre : f.id_centro_salud}
+                            </td>
+                            <td style={{padding: '0.5rem', borderBottom: '1px solid #eee'}}>
+                                {user?.nombre ?? f.id_usuario_responsable}
+                            </td>
+                        </tr>
+                    );
+                })}
                 </tbody>
             </table>
         </div>

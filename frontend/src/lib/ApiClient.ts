@@ -2,7 +2,7 @@ type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export class ApiClient {
     private baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    private defaultHeaders = { 'Content-Type': 'application/json' };
+    private defaultHeaders = {'Content-Type': 'application/json'};
 
     get<T>(path: string, withToken = true): Promise<T | void> {
         return this.request<T>('GET', path, undefined, withToken);
@@ -21,7 +21,7 @@ export class ApiClient {
     }
 
     private getHeaders(withToken = true) {
-        const headers: Record<string, string> = { ...this.defaultHeaders };
+        const headers: Record<string, string> = {...this.defaultHeaders};
         if (withToken) {
             const token = localStorage.getItem('token');
             if (token) headers['Authorization'] = `Bearer ${token}`;

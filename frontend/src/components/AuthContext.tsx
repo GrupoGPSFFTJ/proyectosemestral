@@ -1,6 +1,6 @@
 'use client';
 
-import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import React, {createContext, ReactNode, useCallback, useContext, useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {apiService} from "@/services/ApiService";
 
@@ -50,7 +50,15 @@ export function AuthProvider({children}: { children: ReactNode }) {
     const [user, setUser] = useState<UserInfo | null | undefined>(undefined);
     const router = useRouter();
 
-    const checkSessionValidity = () => {
+    const logout = useCallback(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('loginTime');
+        setUser(null);
+        router.push('/');
+    }, [router]);
+
+    const checkSessionValidity = useCallback(() => {
         const token = localStorage.getItem('token');
         const loginTime = localStorage.getItem('loginTime');
         const userInfoRaw = localStorage.getItem('userInfo');
@@ -76,13 +84,13 @@ export function AuthProvider({children}: { children: ReactNode }) {
             // Falta token, loginTime o userInfo
             setUser(null);
         }
-    };
+    }, [logout]);
 
     useEffect(() => {
         checkSessionValidity();
         const interval = setInterval(checkSessionValidity, 60000);
         return () => clearInterval(interval);
-    }, []);
+    }, [checkSessionValidity]);
 
     const login = async (identifier: string, password: string, useEmail: boolean) => {
         try {
@@ -111,13 +119,6 @@ export function AuthProvider({children}: { children: ReactNode }) {
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('loginTime');
-        setUser(null);
-        router.push('/');
-    };
 
     const register = async (data: RegisterData) => {
         try {

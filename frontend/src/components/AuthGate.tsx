@@ -122,7 +122,7 @@ function RegisterForm() {
 
     useEffect(() => {
         apiService.getCentrosSalud()
-            .then(setCentros)
+            .then(data => setCentros(data || [])) // Si data es undefined, usa un arreglo vacío
             .catch(() => alert('Error al cargar centros de salud'));
     }, []);
 

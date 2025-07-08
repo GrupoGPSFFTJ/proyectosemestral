@@ -62,15 +62,15 @@ export default function CitasPage() {
     });
 
     useEffect(() => {
-        apiService.getCitass().then(setCitas);
-        apiService.getPacientes().then(setPacientes);
-        apiService.getCentrosSalud().then(setCentros);
-        apiService.getUsuarios().then(setUsuarios);
+        apiService.getCitass().then(data => setCitas(data || []));
+        apiService.getPacientes().then(data => setPacientes(data || []));
+        apiService.getCentrosSalud().then(data => setCentros(data || []));
+        apiService.getUsuarios().then(data => setUsuarios(data || []));
         apiService.getCitaEstado().then((data) => {
-            setCitaEstados(data.map((e: any) => ({value: e, label: e})));
+            setCitaEstados((data || []).map((e: any) => ({value: e, label: e})));
         });
         apiService.getTipoCita().then((data) => {
-            setTiposCita(data.map((e: any) => ({value: e, label: e})));
+            setTiposCita((data || []).map((e: any) => ({value: e, label: e})));
         });
     }, []);
 
