@@ -7,19 +7,19 @@ import { TipoRelacion } from '../entities/tipo-relacion.entity';
 export class TipoRelacionService {
   constructor(
     @InjectRepository(TipoRelacion)
-    private tipoRelacionRepository: Repository<TipoRelacion>,
+    private repo: Repository<TipoRelacion>,
   ) {}
 
   async create(tipoRelacion: TipoRelacion): Promise<TipoRelacion> {
-    return await this.tipoRelacionRepository.save(tipoRelacion);
+    return await this.repo.save(tipoRelacion);
   }
 
   async findAll(): Promise<TipoRelacion[]> {
-    return await this.tipoRelacionRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<TipoRelacion> {
-    const tipoRelacion = await this.tipoRelacionRepository.findOneBy({
+    const tipoRelacion = await this.repo.findOneBy({
       id_tipo_relacion: id,
     });
     if (!tipoRelacion) {
@@ -31,11 +31,11 @@ export class TipoRelacionService {
   async update(id: number, tipoRelacion: TipoRelacion): Promise<TipoRelacion> {
     await this.findOne(id);
     tipoRelacion.id_tipo_relacion = id;
-    return await this.tipoRelacionRepository.save(tipoRelacion);
+    return await this.repo.save(tipoRelacion);
   }
 
   async remove(id: number): Promise<void> {
     const tipoRelacion = await this.findOne(id);
-    await this.tipoRelacionRepository.remove(tipoRelacion);
+    await this.repo.remove(tipoRelacion);
   }
 }

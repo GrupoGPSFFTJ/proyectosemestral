@@ -7,19 +7,19 @@ import { FactorRiesgo } from '../entities/factor-riesgo.entity';
 export class FactorRiesgoService {
   constructor(
     @InjectRepository(FactorRiesgo)
-    private factorRiesgoRepository: Repository<FactorRiesgo>,
+    private repo: Repository<FactorRiesgo>,
   ) {}
 
   async create(factorRiesgo: FactorRiesgo): Promise<FactorRiesgo> {
-    return await this.factorRiesgoRepository.save(factorRiesgo);
+    return await this.repo.save(factorRiesgo);
   }
 
   async findAll(): Promise<FactorRiesgo[]> {
-    return await this.factorRiesgoRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<FactorRiesgo> {
-    const factor = await this.factorRiesgoRepository.findOneBy({
+    const factor = await this.repo.findOneBy({
       id_factor_riesgo: id,
     });
     if (!factor) {
@@ -33,11 +33,11 @@ export class FactorRiesgoService {
   async update(id: number, factorRiesgo: FactorRiesgo): Promise<FactorRiesgo> {
     await this.findOne(id);
     factorRiesgo.id_factor_riesgo = id;
-    return await this.factorRiesgoRepository.save(factorRiesgo);
+    return await this.repo.save(factorRiesgo);
   }
 
   async remove(id: number): Promise<void> {
     const factor = await this.findOne(id);
-    await this.factorRiesgoRepository.remove(factor);
+    await this.repo.remove(factor);
   }
 }

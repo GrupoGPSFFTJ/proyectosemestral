@@ -7,19 +7,19 @@ import { Familia } from '../entities/familia.entity';
 export class FamiliaService {
   constructor(
     @InjectRepository(Familia)
-    private familiaRepository: Repository<Familia>,
+    private repo: Repository<Familia>,
   ) {}
 
   async create(familia: Familia): Promise<Familia> {
-    return await this.familiaRepository.save(familia);
+    return await this.repo.save(familia);
   }
 
   async findAll(): Promise<Familia[]> {
-    return await this.familiaRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<Familia> {
-    const familia = await this.familiaRepository.findOneBy({
+    const familia = await this.repo.findOneBy({
       id_familia: id,
     });
     if (!familia) {
@@ -31,15 +31,15 @@ export class FamiliaService {
   async update(id: number, familia: Familia): Promise<Familia> {
     await this.findOne(id);
     familia.id_familia = id;
-    return await this.familiaRepository.save(familia);
+    return await this.repo.save(familia);
   }
 
   async remove(id: number): Promise<void> {
     const familia = await this.findOne(id);
-    await this.familiaRepository.remove(familia);
+    await this.repo.remove(familia);
   }
 
   async count(): Promise<number> {
-    return this.familiaRepository.count();
+    return this.repo.count();
   }
 }

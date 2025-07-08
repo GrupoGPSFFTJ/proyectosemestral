@@ -7,19 +7,19 @@ import { Repository } from 'typeorm';
 export class PacienteService {
   constructor(
     @InjectRepository(Paciente)
-    private pacienteRepository: Repository<Paciente>,
+    private repo: Repository<Paciente>,
   ) {}
 
   async create(paciente: Paciente): Promise<Paciente> {
-    return await this.pacienteRepository.save(paciente);
+    return await this.repo.save(paciente);
   }
 
   async findAll(): Promise<Paciente[]> {
-    return await this.pacienteRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<Paciente> {
-    const paciente = await this.pacienteRepository.findOneBy({
+    const paciente = await this.repo.findOneBy({
       id_paciente: id,
     });
     if (!paciente) {
@@ -31,15 +31,16 @@ export class PacienteService {
   async update(id: number, paciente: Paciente): Promise<Paciente> {
     await this.findOne(id);
     paciente.id_paciente = id;
-    return await this.pacienteRepository.save(paciente);
+    return await this.repo.save(paciente);
   }
 
-  async remove(id: number): Promise<void> {
-    const paciente = await this.findOne(id);
-    await this.pacienteRepository.remove(paciente);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 
   async count(): Promise<number> {
-    return this.pacienteRepository.count();
+    return this.repo.count();
   }
 }

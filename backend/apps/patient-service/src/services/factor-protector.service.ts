@@ -7,19 +7,19 @@ import { FactorProtector } from '../entities/factor-protector.entity';
 export class FactorProtectorService {
   constructor(
     @InjectRepository(FactorProtector)
-    private factorProtectorRepository: Repository<FactorProtector>,
+    private repo: Repository<FactorProtector>,
   ) {}
 
   async create(factorProtector: FactorProtector): Promise<FactorProtector> {
-    return await this.factorProtectorRepository.save(factorProtector);
+    return await this.repo.save(factorProtector);
   }
 
   async findAll(): Promise<FactorProtector[]> {
-    return await this.factorProtectorRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<FactorProtector> {
-    const factor = await this.factorProtectorRepository.findOneBy({
+    const factor = await this.repo.findOneBy({
       id_factor_protector: id,
     });
     if (!factor) {
@@ -36,11 +36,11 @@ export class FactorProtectorService {
   ): Promise<FactorProtector> {
     await this.findOne(id);
     factorProtector.id_factor_protector = id;
-    return await this.factorProtectorRepository.save(factorProtector);
+    return await this.repo.save(factorProtector);
   }
 
   async remove(id: number): Promise<void> {
     const factor = await this.findOne(id);
-    await this.factorProtectorRepository.remove(factor);
+    await this.repo.remove(factor);
   }
 }
