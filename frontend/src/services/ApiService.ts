@@ -24,7 +24,7 @@ export class ApiService {
         return api.get<any>(`/core/usuarios/email/${email}`);
     }
 
-    getCentrosSalud(): Promise<any[]> {
+    getCentrosSalud(): Promise<void | any[]> {
         return api.get<any[]>('/core/centros-salud/');
     }
 
@@ -32,11 +32,11 @@ export class ApiService {
         return api.post<any>('/patient/paciente', data);
     }
 
-    getGeneros(): Promise<string[]> {
+    getGeneros(): Promise<void | string[]> {
         return api.get<string[]>('/patient/enums/usuario/estados');
     }
 
-    getPacientes(): Promise<any[]> {
+    getPacientes(): Promise<void | any[]> {
         return api.get<any[]>('/patient/paciente');
     }
 
@@ -47,6 +47,7 @@ export class ApiService {
     updatePaciente(id: number, data: any): Promise<any> {
         return api.put<any>(`/patient/paciente/${id}`, data);
     }
+
     deletePaciente(id: number): Promise<any> {
         return api.delete<any>(`/patient/paciente/${id}`);
     }
@@ -179,7 +180,7 @@ export class ApiService {
         return api.get<any>(`/pharmacy/receta-medicamento/receta/${recetaId}`);
     }
 
-    private getCount(schema: string, table: string): Promise<any[]> {
+    private getCount(schema: string, table: string): Promise<void | any[]> {
         return api.get<any[]>(`/${schema}/${table}/count`);
     }
 }
