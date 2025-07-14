@@ -1,0 +1,192 @@
+version: '3.8'
+
+services:
+  # Frontend Angular
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-angular
+    ports:
+      - "4200:4200"
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./backend
+      dockerfile: apps/api-gateway/Dockerfile
+      args:
+        PORT_GATEWAY: 3010
+        URL_CORE_SERVICE: http://core-service:3001
+        URL_CLINICAL_SERVICE: http://clinical-service:3002
+        URL_NUTRITION_SERVICE: http://nutrition-service:3003
+        URL_ODONTO_SERVICE: http://odonto-service:3004
+        URL_PATIENT_SERVICE: http://patient-service:3005
+        URL_PHARMACY_SERVICE: http://pharmacy-service:3006
+        URL_VACCINATION_SERVICE: http://vaccination-service:3007
+    container_name: api-gateway
+    ports:
+      - "3010:3010"
+    depends_on:
+      - core-service
+      - clinical-service
+      - nutrition-service
+      - odonto-service
+      - patient-service
+      - pharmacy-service
+      - vaccination-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Core Service
+  core-service:
+    build:
+      context: ./backend
+      dockerfile: apps/core-service/Dockerfile
+      args:
+        DB_HOST: aws-0-sa-east-1.pooler.supabase.com
+        DB_PORT: 5432
+        DB_USER: postgres.qzfsluhwakwpzdctsttt
+        DB_PASS: 31deMayo@2025
+        DB_NAME: postgres
+        DB_POOL_MODE: session
+        PORT_CORE: 3001
+        SCHEMA_CORE: core
+    container_name: core-service
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Clinical Service
+  clinical-service:
+    build:
+      context: ./backend
+      dockerfile: apps/clinical-service/Dockerfile
+      args:
+        DB_HOST: aws-0-sa-east-1.pooler.supabase.com
+        DB_PORT: 5432
+        DB_USER: postgres.qzfsluhwakwpzdctsttt
+        DB_PASS: 31deMayo@2025
+        DB_NAME: postgres
+        DB_POOL_MODE: session
+        PORT_CLINICAL: 3002
+        SCHEMA_CLINICAL: clinical
+    container_name: clinical-service
+    ports:
+      - "3002:3002"
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Nutrition Service
+  nutrition-service:
+    build:
+      context: ./backend
+      dockerfile: apps/nutrition-service/Dockerfile
+      args:
+        DB_HOST: aws-0-sa-east-1.pooler.supabase.com
+        DB_PORT: 5432
+        DB_USER: postgres.qzfsluhwakwpzdctsttt
+        DB_PASS: 31deMayo@2025
+        DB_NAME: postgres
+        DB_POOL_MODE: session
+        PORT_NUTRITION: 3003
+        SCHEMA_NUTRITION: nutrition
+    container_name: nutrition-service
+    ports:
+      - "3003:3003"
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Odonto Service
+  odonto-service:
+    build:
+      context: ./backend
+      dockerfile: apps/odonto-service/Dockerfile
+      args:
+        DB_HOST: aws-0-sa-east-1.pooler.supabase.com
+        DB_PORT: 5432
+        DB_USER: postgres.qzfsluhwakwpzdctsttt
+        DB_PASS: 31deMayo@2025
+        DB_NAME: postgres
+        DB_POOL_MODE: session
+        PORT_ODONTO: 3004
+        SCHEMA_ODONTO: odonto
+    container_name: odonto-service
+    ports:
+      - "3004:3004"
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Patient Service
+  patient-service:
+    build:
+      context: ./backend
+      dockerfile: apps/patient-service/Dockerfile
+      args:
+        DB_HOST: aws-0-sa-east-1.pooler.supabase.com
+        DB_PORT: 5432
+        DB_USER: postgres.qzfsluhwakwpzdctsttt
+        DB_PASS: 31deMayo@2025
+        DB_NAME: postgres
+        DB_POOL_MODE: session
+        PORT_PATIENT: 3005
+        SCHEMA_PATIENT: patient
+    container_name: patient-service
+    ports:
+      - "3005:3005"
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Pharmacy Service
+  pharmacy-service:
+    build:
+      context: ./backend
+      dockerfile: apps/pharmacy-service/Dockerfile
+      args:
+        DB_HOST: aws-0-sa-east-1.pooler.supabase.com
+        DB_PORT: 5432
+        DB_USER: postgres.qzfsluhwakwpzdctsttt
+        DB_PASS: 31deMayo@2025
+        DB_NAME: postgres
+        DB_POOL_MODE: session
+        PORT_PHARMACY: 3006
+        SCHEMA_PHARMACY: pharmacy
+    container_name: pharmacy-service
+    ports:
+      - "3006:3006"
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Vaccination Service
+  vaccination-service:
+    build:
+      context: ./backend
+      dockerfile: apps/vaccination-service/Dockerfile
+      args:
+        DB_HOST: aws-0-sa-east-1.pooler.supabase.com
+        DB_PORT: 5432
+        DB_USER: postgres.qzfsluhwakwpzdctsttt
+        DB_PASS: 31deMayo@2025
+        DB_NAME: postgres
+        DB_POOL_MODE: session
+        PORT_VACCINATION: 3007
+        SCHEMA_VACCINATION: vaccination
+    container_name: vaccination-service
+    ports:
+      - "3007:3007"
+    restart: unless-stopped
+    networks:
+      - gps-network
