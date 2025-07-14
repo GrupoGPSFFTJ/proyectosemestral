@@ -1,0 +1,37 @@
+<!-- dashboard.component.html -->
+<div class="hero-bg">
+    <div class="hero-container">
+        <h1 class="main-title">Sistema Clínico Integral</h1>
+        <p class="subtitle">
+            <span *ngIf="currentUser">
+                ¡Hola, <span class="user-highlight">{{ currentUser.nombre || currentUser.username }}</span>!<br />
+                Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas
+                clínicas y odontológicas, control de vacunación, citas, recetas y más.
+            </span>
+            <span *ngIf="!currentUser">
+                Bienvenido al panel de control. Desde aquí podrás gestionar pacientes, familias, fichas
+                clínicas y odontológicas, control de vacunación, citas, recetas y más.
+            </span>
+        </p>
+        <div class="down-arrow-container">
+            <span class="down-arrow">↓</span>
+        </div>
+    </div>
+</div>
+
+<div class="cards-section">
+    <div class="cards-wrapper" #cardsWrapper>
+        <div *ngIf="showArrow" class="scroll-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="arrow-text">Desliza para ver más</span>
+        </div>
+        <div class="dashboard-grid">
+            <a *ngFor="let card of cards" [routerLink]="card.href" class="card-link"
+                [ngClass]="getCardClass(card.label)">
+                <div class="icon-container" [ngClass]="getIconClass(card.label)">{{ card.icon }}</div>
+                <h3 class="card-label">{{ card.label }}</h3>
+                <span class="card-count">{{ card.count }}</span>
+            </a>
+        </div>
+    </div>
+</div>

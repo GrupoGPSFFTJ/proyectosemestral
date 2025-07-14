@@ -1,0 +1,43 @@
+<!-- navbar.component.html -->
+<nav class="navbar" *ngIf="currentUser">
+    <a routerLink="/dashboard" class="home-link" aria-label="Ir al Dashboard">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9.5L12 2l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z" />
+        </svg>
+    </a>
+
+    <div class="links-container">
+        <a routerLink="/pacientes" class="nav-link">Pacientes</a>
+        <a routerLink="/familias" class="nav-link">Familias</a>
+        <a routerLink="/fichas-clinica" class="nav-link">Fichas Clínicas</a>
+        <a routerLink="/fichas-odontologica" class="nav-link">Fichas Odontológicas</a>
+        <a routerLink="/citas" class="nav-link">Citas</a>
+        <a routerLink="/recetas" class="nav-link">Recetas</a>
+        <a routerLink="/medicamentos" class="nav-link">Medicamentos</a>
+        <a routerLink="/despachos" class="nav-link">Despachos</a>
+    </div>
+
+    <div class="user-container" #dropdownContainer>
+        <button (click)="toggleDropdown()" class="user-button" aria-label="Abrir menú de usuario">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" />
+            </svg>
+        </button>
+
+        <div *ngIf="dropdownOpen" class="dropdown-menu">
+            <div class="dropdown-header">
+                <div class="user-name-text">
+                    {{ currentUser.nombre || currentUser.username || 'Usuario' }}
+                </div>
+                <span *ngIf="currentUser.email" class="user-email-text">
+                    {{ currentUser.email }}
+                </span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <button (click)="logout()" class="logout-item">
+                Cerrar sesión
+            </button>
+        </div>
+    </div>
+</nav>

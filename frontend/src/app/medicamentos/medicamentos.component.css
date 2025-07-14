@@ -1,0 +1,14 @@
+/* Estilos personalizados para la página de medicamentos. Usa Tailwind en className siempre que sea posible. */
+
+.medicamentos-form {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .medicamentos-form {
+        flex-direction: column;
+    }
+}

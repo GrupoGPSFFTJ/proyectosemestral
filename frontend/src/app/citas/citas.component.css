@@ -1,0 +1,81 @@
+/* Estilos personalizados para la página de citas. Usa Tailwind en className siempre que sea posible. */
+
+/* ✅ LAZY LOADING: Estilos para carga lazy */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.loading-spinner {
+    padding: 2rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    animation: pulse 2s infinite;
+}
+
+.lazy-table-container {
+    min-height: 100px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.table-loading {
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #007bff;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.citas-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.citas-select,
+.citas-input {
+    padding: 0.5rem;
+}
+
+.citas-select.paciente,
+.citas-select.medico,
+.citas-input.observacion {
+    flex: 2 1 300px;
+}
+
+.citas-select.tipo,
+.citas-select.centro {
+    flex: 1 1 180px;
+}
+
+.citas-input.fecha {
+    flex: 1 1 120px;
+}
+
+.citas-input.hora {
+    flex: 1 1 100px;
+}
+
+.citas-btn {
+    padding: 0.5rem 1rem;
+}

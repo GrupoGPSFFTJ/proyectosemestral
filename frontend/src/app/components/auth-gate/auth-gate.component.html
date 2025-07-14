@@ -1,0 +1,24 @@
+<!-- auth-gate.component.html -->
+<div class="auth-container" *ngIf="!isAuthenticated">
+    <div class="auth-overlay"></div>
+    <div class="auth-card">
+        <div *ngIf="!isRegistering">
+            <app-login-form (switchToRegister)="isRegistering = true"></app-login-form>
+        </div>
+        <div *ngIf="isRegistering">
+            <app-register-form (switchToLogin)="isRegistering = false"></app-register-form>
+        </div>
+        <div class="register-section">
+            <span class="register-text" *ngIf="!isRegistering">¿No tienes cuenta?</span>
+            <span class="register-text" *ngIf="isRegistering">¿Ya tienes cuenta?</span>
+            <button (click)="toggleForm()" class="register-link" *ngIf="!isRegistering">
+                Regístrate
+            </button>
+            <button (click)="toggleForm()" class="register-link" *ngIf="isRegistering">
+                Inicia sesión
+            </button>
+        </div>
+    </div>
+</div>
+
+<ng-content *ngIf="isAuthenticated"></ng-content>

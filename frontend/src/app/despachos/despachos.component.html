@@ -1,0 +1,24 @@
+<div *ngIf="loading">Cargando datos...</div>
+
+<div *ngIf="!loading" class="p-6">
+    <table class="table-unified">
+        <thead>
+            <tr>
+                <th class="table-unified-th">Medicamento</th>
+                <th class="table-unified-th">Cantidad despachada</th>
+                <th class="table-unified-th">Fecha de despacho</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let despacho of despachos; let idx = index">
+                <td class="table-unified-td">{{ getNombreMedicamento(despacho.id_receta_med) }}</td>
+                <td class="table-unified-td">{{ despacho.cantidad_despachada }}</td>
+                <td class="table-unified-td">{{ formatDate(despacho.fecha_despacho) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="despachos.length === 0" class="text-center py-8 text-gray-500">
+        No hay despachos registrados
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<!-- login-form.component.html -->
+<div>
+    <h2 class="form-title">Iniciar Sesión</h2>
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="toggle-email-inline">
+            <button type="button" (click)="toggleEmailMode()" [class]="'toggle-email-link'" (mouseenter)="hover = true"
+                (mouseleave)="hover = false" [style.text-decoration]="hover ? 'underline' : 'none'">
+                {{ useEmail ? 'Usar nombre de usuario' : 'Usar correo' }}
+            </button>
+        </div>
+        <input [name]="useEmail ? 'email' : 'username'" [type]="useEmail ? 'email' : 'text'"
+            [placeholder]="useEmail ? 'Email' : 'Usuario'" [(ngModel)]="identifier" required class="auth-input" />
+        <input name="password" type="password" placeholder="Contraseña" [(ngModel)]="password" required
+            class="auth-input" />
+        <button type="submit" class="primary-button">Entrar</button>
+    </form>
+</div>

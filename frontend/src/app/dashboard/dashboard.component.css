@@ -1,0 +1,252 @@
+.hero-bg {
+    background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: calc(60vh - 56px);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2.5rem 1rem 1.5rem;
+    text-align: center;
+    background: transparent;
+}
+
+.main-title {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 800;
+    margin: 0;
+    color: #111;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 12px #e0eafc;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    color: #444;
+    margin-top: 1.2rem;
+    max-width: 700px;
+    line-height: 1.7;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.user-highlight {
+    color: #0070f3;
+    font-weight: 600;
+}
+
+.cards-section {
+    width: 100%;
+    background: linear-gradient(120deg, #f9f9f9 0%, #e0eafc 100%);
+    min-height: 40vh;
+    padding: 2.5rem 0 3rem;
+    margin-top: -2rem;
+}
+
+.cards-wrapper {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.scroll-arrow {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 0.25rem 0.75rem;
+    z-index: 10;
+    font-size: 1.1rem;
+    color: #0070f3;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.arrow-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.arrow-text {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+.card-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    cursor: pointer;
+    height: 100%;
+    border-radius: 18px;
+    padding: 2.2rem 1.5rem 1.5rem;
+    border: none;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.10);
+    transition: transform 0.22s, box-shadow 0.22s;
+    min-height: 210px;
+    align-items: flex-start;
+}
+
+.card-link:hover {
+    transform: translateY(-7px) scale(1.025);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.13);
+}
+
+.icon-container {
+    font-size: 3.2rem;
+    margin-bottom: 1.1rem;
+    align-self: flex-start;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.07));
+}
+
+.card-label {
+    margin: 0 0 0.5rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: -0.01em;
+}
+
+.card-count {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0070f3;
+    text-align: right;
+    margin-top: 0.5rem;
+    align-self: flex-end;
+    text-shadow: 0 2px 8px #e0eafc;
+}
+
+.down-arrow-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    height: 3rem;
+    background: transparent;
+}
+
+.down-arrow {
+    font-size: 2.5rem;
+    color: #0070f3;
+    animation: bounceDown 1.5s infinite;
+    user-select: none;
+}
+
+@keyframes bounceDown {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(12px);
+    }
+}
+
+/* Card gradients */
+.card-pacientes {
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+}
+
+.card-familias {
+    background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+}
+
+.card-fichas-clinicas {
+    background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%);
+}
+
+.card-fichas-odontologicas {
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+}
+
+.card-citas {
+    background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+}
+
+.card-recetas {
+    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+}
+
+.card-medicamentos {
+    background: linear-gradient(135deg, #c2e9fb 0%, #81a4fd 100%);
+}
+
+.card-despachos {
+    background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+}
+
+/* Icon gradients */
+.icon-pacientes {
+    color: #0070f3;
+    text-shadow: 0 2px 8px #b2ebf2;
+}
+
+.icon-familias {
+    color: #f8b500;
+    text-shadow: 0 2px 8px #fceabb;
+}
+
+.icon-fichas-clinicas {
+    color: #3a7bd5;
+    text-shadow: 0 2px 8px #e3eeff;
+}
+
+.icon-fichas-odontologicas {
+    color: #8f5fe8;
+    text-shadow: 0 2px 8px #e0c3fc;
+}
+
+.icon-citas {
+    color: #ff4e50;
+    text-shadow: 0 2px 8px #f9d423;
+}
+
+.icon-recetas {
+    color: #a6c1ee;
+    text-shadow: 0 2px 8px #fbc2eb;
+}
+
+.icon-medicamentos {
+    color: #81a4fd;
+    text-shadow: 0 2px 8px #c2e9fb;
+}
+
+.icon-despachos {
+    color: #f7971e;
+    text-shadow: 0 2px 8px #ffd200;
+}

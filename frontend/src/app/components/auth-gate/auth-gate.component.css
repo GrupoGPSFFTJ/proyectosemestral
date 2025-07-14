@@ -1,0 +1,55 @@
+.auth-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('/Login_Fondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.auth-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.auth-card {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 410px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+}
+
+.register-section {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.register-text {
+    margin-right: 0.25rem;
+}
+
+.register-link {
+    background: none;
+    color: #0070f3;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: underline;
+}
