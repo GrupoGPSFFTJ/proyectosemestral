@@ -35,6 +35,7 @@ import { HistorialResultadoController } from './controllers/historial-resultado.
 import { EnumsController } from './controllers/enums.controller';
 import { EnumsService } from './services/enums.service';
 import { APP_GUARD } from '@nestjs/core';
+import { StatusController } from './status.controller';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { APP_GUARD } from '@nestjs/core';
     FichaControlController,
     HistorialResultadoController,
     EnumsController,
+    StatusController,
   ],
   providers: [
     PacienteService,

@@ -22,13 +22,13 @@ services:
       dockerfile: apps/api-gateway/Dockerfile
       args:
         PORT_GATEWAY: 3010
-        URL_CORE_SERVICE: http://core-service:3001
-        URL_CLINICAL_SERVICE: http://clinical-service:3002
-        URL_NUTRITION_SERVICE: http://nutrition-service:3003
-        URL_ODONTO_SERVICE: http://odonto-service:3004
-        URL_PATIENT_SERVICE: http://patient-service:3005
-        URL_PHARMACY_SERVICE: http://pharmacy-service:3006
-        URL_VACCINATION_SERVICE: http://vaccination-service:3007
+        URL_CORE_SERVICE: https://core-service-gps.loca.lt
+        URL_CLINICAL_SERVICE: https://clinical-service-gps.loca.lt
+        URL_NUTRITION_SERVICE: https://nutrition-service-gps.loca.lt
+        URL_ODONTO_SERVICE: https://odonto-service-gps.loca.lt
+        URL_PATIENT_SERVICE: https://patient-service-gps.loca.lt
+        URL_PHARMACY_SERVICE: https://pharmacy-service-gps.loca.lt
+        URL_VACCINATION_SERVICE: https://vaccination-service-gps.loca.lt
     container_name: api-gateway
     ports:
       - "3010:3010"
@@ -190,3 +190,207 @@ services:
     restart: unless-stopped
     networks:
       - gps-network
+
+  # ============= LOCALTUNNEL SERVICES CORREGIDOS =============
+  
+  # Túnel para Frontend
+  tunnel-frontend:
+    image: node:18-alpine
+    container_name: tunnel-frontend
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Frontend esté listo...' &&
+        while ! curl -s http://frontend:4200 > /dev/null 2>&1; do
+          echo 'Frontend no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Frontend listo, iniciando túnel...' &&
+        lt --port 4200 --subdomain frontend-gps --local-host frontend --print-requests
+      "
+    depends_on:
+      - frontend
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para API Gateway
+  tunnel-api-gateway:
+    image: node:18-alpine
+    container_name: tunnel-api-gateway
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que API Gateway esté listo...' &&
+        while ! curl -s http://api-gateway:3010 > /dev/null 2>&1; do
+          echo 'API Gateway no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'API Gateway listo, iniciando túnel...' &&
+        lt --port 3010 --subdomain api-gateway-gps --local-host api-gateway --print-requests
+      "
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para Core Service
+  tunnel-core-service:
+    image: node:18-alpine
+    container_name: tunnel-core-service
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Core Service esté listo...' &&
+        while ! curl -s http://core-service:3001 > /dev/null 2>&1; do
+          echo 'Core Service no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Core Service listo, iniciando túnel...' &&
+        lt --port 3001 --subdomain core-service-gps --local-host core-service --print-requests
+      "
+    depends_on:
+      - core-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para Clinical Service
+  tunnel-clinical-service:
+    image: node:18-alpine
+    container_name: tunnel-clinical-service
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Clinical Service esté listo...' &&
+        while ! curl -s http://clinical-service:3002 > /dev/null 2>&1; do
+          echo 'Clinical Service no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Clinical Service listo, iniciando túnel...' &&
+        lt --port 3002 --subdomain clinical-service-gps --local-host clinical-service --print-requests
+      "
+    depends_on:
+      - clinical-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para Nutrition Service
+  tunnel-nutrition-service:
+    image: node:18-alpine
+    container_name: tunnel-nutrition-service
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Nutrition Service esté listo...' &&
+        while ! curl -s http://nutrition-service:3003 > /dev/null 2>&1; do
+          echo 'Nutrition Service no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Nutrition Service listo, iniciando túnel...' &&
+        lt --port 3003 --subdomain nutrition-service-gps --local-host nutrition-service --print-requests
+      "
+    depends_on:
+      - nutrition-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para Odonto Service
+  tunnel-odonto-service:
+    image: node:18-alpine
+    container_name: tunnel-odonto-service
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Odonto Service esté listo...' &&
+        while ! curl -s http://odonto-service:3004 > /dev/null 2>&1; do
+          echo 'Odonto Service no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Odonto Service listo, iniciando túnel...' &&
+        lt --port 3004 --subdomain odonto-service-gps --local-host odonto-service --print-requests
+      "
+    depends_on:
+      - odonto-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para Patient Service
+  tunnel-patient-service:
+    image: node:18-alpine
+    container_name: tunnel-patient-service
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Patient Service esté listo...' &&
+        while ! curl -s http://patient-service:3005 > /dev/null 2>&1; do
+          echo 'Patient Service no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Patient Service listo, iniciando túnel...' &&
+        lt --port 3005 --subdomain patient-service-gps --local-host patient-service --print-requests
+      "
+    depends_on:
+      - patient-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para Pharmacy Service
+  tunnel-pharmacy-service:
+    image: node:18-alpine
+    container_name: tunnel-pharmacy-service
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Pharmacy Service esté listo...' &&
+        while ! curl -s http://pharmacy-service:3006 > /dev/null 2>&1; do
+          echo 'Pharmacy Service no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Pharmacy Service listo, iniciando túnel...' &&
+        lt --port 3006 --subdomain pharmacy-service-gps --local-host pharmacy-service --print-requests
+      "
+    depends_on:
+      - pharmacy-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+  # Túnel para Vaccination Service
+  tunnel-vaccination-service:
+    image: node:18-alpine
+    container_name: tunnel-vaccination-service
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        npm install -g localtunnel &&
+        echo 'Esperando a que Vaccination Service esté listo...' &&
+        while ! curl -s http://vaccination-service:3007 > /dev/null 2>&1; do
+          echo 'Vaccination Service no disponible, esperando 5 segundos...'
+          sleep 5
+        done &&
+        echo 'Vaccination Service listo, iniciando túnel...' &&
+        lt --port 3007 --subdomain vaccination-service-gps --local-host vaccination-service --print-requests
+      "
+    depends_on:
+      - vaccination-service
+    restart: unless-stopped
+    networks:
+      - gps-network
+
+networks:
+  gps-network:
+    driver: bridge

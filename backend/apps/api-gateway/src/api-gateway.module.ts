@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { StatusController } from './status.controller';
 
 @Module({
   imports: [
@@ -8,5 +9,6 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: [`${process.cwd()}/.env`],
     }),
   ],
+  controllers: [StatusController],
 })
 export class ApiGatewayModule {}

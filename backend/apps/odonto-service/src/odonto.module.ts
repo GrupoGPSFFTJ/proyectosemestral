@@ -7,6 +7,7 @@ import { ProgramaSaludOralController } from './controllers/programa-salud-oral.c
 import { FichaOdontologicaController } from './controllers/ficha-odontologica.controller';
 import { OdontogramaController } from './controllers/odontograma.controller';
 import { RadiografiaController } from './controllers/radiografia.controller';
+import { StatusController } from './status.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule, JwtAuthGuard } from '@app/auth';
@@ -54,6 +55,7 @@ import { APP_GUARD } from '@nestjs/core';
     FichaOdontologicaController,
     OdontogramaController,
     RadiografiaController,
+    StatusController,
   ],
   providers: [
     ProgramaSaludOralService,

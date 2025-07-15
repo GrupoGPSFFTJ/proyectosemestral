@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:3010',
+    apiUrl: 'https://api-gateway-gps.loca.lt',
     sessionDuration: '2h'
 };

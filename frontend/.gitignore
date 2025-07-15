@@ -11,6 +11,7 @@
 !.yarn/versions
 
 # Build output
+/.angular
 /build
 /dist
 /out

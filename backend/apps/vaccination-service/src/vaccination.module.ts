@@ -7,6 +7,7 @@ import { VacunaController } from './controllers/vacuna.controller';
 import { CalendarioVacunaController } from './controllers/calendario-vacuna.controller';
 import { RegistroVacunacionController } from './controllers/registro-vacunacion.controller';
 import { AlertaInasistenciaController } from './controllers/alerta-inasistencia.controller';
+import { StatusController } from './status.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule, JwtAuthGuard } from '@app/auth';
@@ -54,6 +55,7 @@ import { APP_GUARD } from '@nestjs/core';
     CalendarioVacunaController,
     RegistroVacunacionController,
     AlertaInasistenciaController,
+    StatusController,
   ],
   providers: [
     VacunaService,

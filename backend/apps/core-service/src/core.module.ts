@@ -16,6 +16,7 @@ import { CentroSaludController } from './controllers/centro-salud.controller';
 import { UsuarioController } from './controllers/usuario.controller';
 import { RolController } from './controllers/rol.controller';
 import { UsuarioRolController } from './controllers/usuario-rol.controller';
+import { StatusController } from './status.controller';
 
 import { AuthModule } from './auth/auth.module';
 import { EnumsService } from './services/enums.service';
@@ -56,6 +57,7 @@ import { JwtAuthGuard } from '@app/auth';
     UsuarioController,
     RolController,
     UsuarioRolController,
+    StatusController,
     EnumsController,
   ],
   providers: [

@@ -12,6 +12,7 @@ import { EstratificacionRiesgo } from './entities/estratificacion-riesgo.entity'
 import { EnumsService } from './services/enums.service';
 import { EnumsController } from './controllers/enums.controller';
 import { APP_GUARD } from '@nestjs/core';
+import { StatusController } from './status.controller';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { APP_GUARD } from '@nestjs/core';
     CitaController,
     EstratificacionRiesgoController,
     EnumsController,
+    StatusController,
   ],
   providers: [
     CitaService,
