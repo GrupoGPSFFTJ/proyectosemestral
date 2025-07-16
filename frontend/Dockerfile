@@ -1,7 +1,7 @@
 # Dockerfile para el frontend Angular
 
 # Etapa 1: Construcción de la aplicación
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Establecer directorio de trabajo
 WORKDIR /app

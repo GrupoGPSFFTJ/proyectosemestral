@@ -9,37 +9,6 @@ services:
     container_name: frontend-angular
     ports:
       - "4200:4200"
-    depends_on:
-      - api-gateway
-    restart: unless-stopped
-    networks:
-      - gps-network
-
-  # API Gateway
-  api-gateway:
-    build:
-      context: ./backend
-      dockerfile: apps/api-gateway/Dockerfile
-      args:
-        PORT_GATEWAY: 3010
-        URL_CORE_SERVICE: https://core-service-gps.loca.lt
-        URL_CLINICAL_SERVICE: https://clinical-service-gps.loca.lt
-        URL_NUTRITION_SERVICE: https://nutrition-service-gps.loca.lt
-        URL_ODONTO_SERVICE: https://odonto-service-gps.loca.lt
-        URL_PATIENT_SERVICE: https://patient-service-gps.loca.lt
-        URL_PHARMACY_SERVICE: https://pharmacy-service-gps.loca.lt
-        URL_VACCINATION_SERVICE: https://vaccination-service-gps.loca.lt
-    container_name: api-gateway
-    ports:
-      - "3010:3010"
-    depends_on:
-      - core-service
-      - clinical-service
-      - nutrition-service
-      - odonto-service
-      - patient-service
-      - pharmacy-service
-      - vaccination-service
     restart: unless-stopped
     networks:
       - gps-network
@@ -195,7 +164,7 @@ services:
   
   # Túnel para Frontend
   tunnel-frontend:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-frontend
     command: >
       sh -c "
@@ -215,31 +184,9 @@ services:
     networks:
       - gps-network
 
-  # Túnel para API Gateway
-  tunnel-api-gateway:
-    image: node:18-alpine
-    container_name: tunnel-api-gateway
-    command: >
-      sh -c "
-        apk add --no-cache curl &&
-        npm install -g localtunnel &&
-        echo 'Esperando a que API Gateway esté listo...' &&
-        while ! curl -s http://api-gateway:3010 > /dev/null 2>&1; do
-          echo 'API Gateway no disponible, esperando 5 segundos...'
-          sleep 5
-        done &&
-        echo 'API Gateway listo, iniciando túnel...' &&
-        lt --port 3010 --subdomain api-gateway-gps --local-host api-gateway --print-requests
-      "
-    depends_on:
-      - api-gateway
-    restart: unless-stopped
-    networks:
-      - gps-network
-
   # Túnel para Core Service
   tunnel-core-service:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-core-service
     command: >
       sh -c "
@@ -261,7 +208,7 @@ services:
 
   # Túnel para Clinical Service
   tunnel-clinical-service:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-clinical-service
     command: >
       sh -c "
@@ -283,7 +230,7 @@ services:
 
   # Túnel para Nutrition Service
   tunnel-nutrition-service:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-nutrition-service
     command: >
       sh -c "
@@ -305,7 +252,7 @@ services:
 
   # Túnel para Odonto Service
   tunnel-odonto-service:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-odonto-service
     command: >
       sh -c "
@@ -327,7 +274,7 @@ services:
 
   # Túnel para Patient Service
   tunnel-patient-service:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-patient-service
     command: >
       sh -c "
@@ -349,7 +296,7 @@ services:
 
   # Túnel para Pharmacy Service
   tunnel-pharmacy-service:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-pharmacy-service
     command: >
       sh -c "
@@ -371,7 +318,7 @@ services:
 
   # Túnel para Vaccination Service
   tunnel-vaccination-service:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: tunnel-vaccination-service
     command: >
       sh -c "
