@@ -81,4 +81,13 @@
         </div>
     </form>
 
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="!citaForm.valid" class="btn-primary">
+            Guardar Datos
+        </button>
+    </div>
+
 </app-modal>
