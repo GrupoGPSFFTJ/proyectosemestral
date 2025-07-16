@@ -279,24 +279,62 @@ tr:hover {
 }
 
 .btn-crear {
-    margin-bottom: 1rem;
-    padding: 8px 18px;
-    background: #0070f3;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: #4f46e5;
     color: white;
     border: none;
-    border-radius: 4px;
-    font-weight: 400;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
 }
 
 .btn-crear:hover {
-    background: #005bb5;
+    background: #4338ca;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-crear:active {
+    transform: translateY(0);
 }
 
 .btn-crear:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Estilos para iconos y texto en botones de creación */
+.btn-crear .btn-icon {
+    font-size: 1rem;
+}
+
+.btn-crear .btn-text {
+    font-family: inherit;
+}
+
+/* Responsividad para dispositivos móviles */
+@media (max-width: 640px) {
+    .btn-crear {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .btn-crear .btn-text {
+        display: none;
+    }
+    
+    .btn-crear .btn-icon {
+        font-size: 1.1rem;
+    }
 }
 
 .error-message {

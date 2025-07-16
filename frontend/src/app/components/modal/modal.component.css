@@ -175,13 +175,10 @@
 }
 
 ::ng-deep .modal-footer .btn-primary {
-    padding: 10px 28px;
     background: #0070f3;
     color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 16px;
+    border-radius: 6x;
+    font-weight: 400;
     cursor: pointer;
     transition: background-color 0.2s;
 }

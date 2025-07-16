@@ -76,9 +76,18 @@
         </div>
         <div class="form-field">
             <label class="form-label">Observacion</label>
-            <textarea formControlName="observacion" class="form-textarea" rows="4"
+            <textarea formControlName="observacion" class="form-textarea" rows="3"
                 placeholder="Observacion (opcional)"></textarea>
         </div>
     </form>
+
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="!citaForm.valid" class="btn-primary">
+            Guardar Datos
+        </button>
+    </div>
 
 </app-modal>
