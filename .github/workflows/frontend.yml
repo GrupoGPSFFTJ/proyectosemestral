@@ -46,6 +46,13 @@ jobs:
           echo "${{ secrets.KUBE_CLIENT_CERTIFICATE }}" > client.crt
           echo "${{ secrets.KUBE_CLIENT_KEY }}" > client.key
 
+      - name: Verify KUBE_CERTIFICATE_AUTHORITY format
+        run: |
+          echo "$KUBE_CERTIFICATE_AUTHORITY" | grep "BEGIN CERTIFICATE"
+        shell: bash
+        env:
+          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
+
       - name: Use kubectl
         env:
           KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
@@ -76,9 +83,4 @@ jobs:
             rollout restart deployment/frontend --namespace=${{ secrets.KUBE_NAMESPACE }}
           echo "Signal sent to Kubernetes for frontend."
 
-      - name: Verify KUBE_CERTIFICATE_AUTHORITY format
-        run: |
-          echo "$KUBE_CERTIFICATE_AUTHORITY" | grep "BEGIN CERTIFICATE"
-        shell: bash
-        env:
-          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
+      
