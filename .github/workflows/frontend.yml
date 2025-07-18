@@ -75,3 +75,10 @@ jobs:
             --client-key=client.key \
             rollout restart deployment/frontend --namespace=${{ secrets.KUBE_NAMESPACE }}
           echo "Signal sent to Kubernetes for frontend."
+
+      - name: Verify KUBE_CERTIFICATE_AUTHORITY format
+        run: |
+          echo "$KUBE_CERTIFICATE_AUTHORITY" | grep "BEGIN CERTIFICATE"
+        shell: bash
+        env:
+          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
