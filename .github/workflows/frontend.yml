@@ -47,6 +47,11 @@ jobs:
           echo "${{ secrets.KUBE_CLIENT_KEY }}" > client.key
 
       - name: Use kubectl
+        env:
+          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
+          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
+          KUBE_CLIENT_CERTIFICATE: ${{ secrets.KUBE_CLIENT_CERTIFICATE }}
+          KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
         run: |
           kubectl --server=$KUBE_SERVER \
             --certificate-authority=ca.crt \
