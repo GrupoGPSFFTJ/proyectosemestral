@@ -17,4 +17,4 @@ spec:
       - name: vaccination-service
         image: johnsondavisv45/vaccination-service:latest
         ports:
-        - containerPort: 3005
+        - containerPort: 3007

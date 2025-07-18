@@ -17,4 +17,4 @@ spec:
       - name: clinical-service
         image: johnsondavisv45/clinical-service:latest
         ports:
-        - containerPort: 3006
+        - containerPort: 3002

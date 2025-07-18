@@ -8,5 +8,5 @@ spec:
     app: vaccination-service
   ports:
   - protocol: TCP
-    port: 3005
-    targetPort: 3005
+    port: 3007
+    targetPort: 3007

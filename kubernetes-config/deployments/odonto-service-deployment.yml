@@ -17,4 +17,4 @@ spec:
       - name: odonto-service
         image: johnsondavisv45/odonto-service:latest
         ports:
-        - containerPort: 3002
+        - containerPort: 3004

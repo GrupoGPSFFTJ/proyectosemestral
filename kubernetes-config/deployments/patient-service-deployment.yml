@@ -17,4 +17,4 @@ spec:
       - name: patient-service
         image: johnsondavisv45/patient-service:latest
         ports:
-        - containerPort: 3003
+        - containerPort: 3005

@@ -8,5 +8,5 @@ spec:
     app: pharmacy-service
   ports:
   - protocol: TCP
-    port: 3004
-    targetPort: 3004
+    port: 3006
+    targetPort: 3006

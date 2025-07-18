@@ -17,4 +17,4 @@ spec:
       - name: core-service
         image: johnsondavisv45/core-service:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 3001

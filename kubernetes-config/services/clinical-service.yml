@@ -8,5 +8,5 @@ spec:
     app: clinical-service
   ports:
   - protocol: TCP
-    port: 3006
-    targetPort: 3006
+    port: 3002
+    targetPort: 3002

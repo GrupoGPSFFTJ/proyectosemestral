@@ -17,4 +17,4 @@ spec:
       - name: pharmacy-service
         image: johnsondavisv45/pharmacy-service:latest
         ports:
-        - containerPort: 3004
+        - containerPort: 3006
