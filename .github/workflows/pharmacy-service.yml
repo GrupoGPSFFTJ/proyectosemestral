@@ -49,7 +49,7 @@ jobs:
             --build-arg PORT_PHARMACY=${{ secrets.PORT_PHARMACY }} \
             --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
             -t $IMAGE \
-            backend/apps/pharmacy-service
+            backend/
           docker push $IMAGE
 
       - name: Send Kubernetes Signal

@@ -49,7 +49,7 @@ jobs:
             --build-arg PORT_CLINICAL=${{ secrets.PORT_CLINICAL }} \
             --build-arg SCHEMA_CLINICAL=${{ secrets.SCHEMA_CLINICAL }} \
             -t $IMAGE \
-            backend/apps/clinical-service
+            backend/
           docker push $IMAGE
 
       - name: Send Kubernetes Signal

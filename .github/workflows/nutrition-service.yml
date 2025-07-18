@@ -49,7 +49,7 @@ jobs:
             --build-arg PORT_NUTRITION=${{ secrets.PORT_NUTRITION }} \
             --build-arg SCHEMA_NUTRITION=${{ secrets.SCHEMA_NUTRITION }} \
             -t $IMAGE \
-            backend/apps/nutrition-service
+            backend/
           docker push $IMAGE
 
       - name: Send Kubernetes Signal

@@ -49,7 +49,7 @@ jobs:
             --build-arg PORT_VACCINATION=${{ secrets.PORT_VACCINATION }} \
             --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} \
             -t $IMAGE \
-            backend/apps/vaccination-service
+            backend/
           docker push $IMAGE
 
       - name: Send Kubernetes Signal

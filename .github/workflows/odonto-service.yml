@@ -49,7 +49,7 @@ jobs:
             --build-arg PORT_ODONTO=${{ secrets.PORT_ODONTO }} \
             --build-arg SCHEMA_ODONTO=${{ secrets.SCHEMA_ODONTO }} \
             -t $IMAGE \
-            backend/apps/odonto-service
+            backend/
           docker push $IMAGE
 
       - name: Send Kubernetes Signal

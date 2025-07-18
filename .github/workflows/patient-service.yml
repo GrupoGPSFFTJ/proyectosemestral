@@ -49,7 +49,7 @@ jobs:
             --build-arg PORT_PATIENT=${{ secrets.PORT_PATIENT }} \
             --build-arg SCHEMA_PATIENT=${{ secrets.SCHEMA_PATIENT }} \
             -t $IMAGE \
-            backend/apps/patient-service
+            backend/
           docker push $IMAGE
 
       - name: Send Kubernetes Signal

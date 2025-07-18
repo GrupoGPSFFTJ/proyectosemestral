@@ -49,7 +49,7 @@ jobs:
             --build-arg PORT_CORE=${{ secrets.PORT_CORE }} \
             --build-arg SCHEMA_CORE=${{ secrets.SCHEMA_CORE }} \
             -t $IMAGE \
-            backend/apps/core-service
+            backend/
           docker push $IMAGE
 
       - name: Send Kubernetes Signal
