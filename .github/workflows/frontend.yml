@@ -1,0 +1,55 @@
+name: Build & Push Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/**
+      - frontend/package*.json
+      - frontend/nginx.conf
+  pull_request:
+    branches:
+      - main
+    paths:
+      - frontend/**
+      - frontend/package*.json
+      - frontend/nginx.conf
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
+
+      - name: Build & Push Frontend
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          docker build \
+            -f frontend/Dockerfile \
+            -t $IMAGE \
+            frontend
+          docker push $IMAGE
+
+      - name: Send Kubernetes Signal
+        env:
+          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
+          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
+          KUBE_CLIENT_CERTIFICATE: ${{ secrets.KUBE_CLIENT_CERTIFICATE }}
+          KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
+        run: |
+          kubectl --server=$KUBE_SERVER \
+            --certificate-authority=$KUBE_CERTIFICATE_AUTHORITY \
+            --client-certificate=$KUBE_CLIENT_CERTIFICATE \
+            --client-key=$KUBE_CLIENT_KEY \
+            rollout restart deployment/frontend --namespace=${{ secrets.KUBE_NAMESPACE }}
+          echo "Signal sent to Kubernetes for frontend."

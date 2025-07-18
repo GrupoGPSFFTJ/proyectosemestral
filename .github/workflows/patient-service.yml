@@ -1,0 +1,67 @@
+name: Build & Push Patient Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - backend/apps/patient-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - backend/apps/patient-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
+
+      - name: Build & Push Patient Service
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/patient-service:latest
+          docker build \
+            -f backend/apps/patient-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_PATIENT=${{ secrets.PORT_PATIENT }} \
+            --build-arg SCHEMA_PATIENT=${{ secrets.SCHEMA_PATIENT }} \
+            -t $IMAGE \
+            backend/apps/patient-service
+          docker push $IMAGE
+
+      - name: Send Kubernetes Signal
+        env:
+          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
+          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
+          KUBE_CLIENT_CERTIFICATE: ${{ secrets.KUBE_CLIENT_CERTIFICATE }}
+          KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
+        run: |
+          kubectl --server=$KUBE_SERVER \
+            --certificate-authority=$KUBE_CERTIFICATE_AUTHORITY \
+            --client-certificate=$KUBE_CLIENT_CERTIFICATE \
+            --client-key=$KUBE_CLIENT_KEY \
+            rollout restart deployment/patient-service --namespace=${{ secrets.KUBE_NAMESPACE }}
+          echo "Signal sent to Kubernetes for patient-service."

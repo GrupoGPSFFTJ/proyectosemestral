@@ -1,11 +1,6 @@
 name: CI del proyecto
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  workflow_dispatch:
+on: {}
 
 jobs:
   # 1) Login a Docker Hub

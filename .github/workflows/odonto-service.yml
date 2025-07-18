@@ -1,0 +1,67 @@
+name: Build & Push Odonto Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - backend/apps/odonto-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - backend/apps/odonto-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
+
+      - name: Build & Push Odonto Service
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/odonto-service:latest
+          docker build \
+            -f backend/apps/odonto-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_ODONTO=${{ secrets.PORT_ODONTO }} \
+            --build-arg SCHEMA_ODONTO=${{ secrets.SCHEMA_ODONTO }} \
+            -t $IMAGE \
+            backend/apps/odonto-service
+          docker push $IMAGE
+
+      - name: Send Kubernetes Signal
+        env:
+          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
+          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
+          KUBE_CLIENT_CERTIFICATE: ${{ secrets.KUBE_CLIENT_CERTIFICATE }}
+          KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
+        run: |
+          kubectl --server=$KUBE_SERVER \
+            --certificate-authority=$KUBE_CERTIFICATE_AUTHORITY \
+            --client-certificate=$KUBE_CLIENT_CERTIFICATE \
+            --client-key=$KUBE_CLIENT_KEY \
+            rollout restart deployment/odonto-service --namespace=${{ secrets.KUBE_NAMESPACE }}
+          echo "Signal sent to Kubernetes for odonto-service."
