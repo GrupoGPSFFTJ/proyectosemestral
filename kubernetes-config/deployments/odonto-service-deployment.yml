@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odonto-service
+  namespace: proyecto-gps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odonto-service
+  template:
+    metadata:
+      labels:
+        app: odonto-service
+    spec:
+      containers:
+      - name: odonto-service
+        image: johnsondavisv45/odonto-service:latest
+        ports:
+        - containerPort: 3002

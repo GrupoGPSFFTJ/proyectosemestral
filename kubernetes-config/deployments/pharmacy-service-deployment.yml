@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pharmacy-service
+  namespace: proyecto-gps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pharmacy-service
+  template:
+    metadata:
+      labels:
+        app: pharmacy-service
+    spec:
+      containers:
+      - name: pharmacy-service
+        image: johnsondavisv45/pharmacy-service:latest
+        ports:
+        - containerPort: 3004
