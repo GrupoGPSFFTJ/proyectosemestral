@@ -52,6 +52,23 @@ jobs:
             backend/
           docker push $IMAGE
 
+      - name: Write Kube config files
+        run: |
+          echo "${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}" > ca.crt
+          echo "${{ secrets.KUBE_CLIENT_CERTIFICATE }}" > client.crt
+          echo "${{ secrets.KUBE_CLIENT_KEY }}" > client.key
+
+      - name: Use kubectl
+        run: |
+          kubectl --server=$KUBE_SERVER \
+            --certificate-authority=ca.crt \
+            --client-certificate=client.crt \
+            --client-key=client.key get nodes
+
+      - name: Clean up
+        run: |
+          rm ca.crt client.crt client.key
+
       - name: Send Kubernetes Signal
         env:
           KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
@@ -60,8 +77,8 @@ jobs:
           KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
         run: |
           kubectl --server=$KUBE_SERVER \
-            --certificate-authority=$KUBE_CERTIFICATE_AUTHORITY \
-            --client-certificate=$KUBE_CLIENT_CERTIFICATE \
-            --client-key=$KUBE_CLIENT_KEY \
+            --certificate-authority=ca.crt \
+            --client-certificate=client.crt \
+            --client-key=client.key \
             rollout restart deployment/pharmacy-service --namespace=${{ secrets.KUBE_NAMESPACE }}
           echo "Signal sent to Kubernetes for pharmacy-service."
