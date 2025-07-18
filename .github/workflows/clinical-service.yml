@@ -41,5 +41,5 @@ jobs:
           docker build \
             -f backend/apps/clinical-service/Dockerfile \
             -t $IMAGE \
-            backend/apps/clinical-service
+            backend
           docker push $IMAGE

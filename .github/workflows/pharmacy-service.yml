@@ -6,13 +6,19 @@ on:
       - main
     paths:
       - backend/apps/pharmacy-service/**
-      - backend/apps/pharmacy-service/package*.json
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
   pull_request:
     branches:
       - main
     paths:
       - backend/apps/pharmacy-service/**
-      - backend/apps/pharmacy-service/package*.json
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
   workflow_dispatch:
 
 jobs:
@@ -35,5 +41,5 @@ jobs:
           docker build \
             -f backend/apps/pharmacy-service/Dockerfile \
             -t $IMAGE \
-            backend/apps/pharmacy-service
+            backend
           docker push $IMAGE

@@ -6,13 +6,19 @@ on:
       - main
     paths:
       - backend/apps/vaccination-service/**
-      - backend/apps/vaccination-service/package*.json
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
   pull_request:
     branches:
       - main
     paths:
       - backend/apps/vaccination-service/**
-      - backend/apps/vaccination-service/package*.json
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
   workflow_dispatch:
 
 jobs:
@@ -35,5 +41,5 @@ jobs:
           docker build \
             -f backend/apps/vaccination-service/Dockerfile \
             -t $IMAGE \
-            backend/apps/vaccination-service
+            backend
           docker push $IMAGE
