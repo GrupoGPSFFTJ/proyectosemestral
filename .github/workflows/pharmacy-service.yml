@@ -6,19 +6,13 @@ on:
       - main
     paths:
       - backend/apps/pharmacy-service/**
-      - backend/package*.json
-      - backend/nest-cli.json
-      - backend/tsconfig*.json
-      - backend/libs/**
+      - backend/apps/pharmacy-service/package*.json
   pull_request:
     branches:
       - main
     paths:
       - backend/apps/pharmacy-service/**
-      - backend/package*.json
-      - backend/nest-cli.json
-      - backend/tsconfig*.json
-      - backend/libs/**
+      - backend/apps/pharmacy-service/package*.json
   workflow_dispatch:
 
 jobs:
@@ -40,16 +34,8 @@ jobs:
           IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/pharmacy-service:latest
           docker build \
             -f backend/apps/pharmacy-service/Dockerfile \
-            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
-            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
-            --build-arg DB_USER=${{ secrets.DB_USER }} \
-            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
-            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
-            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
-            --build-arg PORT_PHARMACY=${{ secrets.PORT_PHARMACY }} \
-            --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
             -t $IMAGE \
-            backend/
+            backend/apps/pharmacy-service
           docker push $IMAGE
 
       - name: Write Kube config files
@@ -59,6 +45,8 @@ jobs:
           echo "${{ secrets.KUBE_CLIENT_KEY }}" > client.key
 
       - name: Use kubectl
+        env:
+          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
         run: |
           kubectl --server=$KUBE_SERVER \
             --certificate-authority=ca.crt \
@@ -69,16 +57,13 @@ jobs:
         run: |
           rm ca.crt client.crt client.key
 
-      - name: Send Kubernetes Signal
+      - name: Restart Pharmacy Service Deployment
         env:
           KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
-          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
-          KUBE_CLIENT_CERTIFICATE: ${{ secrets.KUBE_CLIENT_CERTIFICATE }}
-          KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
         run: |
           kubectl --server=$KUBE_SERVER \
             --certificate-authority=ca.crt \
             --client-certificate=client.crt \
             --client-key=client.key \
             rollout restart deployment/pharmacy-service --namespace=${{ secrets.KUBE_NAMESPACE }}
-          echo "Signal sent to Kubernetes for pharmacy-service."
+          echo "Pharmacy service deployment restarted."

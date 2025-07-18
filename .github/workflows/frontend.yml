@@ -46,19 +46,9 @@ jobs:
           echo "${{ secrets.KUBE_CLIENT_CERTIFICATE }}" > client.crt
           echo "${{ secrets.KUBE_CLIENT_KEY }}" > client.key
 
-      - name: Verify KUBE_CERTIFICATE_AUTHORITY format
-        run: |
-          echo "$KUBE_CERTIFICATE_AUTHORITY" | grep "BEGIN CERTIFICATE"
-        shell: bash
-        env:
-          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
-
       - name: Use kubectl
         env:
           KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
-          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
-          KUBE_CLIENT_CERTIFICATE: ${{ secrets.KUBE_CLIENT_CERTIFICATE }}
-          KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
         run: |
           kubectl --server=$KUBE_SERVER \
             --certificate-authority=ca.crt \
@@ -69,18 +59,15 @@ jobs:
         run: |
           rm ca.crt client.crt client.key
 
-      - name: Send Kubernetes Signal
+      - name: Restart Frontend Deployment
         env:
           KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
-          KUBE_CERTIFICATE_AUTHORITY: ${{ secrets.KUBE_CERTIFICATE_AUTHORITY }}
-          KUBE_CLIENT_CERTIFICATE: ${{ secrets.KUBE_CLIENT_CERTIFICATE }}
-          KUBE_CLIENT_KEY: ${{ secrets.KUBE_CLIENT_KEY }}
         run: |
           kubectl --server=$KUBE_SERVER \
             --certificate-authority=ca.crt \
             --client-certificate=client.crt \
             --client-key=client.key \
             rollout restart deployment/frontend --namespace=${{ secrets.KUBE_NAMESPACE }}
-          echo "Signal sent to Kubernetes for frontend."
+          echo "Frontend deployment restarted."
 
-      
+
