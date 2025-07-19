@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: clinical-service
   namespace: proyecto-gps
-  annotations:
-    keel.sh/policy: force
 spec:
   replicas: 1
   selector:
