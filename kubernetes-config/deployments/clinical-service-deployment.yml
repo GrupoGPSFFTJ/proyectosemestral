@@ -18,7 +18,7 @@ spec:
         image: johnsondavisv45/clinical-service:latest
         ports:
         - containerPort: 3002
-      strategy:
+    strategy:
         type: RollingUpdate
         rollingUpdate:
           maxSurge: 100%
