@@ -1,1 +1,32 @@
-<p>medicamento-form works!</p>
+<app-modal [isOpen]="isOpen" [title]="!this.medicamento ? 'Crear Medicamento' : 'Editar Medicamento'" (closeModal)="onModalClose()">
+    <form [formGroup]="medicamentoForm">
+        <div class="form-field">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="nombre" id="nombre" class="form-input" 
+                   placeholder="Nombre del medicamento" />
+            <div *ngIf="medicamentoForm.get('nombre')?.invalid && medicamentoForm.get('nombre')?.touched"
+                class="error-message">
+                El nombre es requerido
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Descripción</label>
+            <textarea formControlName="descripcion" id="descripcion" class="form-textarea" rows="4"
+                placeholder="Descripción del medicamento"></textarea>
+            <div *ngIf="medicamentoForm.get('descripcion')?.invalid && medicamentoForm.get('descripcion')?.touched"
+                class="error-message">
+                La descripción es requerida
+            </div>
+        </div>
+    </form>
+
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="!medicamentoForm.valid" class="btn-primary">
+            Guardar Datos
+        </button>
+    </div>
+</app-modal>

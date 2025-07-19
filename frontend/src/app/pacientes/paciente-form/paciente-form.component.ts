@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
+import { Paciente } from '../pacientes.interfaces';
 
 @Component({
     selector: 'app-paciente-form',
@@ -7,80 +9,71 @@ import { ApiService } from '../../../services/api.service';
     templateUrl: './paciente-form.component.html',
     styleUrls: ['./paciente-form.component.css']
 })
-export class PacienteFormComponent implements OnInit, OnChanges {
-    @Input() paciente: any = null;
-    @Input() show = false;
-    @Output() close = new EventEmitter<boolean>();
+export class PacienteFormComponent {
+    @Input() paciente: Paciente | null = null;
+    @Input() isOpen: boolean = false;
+    @Output() onClose = new EventEmitter();
+    @Output() onSave = new EventEmitter();
+    @Output() onUpdate = new EventEmitter<Paciente>();
 
-    generos: string[] = [];
-    form = {
-        direccion: '',
-        rut: '',
-        nombre: '',
-        apellido_paterno: '',
-        apellido_materno: '',
-        fecha_nacimiento: '',
-        genero: '',
-        telefono: ''
-    };
+    pacienteForm: FormGroup;
 
-    constructor(private apiService: ApiService) { }
-
-    ngOnInit(): void {
-        this.apiService.getGeneros()
-            .then(data => this.generos = data)
-            .catch(err => console.error('Error al cargar géneros:', err));
+    constructor(private fb: FormBuilder, private apiService: ApiService) {
+        this.pacienteForm = this.fb.group({
+            nombre: ['', Validators.required],
+            apellido_paterno: ['', Validators.required],
+            apellido_materno: ['', Validators.required],
+            rut: ['', Validators.required],
+            fecha_nacimiento: ['', Validators.required],
+            genero: ['', Validators.required],
+            telefono: ['', Validators.required],
+            direccion: ['', Validators.required]
+        });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['paciente'] || changes['show']) {
-            this.updateForm();
-        }
-    }
-
-    private updateForm(): void {
-        if (this.paciente) {
-            this.form = {
-                direccion: this.paciente.direccion || '',
-                rut: this.paciente.rut || '',
-                nombre: this.paciente.nombre || '',
-                apellido_paterno: this.paciente.apellido_paterno || '',
-                apellido_materno: this.paciente.apellido_materno || '',
-                fecha_nacimiento: this.paciente.fecha_nacimiento ? this.paciente.fecha_nacimiento.slice(0, 10) : '',
-                genero: this.paciente.genero || '',
-                telefono: this.paciente.telefono || ''
-            };
-        } else {
-            this.form = {
-                direccion: '',
-                rut: '',
-                nombre: '',
-                apellido_paterno: '',
-                apellido_materno: '',
-                fecha_nacimiento: '',
-                genero: '',
-                telefono: ''
-            };
-        }
-    }
-
-    async handleSubmit(): Promise<void> {
-        try {
-            if (this.paciente && this.paciente.id_paciente) {
-                await this.apiService.updatePaciente(this.paciente.id_paciente, this.form);
-                alert('Paciente actualizado correctamente');
+    ngOnChanges() {
+        if (this.isOpen) {
+            if (this.paciente) {
+                this.pacienteForm.patchValue({
+                    nombre: this.paciente.nombre,
+                    apellido_paterno: this.paciente.apellido_paterno,
+                    apellido_materno: this.paciente.apellido_materno,
+                    rut: this.paciente.rut,
+                    fecha_nacimiento: this.paciente.fecha_nacimiento ? this.paciente.fecha_nacimiento.slice(0, 10) : '',
+                    genero: this.paciente.genero,
+                    telefono: this.paciente.telefono,
+                    direccion: this.paciente.direccion
+                });
             } else {
-                await this.apiService.createPaciente(this.form);
-                alert('Paciente creado correctamente');
+                this.pacienteForm.patchValue({
+                    nombre: '',
+                    apellido_paterno: '',
+                    apellido_materno: '',
+                    rut: '',
+                    fecha_nacimiento: '',
+                    genero: '',
+                    telefono: '',
+                    direccion: ''
+                });
             }
-            this.close.emit(true);
-        } catch (err: any) {
-            console.error(err);
-            alert('Error al guardar paciente: ' + err.message);
+
+            this.pacienteForm.markAsUntouched();
         }
     }
 
-    handleCloseModal(): void {
-        this.close.emit();
+    async onSubmit() {
+        if (this.paciente) {
+            const paciente = await this.apiService.updatePaciente(this.paciente.id_paciente, this.pacienteForm.value);
+            alert('Paciente actualizado correctamente');
+            this.onUpdate.emit(paciente);
+        } else {
+            const paciente = await this.apiService.createPaciente(this.pacienteForm.value);
+            alert('Paciente creado correctamente');
+            this.onSave.emit(paciente);
+        }
+    }
+
+    onModalClose() {
+        this.onClose.emit();
     }
 }

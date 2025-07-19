@@ -12,6 +12,8 @@ import { Familia } from './familias.interfaces';
 export class FamiliasComponent implements OnInit {
     familias: Familia[] = [];
     loading = true;
+    editingFamilia: Familia | null = null;
+    showModal = false;
 
     constructor(
         private apiService: ApiService,
@@ -37,6 +39,34 @@ export class FamiliasComponent implements OnInit {
             console.error('ApiService familias GET error:', err);
             this.loading = false;
         }
+    }
+
+    openCreateModal(): void {
+        this.editingFamilia = null;
+        this.showModal = true;
+    }
+
+    openEditModal(familia: Familia): void {
+        this.editingFamilia = familia;
+        this.showModal = true;
+    }
+
+    closeModal(): void {
+        this.editingFamilia = null;
+        this.showModal = false;
+    }
+
+    saveFamilia(familia: Familia): void {
+        this.familias = [...this.familias, familia].sort((a, b) => a.id_familia - b.id_familia);
+        this.closeModal();
+    }
+
+    updateFamilia(familia: Familia): void {
+        const index = this.familias.findIndex(f => f.id_familia === familia.id_familia);
+        const updatedFamilias = [...this.familias];
+        updatedFamilias[index] = familia;
+        this.familias = updatedFamilias.sort((a, b) => a.id_familia - b.id_familia);
+        this.closeModal();
     }
 
     formatDate(dateString: string): string {

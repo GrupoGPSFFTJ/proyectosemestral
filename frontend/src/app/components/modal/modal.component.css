@@ -178,9 +178,6 @@
     flex: 1;
     position: relative;
 }
-::ng-deep .form-row .form-input {
-    height: 48px;
-}
 
 /* === BOTONES === */
 ::ng-deep .modal-footer .button-group {

@@ -56,7 +56,7 @@
         </div>
         <div class="form-field">
             <label class="form-label">Tipo de Cita</label>
-            <select formControlName="tipo_cita" id="tipo_cita" class="form-input">
+            <select formControlName="tipo_cita" id="tipo_cita" class="form-select">
                 <option value="">Seleccione el Tipo de Cita</option>
                 <option *ngFor="let tipoCita of data.getTiposCita()" [value]="tipoCita.value">
                     {{ tipoCita.label }}

@@ -1,54 +1,93 @@
-<!-- paciente-form.component.html -->
-<div *ngIf="show" class="modal-overlay">
-    <div class="modal-container">
-        <button (click)="handleCloseModal()" class="close-button" title="Cerrar">
-            ×
-        </button>
-
-        <div class="modal-header">
-            <div class="modal-icon">👤</div>
-            <h2 class="modal-title">
-                {{ paciente ? 'Editar Paciente' : 'Nuevo Paciente' }}
-            </h2>
-            <p class="modal-subtitle">
-                Completa la información del paciente
-            </p>
+<app-modal [isOpen]="isOpen" [title]="!this.paciente ? 'Crear Paciente' : 'Editar Paciente'"
+    (closeModal)="onModalClose()">
+    <form [formGroup]="pacienteForm">
+        <div class="form-field">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="nombre" id="nombre" class="form-input" placeholder="Nombre" />
+            <div *ngIf="pacienteForm.get('nombre')?.invalid && pacienteForm.get('nombre')?.touched"
+                class="error-message">
+                El nombre es requerido
+            </div>
         </div>
 
-        <form (ngSubmit)="handleSubmit()" class="patient-form">
-            <input name="nombre" placeholder="Nombre" [(ngModel)]="form.nombre" required class="form-input" />
-
-            <input name="apellido_paterno" placeholder="Apellido Paterno" [(ngModel)]="form.apellido_paterno" required
-                class="form-input" />
-
-            <input name="apellido_materno" placeholder="Apellido Materno" [(ngModel)]="form.apellido_materno" required
-                class="form-input" />
-
-            <input name="rut" placeholder="RUT (ej: 12345678-9)" [(ngModel)]="form.rut" required class="form-input" />
-
-            <input name="fecha_nacimiento" type="date" [(ngModel)]="form.fecha_nacimiento" required
-                class="form-input" />
-
-            <select name="genero" [(ngModel)]="form.genero" required class="form-input">
-                <option value="">Seleccione género</option>
-                <option *ngFor="let genero of generos" [value]="genero">
-                    {{ genero }}
-                </option>
-            </select>
-
-            <input name="telefono" placeholder="Teléfono" [(ngModel)]="form.telefono" required class="form-input" />
-
-            <input name="direccion" placeholder="Dirección" [(ngModel)]="form.direccion" required
-                class="form-input form-input-full" />
-
-            <div class="form-actions">
-                <button type="button" (click)="handleCloseModal()" class="cancel-button">
-                    Cancelar
-                </button>
-                <button type="submit" class="submit-button">
-                    {{ paciente ? 'Actualizar Paciente' : 'Crear Paciente' }}
-                </button>
+        <div class="form-field">
+            <label class="form-label">RUT</label>
+            <input type="text" formControlName="rut" id="rut" class="form-input" placeholder="12345678-9" />
+            <div *ngIf="pacienteForm.get('rut')?.invalid && pacienteForm.get('rut')?.touched" class="error-message">
+                El RUT es requerido
             </div>
-        </form>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Apellido Paterno</label>
+            <input type="text" formControlName="apellido_paterno" id="apellido_paterno" class="form-input"
+                placeholder="Apellido Paterno" />
+            <div *ngIf="pacienteForm.get('apellido_paterno')?.invalid && pacienteForm.get('apellido_paterno')?.touched"
+                class="error-message">
+                El apellido paterno es requerido
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Apellido Materno</label>
+            <input type="text" formControlName="apellido_materno" id="apellido_materno" class="form-input"
+                placeholder="Apellido Materno" />
+            <div *ngIf="pacienteForm.get('apellido_materno')?.invalid && pacienteForm.get('apellido_materno')?.touched"
+                class="error-message">
+                El apellido materno es requerido
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-field form-field-half">
+                <label class="form-label">Fecha de Nacimiento</label>
+                <input type="date" formControlName="fecha_nacimiento" id="fecha_nacimiento" class="form-input" />
+                <div *ngIf="pacienteForm.get('fecha_nacimiento')?.invalid && pacienteForm.get('fecha_nacimiento')?.touched"
+                    class="error-message">
+                    La fecha de nacimiento es requerida
+                </div>
+            </div>
+
+            <div class="form-field form-field-half">
+                <label class="form-label">Género</label>
+                <select formControlName="genero" id="genero" class="form-input">
+                    <option value="">Seleccione género</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                </select>
+                <div *ngIf="pacienteForm.get('genero')?.invalid && pacienteForm.get('genero')?.touched"
+                    class="error-message">
+                    El género es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" formControlName="telefono" id="telefono" class="form-input" placeholder="Teléfono" />
+            <div *ngIf="pacienteForm.get('telefono')?.invalid && pacienteForm.get('telefono')?.touched"
+                class="error-message">
+                El teléfono es requerido
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Dirección</label>
+            <input type="text" formControlName="direccion" id="direccion" class="form-input" placeholder="Dirección" />
+            <div *ngIf="pacienteForm.get('direccion')?.invalid && pacienteForm.get('direccion')?.touched"
+                class="error-message">
+                La dirección es requerida
+            </div>
+        </div>
+    </form>
+
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="!pacienteForm.valid" class="btn-primary">
+            Guardar Datos
+        </button>
     </div>
-</div>
+</app-modal>

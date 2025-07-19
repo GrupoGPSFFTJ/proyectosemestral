@@ -1,13 +1,31 @@
 <!-- familias.component.html -->
-<div *ngIf="loading">Cargando datos...</div>
+<div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">⏳ Cargando datos de familias...</div>
+</div>
 
 <div *ngIf="!loading" class="p-6">
-    <table class="table-unified">
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Familias</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Familia</span>
+        </button>
+    </div>
+
+    <app-familia-form [isOpen]="showModal" [familia]="editingFamilia" (onClose)="closeModal()" (onSave)="saveFamilia($event)"
+        (onUpdate)="updateFamilia($event)"></app-familia-form>
+
+    <div *ngIf="familias && familias.length === 0" class="no-data" style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay familias registradas
+    </div>
+
+    <table *ngIf="familias && familias.length > 0" class="table-unified">
         <thead>
             <tr>
                 <th class="table-unified-th">ID</th>
                 <th class="table-unified-th">Nombre</th>
                 <th class="table-unified-th">Fecha Creación</th>
+                <th class="table-unified-th">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -15,6 +33,11 @@
                 <td class="table-unified-td">{{ f.id_familia }}</td>
                 <td class="table-unified-td">{{ f.nombre }}</td>
                 <td class="table-unified-td">{{ formatDate(f.fecha_creacion) }}</td>
+                <td class="table-unified-td">
+                    <button (click)="openEditModal(f)" title="Editar">
+                        Editar Familia
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>

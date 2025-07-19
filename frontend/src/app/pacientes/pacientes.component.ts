@@ -80,6 +80,35 @@ export class PacientesComponent implements OnInit {
         }
     }
 
+    // Nuevos métodos siguiendo el patrón de modal
+    openCreateModal(): void {
+        this.editingPaciente = null;
+        this.showForm = true;
+    }
+
+    openEditModal(paciente: Paciente): void {
+        this.editingPaciente = paciente;
+        this.showForm = true;
+    }
+
+    closeModal(): void {
+        this.editingPaciente = null;
+        this.showForm = false;
+    }
+
+    savePaciente(paciente: Paciente): void {
+        this.pacientes = [...this.pacientes, paciente].sort((a, b) => a.id_paciente - b.id_paciente);
+        this.closeModal();
+    }
+
+    updatePaciente(paciente: Paciente): void {
+        const index = this.pacientes.findIndex(p => p.id_paciente === paciente.id_paciente);
+        const updatedPacientes = [...this.pacientes];
+        updatedPacientes[index] = paciente;
+        this.pacientes = updatedPacientes.sort((a, b) => a.id_paciente - b.id_paciente);
+        this.closeModal();
+    }
+
     async handleDelete(id: number): Promise<void> {
         if (!confirm('¿Seguro que deseas eliminar este paciente?')) return;
 

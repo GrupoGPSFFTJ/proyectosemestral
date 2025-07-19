@@ -12,6 +12,8 @@ import { Medicamento } from './medicamentos.interfaces';
 export class MedicamentosComponent implements OnInit {
   medicamentos: Medicamento[] = [];
   loading = true;
+  editingMedicamento: Medicamento | null = null;
+  showModal = false;
 
   constructor(
     private apiService: ApiService,
@@ -37,5 +39,33 @@ export class MedicamentosComponent implements OnInit {
       console.error('Error al cargar medicamentos:', error);
       this.loading = false;
     }
+  }
+
+  openCreateModal(): void {
+    this.editingMedicamento = null;
+    this.showModal = true;
+  }
+
+  openEditModal(medicamento: Medicamento): void {
+    this.editingMedicamento = medicamento;
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.editingMedicamento = null;
+    this.showModal = false;
+  }
+
+  saveMedicamento(medicamento: Medicamento): void {
+    this.medicamentos = [...this.medicamentos, medicamento].sort((a, b) => a.id_medicamento - b.id_medicamento);
+    this.closeModal();
+  }
+
+  updateMedicamento(medicamento: Medicamento): void {
+    const index = this.medicamentos.findIndex(m => m.id_medicamento === medicamento.id_medicamento);
+    const updatedMedicamentos = [...this.medicamentos];
+    updatedMedicamentos[index] = medicamento;
+    this.medicamentos = updatedMedicamentos.sort((a, b) => a.id_medicamento - b.id_medicamento);
+    this.closeModal();
   }
 }
