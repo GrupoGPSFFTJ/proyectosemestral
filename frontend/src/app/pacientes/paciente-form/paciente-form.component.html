@@ -1,0 +1,54 @@
+<!-- paciente-form.component.html -->
+<div *ngIf="show" class="modal-overlay">
+    <div class="modal-container">
+        <button (click)="handleCloseModal()" class="close-button" title="Cerrar">
+            ×
+        </button>
+
+        <div class="modal-header">
+            <div class="modal-icon">👤</div>
+            <h2 class="modal-title">
+                {{ paciente ? 'Editar Paciente' : 'Nuevo Paciente' }}
+            </h2>
+            <p class="modal-subtitle">
+                Completa la información del paciente
+            </p>
+        </div>
+
+        <form (ngSubmit)="handleSubmit()" class="patient-form">
+            <input name="nombre" placeholder="Nombre" [(ngModel)]="form.nombre" required class="form-input" />
+
+            <input name="apellido_paterno" placeholder="Apellido Paterno" [(ngModel)]="form.apellido_paterno" required
+                class="form-input" />
+
+            <input name="apellido_materno" placeholder="Apellido Materno" [(ngModel)]="form.apellido_materno" required
+                class="form-input" />
+
+            <input name="rut" placeholder="RUT (ej: 12345678-9)" [(ngModel)]="form.rut" required class="form-input" />
+
+            <input name="fecha_nacimiento" type="date" [(ngModel)]="form.fecha_nacimiento" required
+                class="form-input" />
+
+            <select name="genero" [(ngModel)]="form.genero" required class="form-input">
+                <option value="">Seleccione género</option>
+                <option *ngFor="let genero of generos" [value]="genero">
+                    {{ genero }}
+                </option>
+            </select>
+
+            <input name="telefono" placeholder="Teléfono" [(ngModel)]="form.telefono" required class="form-input" />
+
+            <input name="direccion" placeholder="Dirección" [(ngModel)]="form.direccion" required
+                class="form-input form-input-full" />
+
+            <div class="form-actions">
+                <button type="button" (click)="handleCloseModal()" class="cancel-button">
+                    Cancelar
+                </button>
+                <button type="submit" class="submit-button">
+                    {{ paciente ? 'Actualizar Paciente' : 'Crear Paciente' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

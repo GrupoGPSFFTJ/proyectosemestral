@@ -1,0 +1,41 @@
+name: Build & Push Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/**
+      - frontend/package*.json
+      - frontend/nginx.conf
+  pull_request:
+    branches:
+      - main
+    paths:
+      - frontend/**
+      - frontend/package*.json
+      - frontend/nginx.conf
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
+
+      - name: Build & Push Frontend
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          docker build \
+            -f frontend/Dockerfile \
+            -t $IMAGE \
+            frontend
+          docker push $IMAGE

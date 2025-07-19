@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaccination-service
+  namespace: proyecto-gps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vaccination-service
+  template:
+    metadata:
+      labels:
+        app: vaccination-service
+    spec:
+      containers:
+      - name: vaccination-service
+        image: johnsondavisv45/vaccination-service:latest
+        ports:
+        - containerPort: 3007

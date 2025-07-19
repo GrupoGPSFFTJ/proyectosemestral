@@ -7,21 +7,21 @@ import { HistorialResultado } from '../entities/historial-resultado.entity';
 export class HistorialResultadoService {
   constructor(
     @InjectRepository(HistorialResultado)
-    private historialResultadoRepository: Repository<HistorialResultado>,
+    private repo: Repository<HistorialResultado>,
   ) {}
 
   async create(
     historialResultado: HistorialResultado,
   ): Promise<HistorialResultado> {
-    return await this.historialResultadoRepository.save(historialResultado);
+    return await this.repo.save(historialResultado);
   }
 
   async findAll(): Promise<HistorialResultado[]> {
-    return await this.historialResultadoRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<HistorialResultado> {
-    const historial = await this.historialResultadoRepository.findOneBy({
+    const historial = await this.repo.findOneBy({
       id_historial_resultado: id,
     });
     if (!historial) {
@@ -43,11 +43,12 @@ export class HistorialResultadoService {
       );
     }
     historialResultado.id_historial_resultado = id;
-    return await this.historialResultadoRepository.save(historialResultado);
+    return await this.repo.save(historialResultado);
   }
 
-  async remove(id: number): Promise<void> {
-    const historial = await this.findOne(id);
-    await this.historialResultadoRepository.remove(historial);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

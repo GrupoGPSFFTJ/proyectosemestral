@@ -24,9 +24,6 @@
       "@app/auth/*": [
         "libs/auth/src/*"
       ],
-      "@proyecto-gps/api-gateway": [
-        "apps/api-gateway/src"
-      ],
       "@proyecto-gps/clinical-service/*": [
         "apps/clinical-service/src/*"
       ],

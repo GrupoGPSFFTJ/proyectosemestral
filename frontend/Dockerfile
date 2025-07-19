@@ -1,40 +1,34 @@
-# Usa una imagen oficial de Node.js como base
-FROM node:20-alpine AS builder
+# Dockerfile para el frontend Angular
 
+# Etapa 1: Construcción de la aplicación
+FROM node:20-alpine AS build
+
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos necesarios
-COPY package.json package-lock.json ./
-RUN npm ci
+# Copiar archivos de configuración de dependencias
+COPY package*.json ./
 
+# Instalar dependencias
+RUN npm ci --only=production=false
+
+# Copiar el código fuente
 COPY . .
 
-# Recibe los secrets como argumentos de build
-ARG NEXT_PUBLIC_API_URL
-ARG NEXT_PUBLIC_SESSION_DURATION
-
-# Los expone como variables de entorno en el contenedor
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_SESSION_DURATION=$NEXT_PUBLIC_SESSION_DURATION
-
-# Construye la aplicación Next.js
+# Construir la aplicación para producción
 RUN npm run build
 
-# Imagen final para producción
-FROM node:20-alpine
+# Etapa 2: Servir la aplicación con Nginx
+FROM nginx:alpine
 
-WORKDIR /app
+# Copiar configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copia solo los archivos necesarios desde el builder
-COPY --from=builder /app/package.json /app/package-lock.json ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./next.config.ts
-COPY --from=builder /app/src ./src
+# Copiar los archivos construidos desde la etapa de build
+COPY --from=build /app/dist/frontend_angular/browser /usr/share/nginx/html
 
-# Instala dependencias de producción
-RUN npm ci --omit=dev
+# Exponer el puerto 4200
+EXPOSE 4200
 
-EXPOSE 3000
-
-CMD ["npm", "start"]
+# Comando para iniciar Nginx
+CMD ["nginx", "-g", "daemon off;"]

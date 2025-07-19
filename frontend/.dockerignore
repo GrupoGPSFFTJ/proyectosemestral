@@ -1,9 +1,37 @@
+# Dependencias
 node_modules
-.next
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de desarrollo
+.angular
+.vscode
+*.log
+
+# Archivos de distribución
+dist
+build
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración local
 .env
-.env.*
-Dockerfile
+.env.local
+.env.production.local
+
+# Archivos de testing
+coverage
+*.tgz
+*.tar.gz
+
+# Archivos de git
 .git
 .gitignore
 README.md
-*.log
+
+# Archivos de Docker
+Dockerfile
+.dockerignore

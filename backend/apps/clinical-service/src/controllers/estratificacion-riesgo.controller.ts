@@ -48,7 +48,7 @@ export class EstratificacionRiesgoController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.svc.remove(id);
   }
 }

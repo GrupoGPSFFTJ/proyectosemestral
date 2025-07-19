@@ -1,0 +1,53 @@
+name: Build & Push Pharmacy Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - backend/apps/pharmacy-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - backend/apps/pharmacy-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
+
+      - name: Build & Push Pharmacy Service
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/pharmacy-service:latest
+          docker build \
+            -f backend/apps/pharmacy-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_PHARMACY=${{ secrets.PORT_PHARMACY }} \
+            --build-arg SCHEMA_PHARMACY=${{ secrets.SCHEMA_PHARMACY }} \
+            -t $IMAGE \
+            backend
+          docker push $IMAGE

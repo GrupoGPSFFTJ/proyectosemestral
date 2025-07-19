@@ -7,19 +7,19 @@ import { FichaControl } from '../entities/ficha-control.entity';
 export class FichaControlService {
   constructor(
     @InjectRepository(FichaControl)
-    private fichaControlRepository: Repository<FichaControl>,
+    private repo: Repository<FichaControl>,
   ) {}
 
   async create(fichaControl: FichaControl): Promise<FichaControl> {
-    return await this.fichaControlRepository.save(fichaControl);
+    return await this.repo.save(fichaControl);
   }
 
   async findAll(): Promise<FichaControl[]> {
-    return await this.fichaControlRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<FichaControl> {
-    const ficha = await this.fichaControlRepository.findOneBy({
+    const ficha = await this.repo.findOneBy({
       id_ficha_control: id,
     });
     if (!ficha) {
@@ -33,15 +33,16 @@ export class FichaControlService {
   async update(id: number, fichaControl: FichaControl): Promise<FichaControl> {
     await this.findOne(id);
     fichaControl.id_ficha_control = id;
-    return await this.fichaControlRepository.save(fichaControl);
+    return await this.repo.save(fichaControl);
   }
 
-  async remove(id: number): Promise<void> {
-    const ficha = await this.findOne(id);
-    await this.fichaControlRepository.remove(ficha);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 
   async count(): Promise<number> {
-    return this.fichaControlRepository.count();
+    return this.repo.count();
   }
 }

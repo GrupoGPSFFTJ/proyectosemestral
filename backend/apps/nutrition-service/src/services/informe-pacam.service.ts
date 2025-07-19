@@ -30,9 +30,9 @@ export class InformePacamService {
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
-    const res = await this.repo.delete(id);
-    if (res.affected === 0)
-      throw new NotFoundException(`Informe ${id} no encontrado`);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

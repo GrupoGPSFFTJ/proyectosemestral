@@ -7,19 +7,19 @@ import { PlanIntervencion } from '../entities/plan-intervencion.entity';
 export class PlanIntervencionService {
   constructor(
     @InjectRepository(PlanIntervencion)
-    private planIntervencionRepository: Repository<PlanIntervencion>,
+    private repo: Repository<PlanIntervencion>,
   ) {}
 
   async create(planIntervencion: PlanIntervencion): Promise<PlanIntervencion> {
-    return await this.planIntervencionRepository.save(planIntervencion);
+    return await this.repo.save(planIntervencion);
   }
 
   async findAll(): Promise<PlanIntervencion[]> {
-    return await this.planIntervencionRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<PlanIntervencion> {
-    const plan = await this.planIntervencionRepository.findOneBy({
+    const plan = await this.repo.findOneBy({
       id_plan_intervencion: id,
     });
     if (!plan) {
@@ -36,11 +36,12 @@ export class PlanIntervencionService {
   ): Promise<PlanIntervencion> {
     await this.findOne(id);
     planIntervencion.id_plan_intervencion = id;
-    return await this.planIntervencionRepository.save(planIntervencion);
+    return await this.repo.save(planIntervencion);
   }
 
-  async remove(id: number): Promise<void> {
-    const plan = await this.findOne(id);
-    await this.planIntervencionRepository.remove(plan);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

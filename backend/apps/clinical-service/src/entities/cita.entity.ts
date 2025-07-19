@@ -33,8 +33,11 @@ export class Cita {
   @PrimaryGeneratedColumn()
   id_cita: number;
 
-  @Column({ type: 'timestamp' })
-  fecha_hora: Date;
+  @Column({ type: 'date' })
+  fecha: Date;
+
+  @Column({ type: 'time' })
+  hora: Date;
 
   @Column({
     type: 'enum',

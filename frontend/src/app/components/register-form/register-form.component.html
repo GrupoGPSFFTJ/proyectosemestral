@@ -1,0 +1,18 @@
+<!-- register-form.component.html -->
+<div>
+    <h2 class="form-title">Registro</h2>
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+        <input name="username" placeholder="Usuario" [(ngModel)]="form.username" required class="auth-input" />
+        <input name="password" type="password" placeholder="Contraseña" [(ngModel)]="form.password" required
+            class="auth-input" />
+        <input name="nombre" placeholder="Nombre completo" [(ngModel)]="form.nombre" required class="auth-input" />
+        <input name="email" type="email" placeholder="Email" [(ngModel)]="form.email" required class="auth-input" />
+        <select name="id_centro_salud" [(ngModel)]="form.id_centro_salud" required class="auth-input">
+            <option value="">Selecciona centro de salud</option>
+            <option *ngFor="let centro of centros" [value]="centro.id_centro_salud">
+                {{ centro.nombre }}
+            </option>
+        </select>
+        <button type="submit" class="primary-button">Registrarse</button>
+    </form>
+</div>

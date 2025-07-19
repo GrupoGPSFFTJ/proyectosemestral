@@ -11,6 +11,7 @@
 !.yarn/versions
 
 # Build output
+/.angular
 /build
 /dist
 /out
@@ -62,6 +63,7 @@ next-env.d.ts
 .vercel
 
 # IDEs and editors
+/.vscode
 /.idea
 .c9/
 .classpath

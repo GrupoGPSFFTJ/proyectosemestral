@@ -15,6 +15,7 @@ import { InscripcionPacam } from './entities/inscripcion-pacam.entity';
 import { InformePacam } from './entities/informe-pacam.entity';
 import { ControlDesembolso } from './entities/control-desembolso.entity';
 import { APP_GUARD } from '@nestjs/core';
+import { StatusController } from './status.controller';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { APP_GUARD } from '@nestjs/core';
     InscripcionPacamController,
     InformePacamController,
     ControlDesembolsoController,
+    StatusController,
   ],
   providers: [
     ProgramaNutricionalService,

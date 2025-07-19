@@ -1,11 +1,6 @@
 name: CI del proyecto
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  workflow_dispatch:
+on: {}
 
 jobs:
   # 1) Login a Docker Hub
@@ -209,39 +204,6 @@ jobs:
             --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
             --build-arg PORT_VACCINATION=${{ secrets.PORT_VACCINATION }} \
             --build-arg SCHEMA_VACCINATION=${{ secrets.SCHEMA_VACCINATION }} \
-            -t $IMAGE \
-            backend/
-          docker push $IMAGE
-
-  build-api-gateway:
-    needs: docker-login
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log in to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
-            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
-            --password-stdin
-      - uses: actions/checkout@v4
-      - name: Build & Push api-gateway
-        run: |
-          IMAGE=fabiangpsproy/api-gateway:latest
-          docker build \
-            -f backend/apps/api-gateway/Dockerfile \
-            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
-            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
-            --build-arg DB_USER=${{ secrets.DB_USER }} \
-            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
-            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
-            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
-            --build-arg PORT_GATEWAY=${{ secrets.PORT_GATEWAY }} \
-            --build-arg URL_CORE_SERVICE=${{ secrets.URL_CORE_SERVICE }} \
-            --build-arg URL_CLINICAL_SERVICE=${{ secrets.URL_CLINICAL_SERVICE }} \
-            --build-arg URL_NUTRITION_SERVICE=${{ secrets.URL_NUTRITION_SERVICE }} \
-            --build-arg URL_ODONTO_SERVICE=${{ secrets.URL_ODONTO_SERVICE }} \
-            --build-arg URL_PATIENT_SERVICE=${{ secrets.URL_PATIENT_SERVICE }} \
-            --build-arg URL_PHARMACY_SERVICE=${{ secrets.URL_PHARMACY_SERVICE }} \
-            --build-arg URL_VACCINATION_SERVICE=${{ secrets.URL_VACCINATION_SERVICE }} \
             -t $IMAGE \
             backend/
           docker push $IMAGE

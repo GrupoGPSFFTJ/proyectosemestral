@@ -7,6 +7,7 @@ import { MedicamentoController } from './controllers/medicamento.controller';
 import { RecetaController } from './controllers/receta.controller';
 import { RecetaMedicamentoController } from './controllers/receta-medicamento.controller';
 import { DespachoMedicamentoController } from './controllers/despacho-medicamento.controller';
+import { StatusController } from './status.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule, JwtAuthGuard } from '@app/auth';
@@ -54,6 +55,7 @@ import { APP_GUARD } from '@nestjs/core';
     RecetaController,
     RecetaMedicamentoController,
     DespachoMedicamentoController,
+    StatusController,
   ],
   providers: [
     MedicamentoService,

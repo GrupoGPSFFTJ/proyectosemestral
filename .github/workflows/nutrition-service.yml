@@ -1,0 +1,53 @@
+name: Build & Push Nutrition Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - backend/apps/nutrition-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - backend/apps/nutrition-service/**
+      - backend/package*.json
+      - backend/nest-cli.json
+      - backend/tsconfig*.json
+      - backend/libs/**
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
+
+      - name: Build & Push Nutrition Service
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/nutrition-service:latest
+          docker build \
+            -f backend/apps/nutrition-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_NUTRITION=${{ secrets.PORT_NUTRITION }} \
+            --build-arg SCHEMA_NUTRITION=${{ secrets.SCHEMA_NUTRITION }} \
+            -t $IMAGE \
+            backend
+          docker push $IMAGE

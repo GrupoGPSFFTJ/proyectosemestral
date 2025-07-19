@@ -7,19 +7,19 @@ import { MiembroFamiliar } from '../entities/miembro-familiar.entity';
 export class MiembroFamiliarService {
   constructor(
     @InjectRepository(MiembroFamiliar)
-    private miembroFamiliarRepository: Repository<MiembroFamiliar>,
+    private repo: Repository<MiembroFamiliar>,
   ) {}
 
   async create(miembroFamiliar: MiembroFamiliar): Promise<MiembroFamiliar> {
-    return await this.miembroFamiliarRepository.save(miembroFamiliar);
+    return await this.repo.save(miembroFamiliar);
   }
 
   async findAll(): Promise<MiembroFamiliar[]> {
-    return await this.miembroFamiliarRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<MiembroFamiliar> {
-    const miembro = await this.miembroFamiliarRepository.findOneBy({
+    const miembro = await this.repo.findOneBy({
       id_miembro_familiar: id,
     });
     if (!miembro) {
@@ -36,11 +36,12 @@ export class MiembroFamiliarService {
   ): Promise<MiembroFamiliar> {
     await this.findOne(id);
     miembroFamiliar.id_miembro_familiar = id;
-    return await this.miembroFamiliarRepository.save(miembroFamiliar);
+    return await this.repo.save(miembroFamiliar);
   }
 
-  async remove(id: number): Promise<void> {
-    const miembro = await this.findOne(id);
-    await this.miembroFamiliarRepository.remove(miembro);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

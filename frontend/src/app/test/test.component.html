@@ -1,0 +1,92 @@
+<div class="p-6">
+    <h1 class="page_header">Página de Prueba - Modal Genérico</h1>
+
+    <div class="test-section">
+        <h2>Ejemplos de Modal Genérico</h2>
+
+        <!-- Botones para abrir diferentes modales -->
+        <div class="button-row">
+            <button (click)="openModal()" class="btn-crear">
+                Modal Básico
+            </button>
+
+            <button (click)="openFormModal()" class="btn-crear ml-4">
+                Modal con Formulario
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal básico -->
+    <app-modal [isOpen]="showModal" [title]="'Modal de Prueba'" [size]="'medium'" (closeModal)="closeModal()">
+        <!-- Contenido del modal -->
+        <div class="test-content">
+            <p>Este es un modal básico de prueba.</p>
+            <p>Puedes cerrar este modal de las siguientes formas:</p>
+            <ul>
+                <li>Haciendo click en el botón × (esquina superior derecha)</li>
+                <li>Haciendo click fuera del modal</li>
+                <li>Haciendo click en el botón Cerrar</li>
+            </ul>
+        </div>
+
+        <!-- Footer del modal -->
+        <div slot="footer" class="button-group">
+            <button type="button" (click)="closeModal()" class="btn-primary">
+                Cerrar
+            </button>
+        </div>
+    </app-modal>
+
+    <!-- Modal con formulario -->
+    <app-modal [isOpen]="showFormModal" [title]="'Formulario de Prueba'" [size]="'large'"
+        (closeModal)="closeFormModal()">
+        <!-- Formulario dentro del modal -->
+        <form [formGroup]="citaForm">
+            <div class="form-field">
+                <label class="form-label">Nombre completo:</label>
+                <input formControlName="name" type="text" class="form-input" placeholder="Ingresa tu nombre completo">
+                <div *ngIf="citaForm.get('name')?.invalid && citaForm.get('name')?.touched" class="error-message">
+                    El nombre es requerido
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Correo electrónico:</label>
+                <input formControlName="email" type="email" class="form-input" placeholder="correo@ejemplo.com">
+                <div *ngIf="citaForm.get('email')?.invalid && citaForm.get('email')?.touched" class="error-message">
+                    Ingresa un correo válido
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Descripción:</label>
+                <textarea formControlName="description" class="form-textarea" rows="4"
+                    placeholder="Escribe una descripción (opcional)"></textarea>
+            </div>
+        </form>
+
+        <!-- Footer del modal -->
+        <div slot="footer" class="button-group">
+            <button type="button" (click)="closeFormModal()" class="btn-secondary">
+                Cancelar
+            </button>
+            <button type="button" (click)="saveForm()" [disabled]="!citaForm.valid" class="btn-primary">
+                Guardar Datos
+            </button>
+        </div>
+    </app-modal>
+
+    <!-- Información adicional -->
+    <div class="info-section">
+        <h3>Características del Modal Genérico:</h3>
+        <ul>
+            <li>✅ Cierre al hacer click fuera del modal</li>
+            <li>✅ Botón × de cierre en esquina superior derecha</li>
+            <li>✅ Diferentes tamaños (small, medium, large)</li>
+            <li>✅ Contenido personalizable (título, body, footer)</li>
+            <li>✅ Integración con formularios reactivos</li>
+            <li>✅ Estilos consistentes con el diseño de la aplicación</li>
+            <li>✅ Responsive design</li>
+        </ul>
+    </div>
+</div>

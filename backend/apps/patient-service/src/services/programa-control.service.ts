@@ -7,19 +7,19 @@ import { ProgramaControl } from '../entities/programa-control.entity';
 export class ProgramaControlService {
   constructor(
     @InjectRepository(ProgramaControl)
-    private programaControlRepository: Repository<ProgramaControl>,
+    private repo: Repository<ProgramaControl>,
   ) {}
 
   async create(programaControl: ProgramaControl): Promise<ProgramaControl> {
-    return await this.programaControlRepository.save(programaControl);
+    return await this.repo.save(programaControl);
   }
 
   async findAll(): Promise<ProgramaControl[]> {
-    return await this.programaControlRepository.find();
+    return await this.repo.find();
   }
 
   async findOne(id: number): Promise<ProgramaControl> {
-    const programa = await this.programaControlRepository.findOneBy({
+    const programa = await this.repo.findOneBy({
       id_programa_control: id,
     });
     if (!programa) {
@@ -36,11 +36,12 @@ export class ProgramaControlService {
   ): Promise<ProgramaControl> {
     await this.findOne(id);
     programaControl.id_programa_control = id;
-    return await this.programaControlRepository.save(programaControl);
+    return await this.repo.save(programaControl);
   }
 
-  async remove(id: number): Promise<void> {
-    const programa = await this.findOne(id);
-    await this.programaControlRepository.remove(programa);
+  async remove(id: number) {
+    const entity = await this.findOne(id);
+    await this.repo.remove(entity);
+    return entity;
   }
 }

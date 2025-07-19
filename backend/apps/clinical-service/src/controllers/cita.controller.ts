@@ -5,15 +5,15 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CitaService } from '../services/cita.service';
 import { Cita } from '../entities/cita.entity';
 
 @Controller('cita')
 export class CitaController {
-  constructor(private readonly citaService: CitaService) {}
+  constructor(private readonly citaService: CitaService) { }
 
   @Post()
   create(@Body() data: Partial<Cita>): Promise<Cita> {
@@ -35,7 +35,7 @@ export class CitaController {
     return this.citaService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: Partial<Cita>,
@@ -44,7 +44,7 @@ export class CitaController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.citaService.remove(id);
   }
 }
