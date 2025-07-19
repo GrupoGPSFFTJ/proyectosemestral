@@ -40,6 +40,14 @@ jobs:
           IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/clinical-service:latest
           docker build \
             -f backend/apps/clinical-service/Dockerfile \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USER=${{ secrets.DB_USER }} \
+            --build-arg DB_PASS=${{ secrets.DB_PASS }} \
+            --build-arg DB_NAME=${{ secrets.DB_NAME }} \
+            --build-arg DB_POOL_MODE=${{ secrets.DB_POOL_MODE }} \
+            --build-arg PORT_CLINICAL=${{ secrets.PORT_CLINICAL }} \
+            --build-arg SCHEMA_CLINICAL=${{ secrets.SCHEMA_CLINICAL }} \
             -t $IMAGE \
             backend
           docker push $IMAGE
