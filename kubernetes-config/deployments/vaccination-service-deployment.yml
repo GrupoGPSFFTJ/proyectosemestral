@@ -18,3 +18,8 @@ spec:
         image: johnsondavisv45/vaccination-service:latest
         ports:
         - containerPort: 3007
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 100%
