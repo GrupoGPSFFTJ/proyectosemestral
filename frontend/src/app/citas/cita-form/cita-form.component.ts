@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, output, Output } from '@angular/core';
 import { CitasDataService } from '../../data-services';
 import { Cita } from '../citas.interfaces';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,7 +13,9 @@ import { ApiService } from '../../../services/api.service';
 export class CitaFormComponent {
   @Input() cita: Cita | null = null;
   @Input() isOpen: boolean = false;
-  @Output() onClose = new EventEmitter<boolean>();
+  @Output() onClose = new EventEmitter();
+  @Output() onSave = new EventEmitter();
+  @Output() onUpdate = new EventEmitter<Cita>();
 
   citaForm: FormGroup
 
@@ -58,17 +60,18 @@ export class CitaFormComponent {
   async onSubmit() {
     //validacion en el template y deshabilitando el boton principal
     if (this.cita) {
-      await this.apiService.updateCita(this.cita.id_cita, this.citaForm.value);
+      const cita = await this.apiService.updateCita(this.cita.id_cita, this.citaForm.value);
       alert('Cita actualizada correctamente');
+      this.onUpdate.emit(cita);
     } else {
       // Crear nueva entidad
-      await this.apiService.createCita(this.citaForm.value);
+      const cita = await this.apiService.createCita(this.citaForm.value);
       alert('Cita creada correctamente');
+      this.onSave.emit(cita);
     }
-    this.onClose.emit(true); // Cerrar modal y notificar éxito
   }
 
   onModalClose() {
-    this.onClose.emit(false);
+    this.onClose.emit();
   }
 }

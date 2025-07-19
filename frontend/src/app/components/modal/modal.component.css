@@ -171,7 +171,8 @@
 ::ng-deep .form-row {
     display: flex;
     gap: 15px;
-    align-items: flex-end;
+    align-items: flex-start;
+    flex-wrap: wrap;
 }
 ::ng-deep .form-field-half {
     flex: 1;

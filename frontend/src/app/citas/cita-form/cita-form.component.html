@@ -41,22 +41,14 @@
         <div class="form-row">
             <div class="form-field form-field-half">
                 <label class="form-label">Fecha</label>
-                <input type="date" formControlName="fecha" id="fecha" class="form-input"
-                    placeholder="Fecha de la Cita" />
-            </div>
-            <div class="form-field form-field-half">
-                <label class="form-label">Hora</label>
-                <input type="time" formControlName="hora" id="hora" class="form-input" placeholder="Hora de la Cita" />
-            </div>
-        </div>
-        <div *ngIf="citaForm.get('fecha')?.invalid && citaForm.get('fecha')?.touched || citaForm.get('hora')?.invalid && citaForm.get('hora')?.touched"
-            class="form-row">
-            <div class="form-field form-field-half">
+                <input type="date" formControlName="fecha" id="fecha" class="form-input" placeholder="Fecha de la Cita" />
                 <div *ngIf="citaForm.get('fecha')?.invalid && citaForm.get('fecha')?.touched" class="error-message">
                     La fecha es requerida
                 </div>
             </div>
             <div class="form-field form-field-half">
+                <label class="form-label">Hora</label>
+                <input type="time" formControlName="hora" id="hora" class="form-input" placeholder="Hora de la Cita" />
                 <div *ngIf="citaForm.get('hora')?.invalid && citaForm.get('hora')?.touched" class="error-message">
                     La hora es requerida
                 </div>

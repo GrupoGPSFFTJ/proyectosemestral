@@ -115,11 +115,21 @@ export class CitasComponent implements OnInit {
     this.showModal = true;
   }
 
-  closeModal(updated: boolean = false): void {
+  closeModal(): void {
     this.editingCita = null;
     this.showModal = false;
-    if (updated) {
-      this.loadAllData();
-    }
+  }
+
+  saveCita(cita: Cita): void {
+    this.citas = [...this.citas, cita];
+    this.closeModal();
+  }
+
+  updateCita(cita: Cita): void {
+    const index = this.citas.findIndex(c => c.id_cita === cita.id_cita);
+    const updatedCitas = [...this.citas];
+    updatedCitas[index] = cita;
+    this.citas = updatedCitas;
+    this.closeModal();
   }
 }
