@@ -7,6 +7,7 @@ import { ApiService } from '../../services/api.service';
 export class PacientesDataService {
     private isLoaded = false;
     private loadingPromise: Promise<void> | null = null;
+    private generos: Array<{ value: string, label: string }> = [];
 
     constructor(private apiService: ApiService) { }
 
@@ -21,10 +22,9 @@ export class PacientesDataService {
 
     private async _loadData(): Promise<void> {
         try {
-
-            // Aquí se pueden cargar datos estáticos si es necesario
-            // Por ejemplo: centros de salud, géneros, etc.
-            // await this.apiService.getCentrosSalud();
+            // Obtiene los géneros desde la API
+            const generosApi = await this.apiService.getGeneros();
+            this.generos = (generosApi || []).map((g: string) => ({ value: g, label: g }));
 
             this.isLoaded = true;
             this.loadingPromise = null;
@@ -33,5 +33,9 @@ export class PacientesDataService {
             this.loadingPromise = null;
             throw error;
         }
+    }
+
+    getGeneros(): Array<{ value: string, label: string }> {
+        return this.generos;
     }
 }

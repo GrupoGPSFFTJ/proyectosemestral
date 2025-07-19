@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
+import { PacientesDataService } from '../../data-services/pacientes-data.service';
 import { Paciente } from '../pacientes.interfaces';
 
 @Component({
@@ -18,7 +19,11 @@ export class PacienteFormComponent {
 
     pacienteForm: FormGroup;
 
-    constructor(private fb: FormBuilder, private apiService: ApiService) {
+    constructor(
+        private fb: FormBuilder,
+        private apiService: ApiService,
+        public pacientesDataService: PacientesDataService
+    ) {
         this.pacienteForm = this.fb.group({
             nombre: ['', Validators.required],
             apellido_paterno: ['', Validators.required],

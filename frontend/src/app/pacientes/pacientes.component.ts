@@ -62,22 +62,17 @@ export class PacientesComponent implements OnInit {
         );
     }
 
-    handleEdit(paciente: Paciente): void {
-        this.editingPaciente = paciente;
-        this.showForm = true;
+     
+    capitalizeWords(str: string): string {
+        return str.replace(/\b\w+/g, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
     }
 
-    openForm(): void {
-        this.editingPaciente = null;
-        this.showForm = true;
+    getInitials(paciente: Paciente): string {
+        return `${paciente.nombre?.[0] || ''}${paciente.apellido_paterno?.[0] || ''}`.toUpperCase();
     }
 
-    onFormClose(updated: boolean = false): void {
-        this.editingPaciente = null;
-        this.showForm = false;
-        if (updated) {
-            this.loadAllData();
-        }
+    formatFecha(dateString: string): string {
+        return new Date(dateString).toLocaleDateString('es-CL');
     }
 
     // Nuevos métodos siguiendo el patrón de modal
@@ -97,7 +92,7 @@ export class PacientesComponent implements OnInit {
     }
 
     savePaciente(paciente: Paciente): void {
-        this.pacientes = [...this.pacientes, paciente].sort((a, b) => a.id_paciente - b.id_paciente);
+        this.pacientes = [...this.pacientes, paciente];
         this.closeModal();
     }
 
@@ -105,7 +100,7 @@ export class PacientesComponent implements OnInit {
         const index = this.pacientes.findIndex(p => p.id_paciente === paciente.id_paciente);
         const updatedPacientes = [...this.pacientes];
         updatedPacientes[index] = paciente;
-        this.pacientes = updatedPacientes.sort((a, b) => a.id_paciente - b.id_paciente);
+        this.pacientes = updatedPacientes;
         this.closeModal();
     }
 
@@ -118,17 +113,5 @@ export class PacientesComponent implements OnInit {
         } catch (err: any) {
             this.error = err.message;
         }
-    }
-
-    capitalizeWords(str: string): string {
-        return str.replace(/\b\w+/g, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
-    }
-
-    getInitials(paciente: Paciente): string {
-        return `${paciente.nombre?.[0] || ''}${paciente.apellido_paterno?.[0] || ''}`.toUpperCase();
-    }
-
-    formatDate(dateString: string): string {
-        return new Date(dateString).toLocaleDateString('es-CL');
     }
 }

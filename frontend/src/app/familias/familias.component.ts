@@ -57,7 +57,7 @@ export class FamiliasComponent implements OnInit {
     }
 
     saveFamilia(familia: Familia): void {
-        this.familias = [...this.familias, familia].sort((a, b) => a.id_familia - b.id_familia);
+        this.familias = [...this.familias, familia];
         this.closeModal();
     }
 
@@ -65,11 +65,16 @@ export class FamiliasComponent implements OnInit {
         const index = this.familias.findIndex(f => f.id_familia === familia.id_familia);
         const updatedFamilias = [...this.familias];
         updatedFamilias[index] = familia;
-        this.familias = updatedFamilias.sort((a, b) => a.id_familia - b.id_familia);
+        this.familias = updatedFamilias;
         this.closeModal();
     }
 
     formatDate(dateString: string): string {
-        return new Date(dateString).toLocaleDateString('es-CL');
+        if (!dateString) return '';
+        // Espera formato YYYY-MM-DD
+        const [year, month, day] = dateString.split('-').map(Number);
+        if (!year || !month || !day) return dateString;
+        const date = new Date(year, month - 1, day);
+        return date.toLocaleDateString('es-CL');
     }
 }

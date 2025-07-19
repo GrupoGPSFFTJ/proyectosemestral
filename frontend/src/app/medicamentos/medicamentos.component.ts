@@ -57,7 +57,7 @@ export class MedicamentosComponent implements OnInit {
   }
 
   saveMedicamento(medicamento: Medicamento): void {
-    this.medicamentos = [...this.medicamentos, medicamento].sort((a, b) => a.id_medicamento - b.id_medicamento);
+    this.medicamentos = [...this.medicamentos, medicamento];
     this.closeModal();
   }
 
@@ -65,7 +65,7 @@ export class MedicamentosComponent implements OnInit {
     const index = this.medicamentos.findIndex(m => m.id_medicamento === medicamento.id_medicamento);
     const updatedMedicamentos = [...this.medicamentos];
     updatedMedicamentos[index] = medicamento;
-    this.medicamentos = updatedMedicamentos.sort((a, b) => a.id_medicamento - b.id_medicamento);
+    this.medicamentos = updatedMedicamentos;
     this.closeModal();
   }
 }

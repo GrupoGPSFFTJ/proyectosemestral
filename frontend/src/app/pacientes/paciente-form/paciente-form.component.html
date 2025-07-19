@@ -50,11 +50,9 @@
 
             <div class="form-field form-field-half">
                 <label class="form-label">Género</label>
-                <select formControlName="genero" id="genero" class="form-input">
+                <select formControlName="genero" id="genero" class="form-select">
                     <option value="">Seleccione género</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="femenino">Femenino</option>
-                    <option value="otro">Otro</option>
+                    <option *ngFor="let g of pacientesDataService.getGeneros()" [value]="g.value">{{ g.label }}</option>
                 </select>
                 <div *ngIf="pacienteForm.get('genero')?.invalid && pacienteForm.get('genero')?.touched"
                     class="error-message">

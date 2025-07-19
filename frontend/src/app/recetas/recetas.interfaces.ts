@@ -5,6 +5,7 @@ export interface Receta {
     id_medico: number;
     fecha_emision: string;
     indicacion: string;
+    items?: RecetaMedicamentoForm[]; // Agregar items para los medicamentos
 }
 
 export interface RecetaMedicamento {
@@ -22,6 +23,16 @@ export interface RecetaMedicamentoForm {
     dosis_unidad: string;
     frecuencia_horas: string;
     duracion_dias: string;
+}
+
+// Nuevas interfaces para detalles de medicamentos en la receta
+export interface RecetaMedicamentoDetalle {
+    id_receta_medicamento: number;
+    dosis: string;
+    frecuencia: string;
+    duracion_dias: number;
+    id_receta: number;
+    id_medicamento: number;
 }
 
 // Interfaces para entidades relacionadas

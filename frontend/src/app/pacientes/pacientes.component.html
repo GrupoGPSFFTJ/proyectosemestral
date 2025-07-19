@@ -36,14 +36,14 @@
                     </h3>
                     <div class="patient-meta-list">
                         <p><strong>RUT:</strong> {{ p.rut }}</p>
-                        <p><strong>F. Nac.:</strong> {{ formatDate(p.fecha_nacimiento) }}</p>
+                        <p><strong>F. Nac.:</strong> {{ formatFecha(p.fecha_nacimiento) }}</p>
                         <p><strong>Género:</strong> {{ capitalizeWords(p.genero) }}</p>
                         <p><strong>Teléfono:</strong> {{ p.telefono }}</p>
                         <p><strong>Dirección:</strong> {{ capitalizeWords(p.direccion) }}</p>
                     </div>
                 </div>
                 <div class="patient-actions patient-actions-list">
-                    <button (click)="handleEdit(p)">Editar</button>
+                    <button (click)="openEditModal(p)">Editar</button>
                     <button (click)="handleDelete(p.id_paciente)">Eliminar</button>
                 </div>
             </div>

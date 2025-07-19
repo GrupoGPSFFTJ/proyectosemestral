@@ -86,23 +86,16 @@ export class CitasComponent implements OnInit {
   }
 
   formatFecha(fecha: string): string {
-    try {
-      if (!fecha) return '';
-      const fechaObj = new Date(fecha);
-      return fechaObj.toLocaleDateString('es-CL');
-    } catch {
-      return fecha || '';
-    }
+    if (!fecha) return '';
+    // Espera formato YYYY-MM-DD
+    const [year, month, day] = fecha.split('-').map(Number);
+    if (!year || !month || !day) return fecha;
+    const date = new Date(year, month - 1, day);
+    return date.toLocaleDateString('es-CL');
   }
 
   formatHora(hora: string): string {
-    try {
-      if (!hora) return '';
-      // El input time ya devuelve formato HH:MM, solo necesitamos mostrarlo
-      return hora;
-    } catch {
-      return hora || '';
-    }
+      return hora || ''
   }
 
   openCreateModal(): void {

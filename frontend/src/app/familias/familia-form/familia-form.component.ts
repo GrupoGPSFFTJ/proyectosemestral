@@ -42,11 +42,22 @@ export class FamiliaFormComponent {
 
   async onSubmit() {
     if (this.familia) {
-      const familia = await this.apiService.updateFamilia(this.familia.id_familia, this.familiaForm.value);
+      // Al actualizar, mantener fecha_creacion original
+      const familiaData = {
+        ...this.familiaForm.value,
+        fecha_creacion: this.familia.fecha_creacion
+      };
+      const familia = await this.apiService.updateFamilia(this.familia.id_familia, familiaData);
       alert('Familia actualizada correctamente');
       this.onUpdate.emit(familia);
     } else {
-      const familia = await this.apiService.createFamilia(this.familiaForm.value);
+      // Al crear, asignar solo la fecha actual (YYYY-MM-DD)
+      const today = new Date();
+      const familiaData = {
+        ...this.familiaForm.value,
+        fecha_creacion: today.toISOString().slice(0, 10)
+      };
+      const familia = await this.apiService.createFamilia(familiaData);
       alert('Familia creada correctamente');
       this.onSave.emit(familia);
     }

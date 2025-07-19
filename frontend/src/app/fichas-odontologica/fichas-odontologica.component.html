@@ -1,7 +1,16 @@
 <div *ngIf="loading">Cargando datos...</div>
 
 <div *ngIf="!loading" class="p-6">
-    <table class="table-unified">
+    <div class="header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Fichas Odontológicas</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Ficha Odontológica</span>
+        </button>
+    </div>
+
+    <app-ficha-odontologica-form [isOpen]="showModal" [ficha]="editingFicha" (onClose)="closeModal()" (onSave)="saveFicha($event)" (onUpdate)="updateFicha($event)"></app-ficha-odontologica-form>
+
+    <table class="table-unified" *ngIf="fichasOdontologicas && fichasOdontologicas.length > 0">
         <thead>
             <tr>
                 <th class="table-unified-th">ID</th>
@@ -11,17 +20,21 @@
                 <th class="table-unified-th">Programa Salud Oral</th>
                 <th class="table-unified-th">Centro Salud</th>
                 <th class="table-unified-th">Usuario Resp.</th>
+                <th class="table-unified-th">Acciones</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let ficha of fichasOdontologicas">
                 <td class="table-unified-td">{{ ficha.id_ficha_odontologica }}</td>
-                <td class="table-unified-td">{{ formatDate(ficha.fecha_control) }}</td>
+                <td class="table-unified-td">{{ formatFecha(ficha.fecha_control) }}</td>
                 <td class="table-unified-td">{{ ficha.observacion }}</td>
                 <td class="table-unified-td">{{ getPacienteNombre(ficha.id_paciente) }}</td>
                 <td class="table-unified-td">{{ getProgramaNombre(ficha.id_programa_salud_oral) }}</td>
                 <td class="table-unified-td">{{ getCentroNombre(ficha.id_centro_salud) }}</td>
                 <td class="table-unified-td">{{ getUsuarioNombre(ficha.id_usuario_responsable) }}</td>
+                <td class="table-unified-td">
+                    <button (click)="openEditModal(ficha)">Editar</button>
+                </td>
             </tr>
         </tbody>
     </table>

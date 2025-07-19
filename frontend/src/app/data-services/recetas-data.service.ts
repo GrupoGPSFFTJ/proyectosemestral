@@ -6,7 +6,9 @@ import {
     Medicamento,
     PacienteSelect,
     UsuarioSelect,
-    MedicamentoSelect
+    MedicamentoSelect,
+    RecetaMedicamentoForm,
+    RecetaMedicamento
 } from '../recetas/recetas.interfaces';
 
 @Injectable({
@@ -92,5 +94,21 @@ export class RecetasDataService {
     async refreshData(): Promise<void> {
         this.isLoaded = false;
         await this.loadStaticData();
+    }
+
+    getRecMedByReceta(recetaId: number): Promise<RecetaMedicamento[]> {
+        return this.apiService.getRecMedByReceta(recetaId);
+    }
+
+    async getRecMedByRecetaForForm(recetaId: number): Promise<RecetaMedicamentoForm[]> {
+        const recMedData = await this.apiService.getRecMedByReceta(recetaId);
+        // Convertir de RecetaMedicamento[] a RecetaMedicamentoForm[]
+        return recMedData.map(item => ({
+            id_medicamento: item.id_medicamento.toString(),
+            dosis_cantidad: item.dosis.split(' ')[0] || '',
+            dosis_unidad: item.dosis.split(' ')[1] || '',
+            frecuencia_horas: item.frecuencia,
+            duracion_dias: item.duracion_dias.toString()
+        }));
     }
 }

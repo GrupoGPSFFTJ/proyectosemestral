@@ -1,146 +1,68 @@
 <div *ngIf="loading">Cargando datos...</div>
 
 <div *ngIf="!loading" class="p-6">
-    <h1 class="page_header">Recetas</h1>
-    <button (click)=" handleOpenModal()" class="recetas-btn-crear">
-        Crear receta
-    </button>
-
-    <!-- Modal de creación -->
-    <div *ngIf="showModal" class="recetas-modal-bg">
-        <div class="recetas-modal">
-            <button (click)="handleCloseModal()" class="recetas-modal-close" title="Cerrar">
-                ×
-            </button>
-            <h2 class="recetas-modal-title">Nueva Receta</h2>
-            <form (ngSubmit)="handleSubmit($event)" class="recetas-form">
-                <div class="recetas-form-row">
-                    <div class="recetas-form-col">
-                        <label class="recetas-label">Paciente</label>
-                        <select name="id_paciente" [value]="form.id_paciente" (change)="handleChange($event)" required
-                            class="recetas-select">
-                            <option value="">Selecciona paciente</option>
-                            <option *ngFor="let p of getPacientes()" [value]="p.id">
-                                {{p.nombre}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="recetas-form-col">
-                        <label class="recetas-label">Médico</label>
-                        <select name="id_medico" [value]="form.id_medico" (change)="handleChange($event)" required
-                            class="recetas-select">
-                            <option value="">Selecciona médico</option>
-                            <option *ngFor="let u of getUsuarios()" [value]="u.id">
-                                {{u.nombre}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="recetas-label">Indicaciones generales</label>
-                    <textarea name="indicacion" placeholder="Indicaciones generales" [value]="form.indicacion"
-                        (input)="handleChange($event)" rows="2" class="recetas-textarea">
-                    </textarea>
-                </div>
-                <div>
-                    <h3 style="margin: 0 0 0.5rem 0">Medicamentos</h3>
-                    <div class="recetas-medicamentos-list">
-                        <div *ngFor="let item of form.items; let idx = index" class="recetas-medicamento-item">
-                            <select name="id_medicamento" [value]="item.id_medicamento"
-                                (change)="handleItemChange(idx, $event)" required class="recetas-select">
-                                <option value="">Medicamento</option>
-                                <option *ngFor="let m of getMedicamentos()" [value]="m.id">
-                                    {{m.nombre}}
-                                </option>
-                            </select>
-                            <input name="dosis_cantidad" type="number" min="1" placeholder="Dosis"
-                                [value]="item.dosis_cantidad" (input)="handleItemChange(idx, $event)" required
-                                class="recetas-input" />
-                            <select name="dosis_unidad" [value]="item.dosis_unidad"
-                                (change)="handleItemChange(idx, $event)" required class="recetas-select">
-                                <option value="">Unidad</option>
-                                <option *ngFor="let u of UNIDADES_DOSIS" [value]="u">{{u}}</option>
-                            </select>
-                            <input name="frecuencia_horas" type="number" min="1" placeholder="Cada (hora)"
-                                [value]="item.frecuencia_horas" (input)="handleItemChange(idx, $event)" required
-                                class="recetas-input" />
-                            <input name="duracion_dias" type="number" min="1" placeholder="Días"
-                                [value]="item.duracion_dias" (input)="handleItemChange(idx, $event)" required
-                                class="recetas-input" />
-                            <button type="button" (click)="handleRemoveItem(idx)" class="recetas-medicamento-remove"
-                                title="Eliminar">
-                                ×
-                            </button>
-                        </div>
-                    </div>
-                    <button type="button" (click)="handleAddItem()" class="recetas-medicamento-add">
-                        Agregar medicamento
-                    </button>
-                </div>
-                <div class="recetas-form-actions">
-                    <button type="submit" class="recetas-form-submit">
-                        Crear receta
-                    </button>
-                    <button type="button" (click)="handleCloseModal()" class="recetas-form-cancel">
-                        Cancelar
-                    </button>
-                </div>
-            </form>
-        </div>
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Recetas</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Receta</span>
+        </button>
     </div>
 
-    <table class="table-unified">
+    <app-receta-form [isOpen]="showModal" [receta]="editingReceta" (onClose)="closeModal()"
+        (onSave)="saveReceta($event)" (onUpdate)="updateReceta($event)">
+    </app-receta-form>
+
+    <div *ngIf="recetas && recetas.length === 0" class="no-data"
+        style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay recetas registradas
+    </div>
+
+    <table *ngIf="recetas && recetas.length > 0" class="table-unified">
         <thead>
             <tr>
                 <th class="table-unified-th">ID</th>
                 <th class="table-unified-th">Paciente</th>
                 <th class="table-unified-th">Médico</th>
                 <th class="table-unified-th">Fecha Emisión</th>
-                <th class="table-unified-th">Indicaciones</th>
-                <th class="table-unified-th">Medicamentos</th>
+                <th class="table-unified-th">Indicación</th>
+                <th class="table-unified-th">Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let r of recetas">
-                <td class="table-unified-td">{{r.id_receta}}</td>
-                <td class="table-unified-td">{{getPacienteNombre(r.id_paciente)}}</td>
-                <td class="table-unified-td">{{getMedicoNombre(r.id_medico)}}</td>
-                <td class="table-unified-td">{{formatFecha(r.fecha_emision)}}</td>
-                <td class="table-unified-td">{{r.indicacion}}</td>
+            <tr *ngFor="let receta of recetas">
+                <td class="table-unified-td">{{ receta.id_receta }}</td>
+                <td class="table-unified-td">{{ getPacienteNombre(receta.id_paciente) }}</td>
+                <td class="table-unified-td">{{ getMedicoNombre(receta.id_medico) }}</td>
+                <td class="table-unified-td">{{ formatFecha(receta.fecha_emision) }}</td>
+                <td class="table-unified-td">{{ receta.indicacion }}</td>
                 <td class="table-unified-td">
-                    <button class="recetas-verdetalle-btn" (click)="handleVerDetalle(r)">
-                        Ver detalle
+                    <button (click)="handleVerDetalle(receta)" title="detalle">
+                        Detalle
                     </button>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <!-- Modal de detalle de receta -->
-    <div *ngIf="showDetalle" class="recetas-detalle-modal-bg">
-        <div class="recetas-detalle-modal">
-            <button (click)="handleCerrarDetalle()" class="recetas-detalle-close" title="Cerrar">
-                ×
-            </button>
-            <h2 class="recetas-detalle-title">{{detalleTitulo}}</h2>
-            <table class="table-unified">
-                <thead>
-                    <tr>
-                        <th class="table-unified-th">Nombre</th>
-                        <th class="table-unified-th">Dosis</th>
-                        <th class="table-unified-th">Frecuencia</th>
-                        <th class="table-unified-th">Duración (días)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of detalleReceta; let idx = index">
-                        <td class="table-unified-td">{{getMedicamentoNombre(item.id_medicamento)}}</td>
-                        <td class="table-unified-td">{{item.dosis}}</td>
-                        <td class="table-unified-td">{{item.frecuencia}}</td>
-                        <td class="table-unified-td">{{item.duracion_dias}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <app-modal [isOpen]="showDetalle" [title]="detalleTitulo" (closeModal)="handleCerrarDetalle()" size="large">
+        <table class="recetas-detalle-table">
+            <thead>
+                <tr>
+                    <th>Medicamento</th>
+                    <th>Dosis</th>
+                    <th>Frecuencia</th>
+                    <th>Duración (días)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of detalleReceta">
+                    <td>{{ getMedicamentoNombre(item.id_medicamento) }}</td>
+                    <td>{{ item.dosis }}</td>
+                    <td>{{ item.frecuencia }}</td>
+                    <td>{{ item.duracion_dias }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </app-modal>
 </div>
