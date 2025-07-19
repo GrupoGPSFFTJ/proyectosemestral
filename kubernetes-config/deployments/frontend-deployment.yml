@@ -18,3 +18,8 @@ spec:
         image: johnsondavisv45/frontend:latest
         ports:
         - containerPort: 4200
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 100%

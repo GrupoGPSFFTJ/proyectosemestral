@@ -18,3 +18,8 @@ spec:
         image: johnsondavisv45/nutrition-service:latest
         ports:
         - containerPort: 3003
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 100%
