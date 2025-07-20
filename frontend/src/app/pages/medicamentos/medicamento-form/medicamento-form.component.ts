@@ -21,7 +21,7 @@ export class MedicamentoFormComponent {
   constructor(private fb: FormBuilder, private apiService: ApiService) {
     this.medicamentoForm = this.fb.group({
       nombre: ['', Validators.required],
-      descripcion: ['', Validators.required]
+      descripcion: ['']
     });
   }
 

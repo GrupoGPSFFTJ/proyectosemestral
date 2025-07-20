@@ -72,11 +72,7 @@
 
         <div class="form-field">
             <label class="form-label">Dirección</label>
-            <input type="text" formControlName="direccion" id="direccion" class="form-input" placeholder="Dirección" />
-            <div *ngIf="pacienteForm.get('direccion')?.invalid && pacienteForm.get('direccion')?.touched"
-                class="error-message">
-                La dirección es requerida
-            </div>
+            <input type="text" formControlName="direccion" id="direccion" class="form-input" placeholder="(Opcional)" />
         </div>
     </form>
 

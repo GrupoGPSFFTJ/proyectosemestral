@@ -24,7 +24,7 @@ export class RecetaFormComponent implements OnChanges {
     this.recetaForm = this.fb.group({
       id_paciente: ['', Validators.required],
       id_medico: ['', Validators.required],
-      indicacion: ['', Validators.required],
+      indicacion: [''],
       items: this.fb.array([])
     });
   }
