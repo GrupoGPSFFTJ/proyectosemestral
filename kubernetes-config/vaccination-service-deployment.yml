@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: proyecto-gps
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: proyecto-gps
+  name: vaccination-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vaccination-service
+  template:
+    metadata:
+      labels:
+        app: vaccination-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3007"
+    spec:
+      containers:
+        - name: vaccination-service
+          image: johnsondavisv45/vaccination-service:latest
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          ports:
+            - containerPort: 3007
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 100%

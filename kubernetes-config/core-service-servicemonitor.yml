@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: core-service-metrics
+  namespace: proyecto-gps
+  labels:
+    app: core-service
+    prometheus: targets
+spec:
+  selector:
+    app: core-service
+  ports:
+    - name: metrics
+      port: 3001
+      targetPort: 3001

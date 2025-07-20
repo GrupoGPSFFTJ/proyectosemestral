@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: proyecto-gps
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vaccination-service
+  namespace: proyecto-gps
+spec:
+  selector:
+    app: vaccination-service
+  ports:
+    - protocol: TCP
+      port: 3007
+      targetPort: 3007

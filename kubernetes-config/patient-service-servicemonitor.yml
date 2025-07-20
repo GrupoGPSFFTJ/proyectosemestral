@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: patient-service-metrics
+  namespace: proyecto-gps
+  labels:
+    app: patient-service
+    prometheus: targets
+spec:
+  selector:
+    app: patient-service
+  ports:
+    - name: metrics
+      port: 3005
+      targetPort: 3005

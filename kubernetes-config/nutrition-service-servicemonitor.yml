@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nutrition-service-metrics
+  namespace: proyecto-gps
+  labels:
+    app: nutrition-service
+    prometheus: targets
+spec:
+  selector:
+    app: nutrition-service
+  ports:
+    - name: metrics
+      port: 3003
+      targetPort: 3003

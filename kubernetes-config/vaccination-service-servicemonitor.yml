@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vaccination-service-metrics
+  namespace: proyecto-gps
+  labels:
+    app: vaccination-service
+    prometheus: targets
+spec:
+  selector:
+    app: vaccination-service
+  ports:
+    - name: metrics
+      port: 3007
+      targetPort: 3007
