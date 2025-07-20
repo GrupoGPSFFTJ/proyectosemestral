@@ -1,54 +1,133 @@
-.navbar {
+@import 'tailwindcss';
+
+.navbar-root {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    right: 0;
+    z-index: 50;
+    background-color: #000000;
+}
+
+.navbar-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    align-items: left;
+    justify-content: space-between;
     height: 56px;
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
-    background-color: #111;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
 }
 
-.home-link {
+.navbar-logo {
     display: flex;
     align-items: center;
+    color: #ffffff;
+    transition: color 0.3s;
     margin-right: 1rem;
-    text-decoration: none;
-    cursor: pointer;
 }
 
-.links-container {
+.navbar-logo:hover {
+    color: #b4b4b4;
+}
+
+
+@media (min-width: 640px) {
+    .navbar-title {
+        display: block;
+    }
+}
+
+.navbar-links {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
-    overflow-x: auto;
-    flex: 1 1 auto;
+    font-size: 1rem;
     min-width: 0;
 }
 
-.nav-link {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 0.25rem 0.5rem;
-    white-space: nowrap;
-    transition: background-color 0.2s, border-radius 0.2s;
-}
-
-.nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-}
-
-.user-container {
+.navbar-user {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    height: 100%;
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.user-button {
+.navbar-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    white-space: normal;
+    transition: background-color 0.2s, border-radius 0.2s;
+}
+
+.navbar-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+.navbar-dropdown-btn {
+    background: transparent;
+    vertical-align: middle;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    white-space: normal;
+    transition: background-color 0.2s, border-radius 0.2s;
+}
+
+.navbar-dropdown-btn:hover,
+.navbar-dropdown-btn.open {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+.navbar-dropdown-btn svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-dropdown {
+    position: relative;
+}
+
+.navbar-dropdown-menu {
+    position: absolute;
+    right: 0;
+    margin-top: 0.5rem;
+    width: 12rem;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px 0 #0002;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    z-index: 50;
+}
+
+.navbar-dropdown-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-weight: 400;
+    color: #18181b;
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.navbar-dropdown-link:hover,
+.navbar-dropdown-link:focus {
+    background: #f3f4f6;
+    color: #18181b;
+}
+
+.navbar-user-btn {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -57,13 +136,14 @@
     transition: background-color 0.2s;
 }
 
-.user-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+.navbar-user-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2)
 }
 
-.dropdown-menu {
+
+.navbar-user-menu {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 7px);
     right: 0;
     width: auto;
     min-width: 200px;
@@ -75,30 +155,24 @@
     white-space: nowrap;
 }
 
-.dropdown-header {
+.navbar-user-info {
     padding: 0.75rem 1rem;
     background-color: #f0f0f0;
 }
 
-.user-name-text {
+.navbar-user-name {
     font-weight: 600;
     color: #333;
 }
 
-.user-email-text {
+.navbar-user-email {
     font-size: 0.8rem;
     color: #666;
     margin-top: 0.25rem;
     display: block;
 }
 
-.dropdown-divider {
-    height: 1px;
-    background-color: #e0e0e0;
-    margin: 0;
-}
-
-.logout-item {
+.navbar-logout-btn {
     width: 100%;
     padding: 0.75rem 1rem;
     background: none;
@@ -110,6 +184,6 @@
     transition: background-color 0.2s;
 }
 
-.logout-item:hover {
+.navbar-logout-btn:hover {
     background-color: #ffe6e6;
 }

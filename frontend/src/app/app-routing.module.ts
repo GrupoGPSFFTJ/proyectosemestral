@@ -50,6 +50,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/fichas-odontologica/fichas-odontologica.module').then(m => m.FichasOdontologicaModule),
     canActivate: [authGuard]
   },
+  { path: 'pacam', loadChildren: () => import('./pages/pacam/pacam.module').then(m => m.PacamModule) },
   { path: '**', redirectTo: '' }
 ];
 
