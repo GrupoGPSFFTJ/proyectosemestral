@@ -32,7 +32,7 @@ export class PacienteFormComponent {
             fecha_nacimiento: ['', Validators.required],
             genero: ['', Validators.required],
             telefono: ['', Validators.required],
-            direccion: ['', Validators.required]
+            direccion: ['']
         });
     }
 

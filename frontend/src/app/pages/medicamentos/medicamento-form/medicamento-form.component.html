@@ -13,11 +13,8 @@
         <div class="form-field">
             <label class="form-label">Descripción</label>
             <textarea formControlName="descripcion" id="descripcion" class="form-textarea" rows="4"
-                placeholder="Descripción del medicamento"></textarea>
-            <div *ngIf="medicamentoForm.get('descripcion')?.invalid && medicamentoForm.get('descripcion')?.touched"
-                class="error-message">
-                La descripción es requerida
-            </div>
+                placeholder="(Opcional)"></textarea>
+
         </div>
     </form>
 
