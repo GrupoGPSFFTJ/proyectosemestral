@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { Paciente } from './pacientes.interfaces';
+import { PacientesDataService } from '../../data-services';
 
 @Component({
     selector: 'app-pacientes',
@@ -17,6 +18,7 @@ export class PacientesComponent implements OnInit {
 
     constructor(
         private apiService: ApiService,
+        public pacientesDataService: PacientesDataService
     ) { }
 
     async ngOnInit(): Promise<void> {
@@ -26,7 +28,7 @@ export class PacientesComponent implements OnInit {
     async loadAllData(): Promise<void> {
         try {
             this.loading = true;
-
+            this.pacientesDataService.loadStaticData();
             this.pacientes = await this.apiService.getPacientes();
             this.loading = false;
         } catch (error) {

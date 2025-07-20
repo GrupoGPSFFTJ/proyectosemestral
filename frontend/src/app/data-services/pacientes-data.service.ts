@@ -12,7 +12,6 @@ export class PacientesDataService {
     constructor(private apiService: ApiService) { }
 
     async loadStaticData(): Promise<void> {
-        // ✅ LAZY LOADING: Evita cargas múltiples concurrentes
         if (this.isLoaded) return;
         if (this.loadingPromise) return this.loadingPromise;
 
