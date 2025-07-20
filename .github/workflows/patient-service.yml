@@ -51,3 +51,9 @@ jobs:
             -t $IMAGE \
             backend
           docker push $IMAGE
+
+      - name: Trigger Kubernetes Redeploy
+        run: |
+          curl -X POST https://kubernetes-redeploy.proyecto-uni.online/redeploy/patient-service \
+            -H "Authorization: Bearer ${{ secrets.KUBE_TOKEN }}" \
+            -f

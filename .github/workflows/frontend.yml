@@ -39,3 +39,9 @@ jobs:
             -t $IMAGE \
             frontend
           docker push $IMAGE
+
+      - name: Trigger Kubernetes Redeploy
+        run: |
+          curl -X POST https://kubernetes-redeploy.proyecto-uni.online/redeploy/frontend \
+            -H "Authorization: Bearer ${{ secrets.KUBE_TOKEN }}" \
+            -f
