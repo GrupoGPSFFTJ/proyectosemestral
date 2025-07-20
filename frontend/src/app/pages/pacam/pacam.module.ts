@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
 import { PacamRoutingModule } from './pacam-routing.module';
 import { InscripcionesComponent } from './inscripciones/inscripciones.component';
 import { ControlDesembolsoComponent } from './control-desembolso/control-desembolso.component';
@@ -10,7 +9,8 @@ import { InscripcionFormComponent } from './inscripciones/inscripcion-form/inscr
 import { ControlDesembolsoFormComponent } from './control-desembolso/control-desembolso-form/control-desembolso-form.component';
 import { InformeFormComponent } from './informes/informe-form/informe-form.component';
 import { SharedModule } from '../../shared/shared.module';
-
+import { ProgramasNutricionalesComponent } from './programas-nutricionales/programas-nutricionales.component';
+import { ProgramaNutricionalFormComponent } from './programas-nutricionales/programa-nutricional-form/programa-nutricional-form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,9 @@ import { SharedModule } from '../../shared/shared.module';
     InformesComponent,
     InscripcionFormComponent,
     ControlDesembolsoFormComponent,
-    InformeFormComponent
+    InformeFormComponent,
+    ProgramasNutricionalesComponent,
+    ProgramaNutricionalFormComponent
   ],
   imports: [
     CommonModule,

@@ -26,7 +26,7 @@ export class ControlDesembolsoFormComponent {
   ) {
     this.desembolsoForm = this.fb.group({
       fecha_entrega: ['', Validators.required],
-      cantidad_entregada: [0, [Validators.required, Validators.min(1)]],
+      cantidad_entregada: ['', [Validators.required, Validators.min(1)]],
       id_inscripcion_pacam: ['', Validators.required]
     });
   }
@@ -42,7 +42,7 @@ export class ControlDesembolsoFormComponent {
       } else {
         this.desembolsoForm.patchValue({
           fecha_entrega: '',
-          cantidad_entregada: 0,
+          cantidad_entregada: '',
           id_inscripcion_pacam: ''
         });
       }

@@ -14,20 +14,16 @@ export class InscripcionPacamDataService {
 
   async loadStaticData(): Promise<void> {
     if (this.isLoaded) return;
-    const [inscripciones, pacientes, centros] = await Promise.all([
+    const [inscripciones, pacientes, centros, programasNutricionales] = await Promise.all([
       this.apiService.getInscripcionesPacam(),
       this.apiService.getPacientes(),
-      this.apiService.getCentrosSalud()
+      this.apiService.getCentrosSalud(),
+      this.apiService.getProgramasNutricionales()
     ]);
     this.inscripciones = inscripciones;
     this.pacientes = pacientes;
     this.centrosSalud = centros;
-    // Para los programas nutricionales, usaremos datos genéricos por ahora
-    this.programasNutricionales = [
-      { id_programa_nutricional: 1, nombre: 'Programa Infantil' },
-      { id_programa_nutricional: 2, nombre: 'Programa Adulto Mayor' },
-      { id_programa_nutricional: 3, nombre: 'Programa Materno' }
-    ];
+    this.programasNutricionales = programasNutricionales;
     this.isLoaded = true;
   }
 
@@ -38,7 +34,7 @@ export class InscripcionPacamDataService {
 
   getPacienteLabel(id_paciente: number): string {
     const paciente = this.pacientes.find(p => p.id_paciente === id_paciente);
-    return paciente ? paciente.nombre : `Paciente ${id_paciente}`;
+    return paciente ? `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}` : `Paciente ${id_paciente}`;
   }
 
   getCentroLabel(id_centro_salud: number): string {
@@ -54,7 +50,7 @@ export class InscripcionPacamDataService {
   getPacientesForSelect(): Array<{id: number, nombre: string}> {
     return this.pacientes.map(paciente => ({
       id: paciente.id_paciente,
-      nombre: paciente.nombre
+      nombre: `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}`
     }));
   }
 
