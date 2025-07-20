@@ -1,16 +1,14 @@
 @import 'tailwindcss';
 
 :root {
-    --bg-light: #ffffff;
-    --fg-light: #171717;
-    --bg-dark: #121212;
-    --fg-dark: #f5f5f5;
-
-    --background: var(--bg-light);
-    --foreground: var(--fg-light);
-
-    --font-geist-sans: 'Geist', sans-serif;
-    --font-geist-mono: 'Geist Mono', monospace;
+  --bg-light: #ffffff;
+  --bg-header: #f1f5f9;
+  --bg-hover: #f8fafc;
+  --fg-light: #334155;
+  --fg-muted: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-color: rgba(15, 23, 42, 0.1);
+  --md-font: 'Roboto', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -74,67 +72,100 @@ button:hover {
     background: #0056b3;
 }
 
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-center;
+    margin-top: 8px;
+}
+
 button:disabled {
     background: #ccc;
     cursor: not-allowed;
 }
 
-/* Tablas globales */
+/* Estilo base */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-light);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.9rem;
 }
 
-th,
-td {
-    text-align: left;
-    padding: 0.75rem;
-    border-bottom: 1px solid #e2e8f0;
-}
-
+/* Cabecera */
 th {
-    background: #f8fafc;
-    font-weight: 600;
-    color: #374151;
-    border-bottom: 2px solid #e2e8f0;
+  background: var(--bg-header);
+  color: var(--fg-muted);
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 1rem;
+  border-bottom: 2px solid var(--border-color);
 }
 
+/* Celdas */
+td {
+  padding: 1rem;
+  color: var(--fg-light);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease;
+}
+
+/* Hover fila */
 tr:hover {
-    background: #f9fafb;
+  background-color: var(--bg-hover);
 }
 
-/* Estilos de tabla unificados */
+/* Tabla con clase especial */
 .table-unified {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--bg-light);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 0.5rem;
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg-light);
+  box-shadow: 0 6px 16px var(--shadow-color);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
+/* Encabezados personalizados */
 .table-unified th,
 .table-unified-th {
-    background-color: #f9fafb;
-    text-align: left;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    color: #6b7280;
-    padding: 0.75rem;
+  background-color: var(--bg-header);
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  padding: 1rem;
+  border-bottom: 2px solid var(--border-color);
 }
 
+/* Celdas personalizadas */
 .table-unified td,
 .table-unified-td {
-    padding: 0.75rem;
-    font-size: 0.875rem;
-    color: var(--fg-light);
-    border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: var(--fg-light);
+  border-top: 1px solid var(--border-color);
+  transition: background-color 0.25s ease;
 }
+
+/* Responsive (opcional) */
+@media (max-width: 768px) {
+  table,
+  .table-unified {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 0.75rem;
+  }
+}
+
 
 /* Utilidades globales */
 .text-center {
@@ -331,11 +362,11 @@ h3 {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
     }
-    
+
     .btn-crear .btn-text {
         display: none;
     }
-    
+
     .btn-crear .btn-icon {
         font-size: 1.1rem;
     }

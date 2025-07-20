@@ -1,59 +1,56 @@
 <div class="pacientes-main">
-    <div class="patients-header">
-        <h1 class="patients-header-title">Pacientes</h1>
-        <div class="patients-header-search">
-            <input type="text" [(ngModel)]="search" placeholder="Buscar paciente" class="patients-search-input"
-                autocomplete="off" />
-            <div class="patients-total">
-                Total: {{ filteredPacientes.length }}
-            </div>
+
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Pacientes</h1>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <button (click)="openCreateModal()" class="btn-crear">
+                <span class="btn-text">Crear Paciente</span>
+            </button>
         </div>
     </div>
 
-    <button class="add-patient-btn" (click)="openCreateModal()">
-        Agregar Paciente
-    </button>
-
-    <app-paciente-form [isOpen]="showForm" [paciente]="editingPaciente" (onClose)="closeModal()" (onSave)="savePaciente($event)"
-        (onUpdate)="updatePaciente($event)"></app-paciente-form>
+    <app-paciente-form [isOpen]="showForm" [paciente]="editingPaciente" (onClose)="closeModal()"
+        (onSave)="savePaciente($event)" (onUpdate)="updatePaciente($event)"></app-paciente-form>
 
     <div *ngIf="error" class="pacientes-error">
         <h2 class="pacientes-error-title">⚠️ Error cargando pacientes</h2>
         <p>{{ error }}</p>
     </div>
 
-    <div *ngIf="!error" class="pacientes-list">
-        <div *ngIf="filteredPacientes.length > 0; else emptyState">
-            <div *ngFor="let p of filteredPacientes" class="patient-card patient-card-list">
-                <div class="patient-avatar" [title]="'Avatar de ' + p.nombre">
-                    {{ getInitials(p) }}
-                </div>
-                <div class="patient-info-list">
-                    <h3>
-                        {{ capitalizeWords(p.nombre) }}
-                        {{ capitalizeWords(p.apellido_paterno) }}
-                        {{ capitalizeWords(p.apellido_materno) }}
-                    </h3>
-                    <div class="patient-meta-list">
-                        <p><strong>RUT:</strong> {{ p.rut }}</p>
-                        <p><strong>F. Nac.:</strong> {{ formatFecha(p.fecha_nacimiento) }}</p>
-                        <p><strong>Género:</strong> {{ capitalizeWords(p.genero) }}</p>
-                        <p><strong>Teléfono:</strong> {{ p.telefono }}</p>
-                        <p><strong>Dirección:</strong> {{ capitalizeWords(p.direccion) }}</p>
-                    </div>
-                </div>
-                <div class="patient-actions patient-actions-list">
-                    <button (click)="openEditModal(p)">Editar</button>
-                    <button (click)="handleDelete(p.id_paciente)">Eliminar</button>
-                </div>
-            </div>
-        </div>
-
-        <ng-template #emptyState>
-            <div class="empty-state">
-                <h3>No hay pacientes registrados</h3>
-                <p>Comienza agregando tu primer paciente usando el botón de arriba</p>
-            </div>
-        </ng-template>
+    <div *ngIf="!error">
+        <table *ngIf="pacientes.length > 0" class="table-unified">
+            <thead>
+                <tr>
+                    <th class="table-unified-th">Nombre</th>
+                    <th class="table-unified-th">Apellido Paterno</th>
+                    <th class="table-unified-th">Apellido Materno</th>
+                    <th class="table-unified-th">RUT</th>
+                    <th class="table-unified-th">F. Nac.</th>
+                    <th class="table-unified-th">Género</th>
+                    <th class="table-unified-th">Teléfono</th>
+                    <th class="table-unified-th">Dirección</th>
+                    <th class="table-unified-th">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of pacientes">
+                    <td class="table-unified-td">{{ capitalizeWords(p.nombre) }}</td>
+                    <td class="table-unified-td">{{ capitalizeWords(p.apellido_paterno) }}</td>
+                    <td class="table-unified-td">{{ capitalizeWords(p.apellido_materno) }}</td>
+                    <td class="table-unified-td">{{ p.rut }}</td>
+                    <td class="table-unified-td">{{ formatFecha(p.fecha_nacimiento) }}</td>
+                    <td class="table-unified-td">{{ capitalizeWords(p.genero) }}</td>
+                    <td class="table-unified-td">{{ p.telefono }}</td>
+                    <td class="table-unified-td">{{ capitalizeWords(p.direccion) }}</td>
+                    <td class="table-unified-td">
+                        <div class="button-group">
+                            <button (click)="openEditModal(p)">Editar</button>
+                            <button (click)="handleDelete(p.id_paciente)">Eliminar</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

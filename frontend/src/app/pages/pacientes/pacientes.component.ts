@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
-import { PacientesDataService } from '../../data-services/pacientes-data.service';
 import { Paciente } from './pacientes.interfaces';
 
 @Component({
@@ -14,12 +13,10 @@ export class PacientesComponent implements OnInit {
     error: string | null = null;
     editingPaciente: Paciente | null = null;
     showForm = false;
-    search = '';
     loading = false;
 
     constructor(
         private apiService: ApiService,
-        private pacientesDataService: PacientesDataService
     ) { }
 
     async ngOnInit(): Promise<void> {
@@ -30,14 +27,7 @@ export class PacientesComponent implements OnInit {
         try {
             this.loading = true;
 
-            // ✅ OPTIMIZACIÓN: Cargar datos principales Y estáticos EN PARALELO
-            const [pacientesData] = await Promise.all([
-                this.apiService.getPacientes(),
-                this.pacientesDataService.loadStaticData() // Se ejecuta en paralelo, no bloquea
-            ]);
-
-            // Mostrar los pacientes inmediatamente
-            this.pacientes = pacientesData;
+            this.pacientes = await this.apiService.getPacientes();
             this.loading = false;
         } catch (error) {
             console.error('❌ [PacientesComponent] Error al cargar datos:', error);
@@ -48,28 +38,12 @@ export class PacientesComponent implements OnInit {
         }
     }
 
-    get filteredPacientes(): Paciente[] {
-        const q = this.search.trim().toLowerCase();
-        if (!q) return this.pacientes;
-
-        return this.pacientes.filter(p =>
-            p.nombre.toLowerCase().includes(q) ||
-            p.apellido_paterno.toLowerCase().includes(q) ||
-            p.apellido_materno.toLowerCase().includes(q) ||
-            p.rut.toLowerCase().includes(q) ||
-            p.telefono.toLowerCase().includes(q) ||
-            p.direccion.toLowerCase().includes(q)
-        );
-    }
 
 
     capitalizeWords(str: string): string {
         return str.replace(/\b\w+/g, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
     }
 
-    getInitials(paciente: Paciente): string {
-        return `${paciente.nombre?.[0] || ''}${paciente.apellido_paterno?.[0] || ''}`.toUpperCase();
-    }
 
     formatFecha(dateString: string): string {
         return new Date(dateString).toLocaleDateString('es-CL');
