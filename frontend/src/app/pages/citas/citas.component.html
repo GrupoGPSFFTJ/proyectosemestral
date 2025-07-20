@@ -21,7 +21,6 @@
     <table *ngIf="citas && citas.length > 0" class="table-unified">
         <thead>
             <tr>
-                <th class="table-unified-th">ID</th>
                 <th class="table-unified-th">Paciente</th>
                 <th class="table-unified-th">Médico</th>
                 <th class="table-unified-th">Fecha</th>
@@ -35,7 +34,6 @@
         </thead>
         <tbody>
             <tr *ngFor="let c of citas">
-                <td class="table-unified-td">{{c.id_cita}}</td>
                 <td class="table-unified-td">{{getPacienteNombre(c.id_paciente)}}</td>
                 <td class="table-unified-td">{{getUsuarioNombre(c.id_usuario)}}</td>
                 <td class="table-unified-td">{{formatFecha(c.fecha)}}</td>

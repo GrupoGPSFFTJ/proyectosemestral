@@ -13,7 +13,6 @@
     <table class="table-unified" *ngIf="fichasClinicas && fichasClinicas.length > 0">
         <thead>
             <tr>
-                <th class="table-unified-th">ID</th>
                 <th class="table-unified-th">Fecha Control</th>
                 <th class="table-unified-th">Observación</th>
                 <th class="table-unified-th">Paciente</th>
@@ -25,7 +24,6 @@
         </thead>
         <tbody>
             <tr *ngFor="let ficha of fichasClinicas">
-                <td class="table-unified-td">{{ ficha.id_ficha_control }}</td>
                 <td class="table-unified-td">{{ formatDate(ficha.fecha_control) }}</td>
                 <td class="table-unified-td">{{ ficha.observacion }}</td>
                 <td class="table-unified-td">{{ getPacienteNombre(ficha.id_paciente) }}</td>

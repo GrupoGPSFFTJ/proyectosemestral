@@ -21,7 +21,6 @@
     <table *ngIf="medicamentos && medicamentos.length > 0" class="table-unified">
         <thead>
             <tr>
-                <th class="table-unified-th">ID</th>
                 <th class="table-unified-th">Nombre</th>
                 <th class="table-unified-th">Descripción</th>
                 <th class="table-unified-th">Acciones</th>
@@ -29,7 +28,6 @@
         </thead>
         <tbody>
             <tr *ngFor="let medicamento of medicamentos">
-                <td class="table-unified-td">{{ medicamento.id_medicamento }}</td>
                 <td class="table-unified-td">{{ medicamento.nombre }}</td>
                 <td class="table-unified-td">{{ medicamento.descripcion }}</td>
                 <td class="table-unified-td">

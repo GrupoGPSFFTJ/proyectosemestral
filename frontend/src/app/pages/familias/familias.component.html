@@ -22,7 +22,6 @@
     <table *ngIf="familias && familias.length > 0" class="table-unified">
         <thead>
             <tr>
-                <th class="table-unified-th">ID</th>
                 <th class="table-unified-th">Nombre</th>
                 <th class="table-unified-th">Fecha Creación</th>
                 <th class="table-unified-th">Acciones</th>
@@ -30,7 +29,6 @@
         </thead>
         <tbody>
             <tr *ngFor="let f of familias">
-                <td class="table-unified-td">{{ f.id_familia }}</td>
                 <td class="table-unified-td">{{ f.nombre }}</td>
                 <td class="table-unified-td">{{ formatDate(f.fecha_creacion) }}</td>
                 <td class="table-unified-td">

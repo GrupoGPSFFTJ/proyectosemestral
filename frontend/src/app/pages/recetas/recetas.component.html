@@ -21,7 +21,6 @@
     <table *ngIf="recetas && recetas.length > 0" class="table-unified">
         <thead>
             <tr>
-                <th class="table-unified-th">ID</th>
                 <th class="table-unified-th">Paciente</th>
                 <th class="table-unified-th">Médico</th>
                 <th class="table-unified-th">Fecha Emisión</th>
@@ -31,7 +30,6 @@
         </thead>
         <tbody>
             <tr *ngFor="let receta of recetas">
-                <td class="table-unified-td">{{ receta.id_receta }}</td>
                 <td class="table-unified-td">{{ getPacienteNombre(receta.id_paciente) }}</td>
                 <td class="table-unified-td">{{ getMedicoNombre(receta.id_medico) }}</td>
                 <td class="table-unified-td">{{ formatFecha(receta.fecha_emision) }}</td>
