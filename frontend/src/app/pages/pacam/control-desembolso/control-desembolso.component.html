@@ -1,1 +1,43 @@
-<p>control-desembolso works!</p>
+<div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">⏳ Cargando datos de desembolsos...</div>
+</div>
+
+<div *ngIf="!loading" class="p-6">
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Control de Desembolsos</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Desembolso</span>
+        </button>
+    </div>
+
+    <app-control-desembolso-form [isOpen]="showModal" [desembolso]="editingDesembolso" (onClose)="closeModal()" (onSave)="saveDesembolso($event)"
+        (onUpdate)="updateDesembolso($event)"></app-control-desembolso-form>
+
+    <div *ngIf="desembolsos && desembolsos.length === 0" class="no-data" style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay desembolsos registrados
+    </div>
+
+    <table *ngIf="desembolsos && desembolsos.length > 0" class="table-unified">
+        <thead>
+            <tr>
+                <th class="table-unified-th">Fecha de Entrega</th>
+                <th class="table-unified-th">Cantidad Entregada</th>
+                <th class="table-unified-th">Inscripción</th>
+                <th class="table-unified-th">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of desembolsos">
+                <td class="table-unified-td">{{formatFecha(d.fecha_entrega)}}</td>
+                <td class="table-unified-td">{{formatCantidad(d.cantidad_entregada)}}</td>
+                <td class="table-unified-td">{{getInscripcionLabel(d.id_inscripcion_pacam)}}</td>
+                <td class="table-unified-td">
+                    <button (click)="openEditModal(d)" title="Editar">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
