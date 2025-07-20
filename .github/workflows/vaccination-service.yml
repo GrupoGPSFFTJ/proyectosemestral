@@ -56,4 +56,4 @@ jobs:
         run: |
           curl -X POST https://kubernetes-redeploy.proyecto-uni.online/redeploy/vaccination-service \
             -H "Authorization: Bearer ${{ secrets.KUBE_TOKEN }}" \
-            -f
+            -f || true
