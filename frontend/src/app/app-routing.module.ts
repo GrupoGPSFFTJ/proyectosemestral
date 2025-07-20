@@ -56,9 +56,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    // ✅ LAZY LOADING: Estrategia de preloading personalizada
     preloadingStrategy: CustomPreloadingStrategy,
-    // Habilitar trazado para debug (opcional)
     enableTracing: false
   })],
   exports: [RouterModule],

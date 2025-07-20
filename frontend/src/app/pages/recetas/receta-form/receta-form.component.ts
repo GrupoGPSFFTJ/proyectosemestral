@@ -38,7 +38,6 @@ export class RecetaFormComponent implements OnChanges {
           indicacion: this.receta.indicacion
         });
 
-        // Obtener los items desde el backend
         this.data.getRecMedByRecetaForForm(this.receta.id_receta).then((items: RecetaMedicamentoForm[]) => {
           this.items.clear();
           items.forEach(item => {
@@ -81,7 +80,6 @@ export class RecetaFormComponent implements OnChanges {
     this.items.removeAt(index);
   }
 
-  // Calcula la cantidad a despachar
   calcularCantidadDespachada(
     dosis_cantidad: string,
     frecuencia_horas: string,
@@ -100,7 +98,6 @@ export class RecetaFormComponent implements OnChanges {
   async onSubmit() {
     try {
       if (this.receta) {
-        // Actualizar receta existente
         const recetaData = {
           id_paciente: this.recetaForm.value.id_paciente,
           id_medico: this.recetaForm.value.id_medico,
@@ -108,22 +105,20 @@ export class RecetaFormComponent implements OnChanges {
         };
         const receta = await this.apiService.updateReceta(this.receta.id_receta, recetaData);
 
-        // TODO: Manejar actualización de RecetaMedicamento
         alert('Receta actualizada correctamente');
         this.onUpdate.emit(receta);
       } else {
-        // Crear nueva receta - usando la lógica exacta del componente principal
 
-        // 1. Crear receta
+        
         const recetaPayload = {
           id_paciente: Number(this.recetaForm.value.id_paciente),
           id_medico: Number(this.recetaForm.value.id_medico),
-          fecha_emision: new Date().toISOString().slice(0, 19).replace('T', ' '), // now()
+          fecha_emision: new Date().toISOString().slice(0, 19).replace('T', ' '),
           indicacion: this.recetaForm.value.indicacion,
         };
         const receta = await this.apiService.createReceta(recetaPayload);
 
-        // 2. Crear ítems de receta y despachos
+        
         const items = this.recetaForm.value.items;
         for (const item of items) {
           const recetaMedPayload = {
@@ -135,7 +130,7 @@ export class RecetaFormComponent implements OnChanges {
           };
           const recetaMed = await this.apiService.createRecetaMedicamento(recetaMedPayload);
 
-          // Despacho automático (now + 1 hora)
+          
           const fecha_despacho = new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
           const cantidad_despachada = this.calcularCantidadDespachada(
             item.dosis_cantidad,

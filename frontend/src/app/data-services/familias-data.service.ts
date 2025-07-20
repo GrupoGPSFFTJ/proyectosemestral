@@ -27,13 +27,11 @@ export class FamiliasDataService {
         }
     }
 
-    // Getter para mostrar nombre de la familia
     getFamiliaNombre(id: number): string {
         const familia = this.familias.find(f => Number(f.id_familia) === Number(id));
         return familia ? familia.nombre : id.toString();
     }
 
-    // Getter para selector en formularios (solo ID y nombre)
     getFamiliasForSelect(): FamiliaSelect[] {
         return this.familias.map(f => ({
             id: f.id_familia,
@@ -41,12 +39,10 @@ export class FamiliasDataService {
         }));
     }
 
-    // Getter para obtener todas las familias (para la tabla principal)
     getAllFamilias(): any[] {
         return this.familias;
     }
 
-    // Método para refrescar datos después de crear/actualizar/eliminar
     async refreshData(): Promise<void> {
         this.isLoaded = false;
         await this.loadStaticData();

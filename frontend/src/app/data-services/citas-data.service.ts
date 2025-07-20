@@ -26,7 +26,6 @@ export class CitasDataService {
     constructor(private apiService: ApiService) { }
 
     async loadStaticData(): Promise<void> {
-        // ✅ LAZY LOADING: Evita cargas múltiples concurrentes
         if (this.isLoaded) return;
         if (this.loadingPromise) return this.loadingPromise;
 
@@ -58,7 +57,6 @@ export class CitasDataService {
         }
     }
 
-    // Getters para mostrar nombres en las tablas
     getPacienteNombre(id: number): string {
         const paciente = this.pacientes.find(p => Number(p.id_paciente) === Number(id));
         return paciente ? `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}` : id.toString();
@@ -84,7 +82,6 @@ export class CitasDataService {
         return estadoObj ? estadoObj.label : estado;
     }
 
-    // Getters para selectores en formularios (solo ID y nombre)
     getPacientesForSelect(): PacienteSelect[] {
         return this.pacientes.map(p => ({
             id: p.id_paciente,
@@ -114,7 +111,6 @@ export class CitasDataService {
         return this.tiposCita;
     }
 
-    // Método para refrescar datos si es necesario
     async refreshData(): Promise<void> {
         this.isLoaded = false;
         await this.loadStaticData();

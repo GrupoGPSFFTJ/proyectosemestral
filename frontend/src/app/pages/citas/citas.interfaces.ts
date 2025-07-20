@@ -1,4 +1,4 @@
-// Interface principal de Cita
+
 export interface Cita {
     id_cita: number;
     observacion: string;
@@ -11,7 +11,7 @@ export interface Cita {
     tipo_cita: string;
 }
 
-// Interfaces para entidades relacionadas
+
 export interface Paciente {
     id_paciente: number;
     nombre: string;
@@ -39,7 +39,7 @@ export interface TipoCita {
     label: string;
 }
 
-// Interfaces para selectores (solo ID y nombre)
+
 export interface PacienteSelect {
     id: number;
     nombre: string;

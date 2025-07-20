@@ -27,7 +27,6 @@ export class LazyContentDirective implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        // ✅ LAZY LOADING: Cargar contenido solo cuando es visible
         this.setupIntersectionObserver();
     }
 
@@ -47,7 +46,7 @@ export class LazyContentDirective implements OnInit, OnDestroy {
                 });
             },
             {
-                threshold: 0.1 // Cargar cuando el 10% del elemento es visible
+                threshold: 0.1
             }
         );
 
@@ -57,18 +56,15 @@ export class LazyContentDirective implements OnInit, OnDestroy {
     private async loadContent() {
         if (this.isLoaded) return;
 
-        // Mostrar loading
         this.viewContainer.clear();
         this.viewContainer.createEmbeddedView(this.templateRef, {
             $implicit: { loading: true }
         });
 
-        // Esperar delay si se especifica
         if (this.lazyDelay > 0) {
             await new Promise(resolve => setTimeout(resolve, this.lazyDelay));
         }
 
-        // Cargar contenido real
         this.viewContainer.clear();
         this.viewContainer.createEmbeddedView(this.templateRef, {
             $implicit: { loading: false, data: this.appLazyContent }
@@ -76,7 +72,6 @@ export class LazyContentDirective implements OnInit, OnDestroy {
 
         this.isLoaded = true;
 
-        // Desconectar observer después de cargar
         if (this.observer) {
             this.observer.disconnect();
         }

@@ -28,19 +28,16 @@ export class CitasComponent implements OnInit {
     try {
       this.loading = true;
 
-      // ✅ OPTIMIZACIÓN: Cargar datos principales Y estáticos EN PARALELO
       const [citasData] = await Promise.all([
         this.apiService.getCitas(),
-        this.citasDataService.loadStaticData() // Se ejecuta en paralelo, no bloquea
+        this.citasDataService.loadStaticData()
       ]);
 
-      // Mostrar las citas inmediatamente
       this.citas = citasData;
       this.loading = false;
     } catch (error) {
       console.error('❌ [CitasComponent] Error al cargar datos:', error);
       this.loading = false;
-      // En caso de error, mostrar array vacío
       this.citas = [];
     }
   }
@@ -87,7 +84,6 @@ export class CitasComponent implements OnInit {
 
   formatFecha(fecha: string): string {
     if (!fecha) return '';
-    // Espera formato YYYY-MM-DD
     const [year, month, day] = fecha.split('-').map(Number);
     if (!year || !month || !day) return fecha;
     const date = new Date(year, month - 1, day);

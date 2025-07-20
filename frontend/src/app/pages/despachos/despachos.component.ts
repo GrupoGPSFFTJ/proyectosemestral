@@ -24,13 +24,11 @@ export class DespachosComponent implements OnInit {
 
   async loadAllData(): Promise<void> {
     try {
-      // ✅ OPTIMIZACIÓN: Cargar datos principales Y estáticos EN PARALELO
       const [despachosData] = await Promise.all([
         this.apiService.getDespachos(),
-        this.despachosDataService.loadStaticData() // Se ejecuta en paralelo, no bloquea
+        this.despachosDataService.loadStaticData()
       ]);
 
-      // Mostrar los despachos inmediatamente
       this.despachos = despachosData;
       this.loading = false;
     } catch (error) {

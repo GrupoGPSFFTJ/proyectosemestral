@@ -35,7 +35,6 @@ export class PacientesComponent implements OnInit {
             console.error('❌ [PacientesComponent] Error al cargar datos:', error);
             this.loading = false;
             this.error = 'Error al cargar los pacientes';
-            // En caso de error, mostrar array vacío
             this.pacientes = [];
         }
     }
@@ -51,7 +50,6 @@ export class PacientesComponent implements OnInit {
         return new Date(dateString).toLocaleDateString('es-CL');
     }
 
-    // Nuevos métodos siguiendo el patrón de modal
     openCreateModal(): void {
         this.editingPaciente = null;
         this.showForm = true;

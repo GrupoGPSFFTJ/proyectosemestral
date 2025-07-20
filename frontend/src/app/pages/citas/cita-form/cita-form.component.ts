@@ -58,13 +58,11 @@ export class CitaFormComponent {
     }
   }
   async onSubmit() {
-    //validacion en el template y deshabilitando el boton principal
     if (this.cita) {
       const cita = await this.apiService.updateCita(this.cita.id_cita, this.citaForm.value);
       alert('Cita actualizada correctamente');
       this.onUpdate.emit(cita);
     } else {
-      // Crear nueva entidad
       const cita = await this.apiService.createCita(this.citaForm.value);
       alert('Cita creada correctamente');
       this.onSave.emit(cita);

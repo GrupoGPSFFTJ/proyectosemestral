@@ -16,7 +16,6 @@ export class ProgramasNutricionalesDataService {
     constructor(private apiService: ApiService) {}
     
     async loadStaticData(): Promise<void> {
-        // ✅ LAZY LOADING: Evita cargas múltiples concurrentes
         if (this.isLoaded) return;
         if (this.loadingPromise) return this.loadingPromise;
 
@@ -40,21 +39,17 @@ export class ProgramasNutricionalesDataService {
         return this.programasNutricionales;
     }
     
-    // Getter para mostrar nombres en las tablas
     getProgramaLabel(id_programa_nutricional: number): string {
         const programa = this.programasNutricionales.find(p => p.id_programa_nutricional === id_programa_nutricional);
         return programa ? programa.nombre : `Programa ${id_programa_nutricional}`;
     }
 
-    // Getter para selectores en formularios
     getProgramasForSelect(): ProgramaNutricionalSelect[] {
         return this.programasNutricionales.map(p => ({
             id: p.id_programa_nutricional,
             nombre: p.nombre
         }));
     }
-
-    // Método para refrescar datos si es necesario
     async refreshData(): Promise<void> {
         this.isLoaded = false;
         this.loadingPromise = null;

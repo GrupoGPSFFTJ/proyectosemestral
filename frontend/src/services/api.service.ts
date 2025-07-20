@@ -5,57 +5,43 @@ import { ApiClient } from '../lib/api-client';
     providedIn: 'root'
 })
 export class ApiService {
-
     constructor(private api: ApiClient) { }
-
     login(data: any): Promise<any> {
         return this.api.post<any>('/core/auth/login', data, false);
     }
-
     register(data: any): Promise<any> {
         return this.api.post<any>('/core/auth/register', data, false);
     }
-
     asignarRolUsuario(data: any): Promise<any> {
         return this.api.post<any>('/core/usuario-rol', data, false);
     }
-
     getUserByUsername(username: string): Promise<any> {
         return this.api.get<any>(`/core/usuarios/user/${username}`);
     }
-
     getUserByEmail(email: string): Promise<any> {
         return this.api.get<any>(`/core/usuarios/email/${email}`);
     }
-
     getCentrosSalud(): Promise<any[]> {
         return this.api.get<any[]>('/core/centros-salud/');
     }
-
     createPaciente(data: any): Promise<any> {
         return this.api.post<any>('/patient/paciente', data);
     }
-
     getGeneros(): Promise<string[]> {
         return this.api.get<string[]>('/patient/enums/usuario/estados');
     }
-
     getPacientes(): Promise<any[]> {
         return this.api.get<any[]>('/patient/paciente');
     }
-
     getPacientesCount() {
         return this.getCount('patient', 'paciente');
     }
-
     updatePaciente(id: number, data: any): Promise<any> {
         return this.api.put<any>(`/patient/paciente/${id}`, data);
     }
-
     deletePaciente(id: number): Promise<any> {
         return this.api.delete<any>(`/patient/paciente/${id}`);
     }
-
     getFamiliasCount() {
         return this.getCount('patient', 'familia');
     }

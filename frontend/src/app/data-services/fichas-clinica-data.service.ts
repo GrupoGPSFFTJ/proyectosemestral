@@ -44,7 +44,6 @@ export class FichasClinicaDataService {
         }
     }
 
-    // Getters para mostrar nombres en las tablas
     getPacienteNombre(id: number): string {
         const paciente = this.pacientes.find(p => Number(p.id_paciente) === Number(id));
         return paciente ? `${paciente.nombre} ${paciente.apellido_paterno} ${paciente.apellido_materno}` : id.toString();
@@ -65,7 +64,6 @@ export class FichasClinicaDataService {
         return usuario ? usuario.nombre : id.toString();
     }
 
-    // Getters para selectores en formularios (solo ID y nombre)
     getPacientesForSelect(): PacienteSelect[] {
         return this.pacientes.map(p => ({
             id: p.id_paciente,
@@ -94,7 +92,6 @@ export class FichasClinicaDataService {
         }));
     }
 
-    // Método para refrescar datos si es necesario
     async refreshData(): Promise<void> {
         this.isLoaded = false;
         await this.loadStaticData();

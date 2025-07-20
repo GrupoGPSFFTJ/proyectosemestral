@@ -26,13 +26,11 @@ export class MedicamentosComponent implements OnInit {
 
   async loadMedicamentos(): Promise<void> {
     try {
-      // ✅ OPTIMIZACIÓN: Cargar datos principales Y estáticos EN PARALELO
       const [medicamentosData] = await Promise.all([
         this.apiService.getMedicamentos(),
-        this.medicamentosDataService.loadStaticData() // Se ejecuta en paralelo, no bloquea
+        this.medicamentosDataService.loadStaticData()
       ]);
 
-      // Mostrar los medicamentos inmediatamente
       this.medicamentos = medicamentosData;
       this.loading = false;
     } catch (error) {

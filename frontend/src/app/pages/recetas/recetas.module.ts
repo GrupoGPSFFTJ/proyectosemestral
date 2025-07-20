@@ -12,7 +12,7 @@ import { RecetaFormComponent } from './receta-form/receta-form.component';
     RecetaFormComponent
   ],
   imports: [
-    SharedModule, // ✅ Incluye: CommonModule, FormsModule, ReactiveFormsModule, LazyContentDirective
+    SharedModule,
     RecetasRoutingModule
   ]
 })

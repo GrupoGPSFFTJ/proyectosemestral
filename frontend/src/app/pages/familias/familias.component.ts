@@ -26,10 +26,8 @@ export class FamiliasComponent implements OnInit {
 
     async loadFamilias(): Promise<void> {
         try {
-            // Cargar datos estáticos primero
             await this.familiasDataService.loadStaticData();
 
-            // Luego cargar las familias
             const data = await this.apiService.getFamilias();
             if (Array.isArray(data)) {
                 this.familias = data;
@@ -71,7 +69,6 @@ export class FamiliasComponent implements OnInit {
 
     formatDate(dateString: string): string {
         if (!dateString) return '';
-        // Espera formato YYYY-MM-DD
         const [year, month, day] = dateString.split('-').map(Number);
         if (!year || !month || !day) return dateString;
         const date = new Date(year, month - 1, day);

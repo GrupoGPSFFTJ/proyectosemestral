@@ -21,7 +21,6 @@ export class PacientesDataService {
 
     private async _loadData(): Promise<void> {
         try {
-            // Obtiene los géneros desde la API
             const generosApi = await this.apiService.getGeneros();
             this.generos = (generosApi || []).map((g: string) => ({ value: g, label: g }));
 

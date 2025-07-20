@@ -29,7 +29,7 @@ export class DespachosDataService {
         }
     }
 
-    // Getter para mostrar nombre del medicamento en las tablas
+    
     getNombreMedicamento(id_receta_med: number): string {
         const recetaMed = this.recetaMedicamentos.find(rm => Number(rm.id_receta_medicamento) === Number(id_receta_med));
         if (!recetaMed) return id_receta_med.toString();
@@ -38,7 +38,6 @@ export class DespachosDataService {
         return medicamento ? medicamento.nombre : id_receta_med.toString();
     }
 
-    // Método para refrescar datos si es necesario
     async refreshData(): Promise<void> {
         this.isLoaded = false;
         await this.loadStaticData();

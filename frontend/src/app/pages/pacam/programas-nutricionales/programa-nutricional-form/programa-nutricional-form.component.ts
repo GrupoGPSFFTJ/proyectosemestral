@@ -29,7 +29,6 @@ export class ProgramaNutricionalFormComponent implements OnChanges {
   ngOnChanges(): void {
     if (this.isOpen) {
       if (this.programa) {
-        // Editing mode
         this.programaForm.patchValue({
           codigo: this.programa.codigo,
           nombre: this.programa.nombre,
@@ -37,7 +36,6 @@ export class ProgramaNutricionalFormComponent implements OnChanges {
           activo: this.programa.activo
         });
       } else {
-        // Create mode
         this.programaForm.reset({
           codigo: '',
           nombre: '',
@@ -54,14 +52,12 @@ export class ProgramaNutricionalFormComponent implements OnChanges {
       const formData = this.programaForm.value;
       
       if (this.programa) {
-        // Update mode
         const updatedPrograma: ProgramasNutricionales = {
           ...this.programa,
           ...formData
         };
         this.onUpdate.emit(updatedPrograma);
       } else {
-        // Create mode
         this.onSave.emit(formData);
       }
     }

@@ -12,7 +12,7 @@ import { CitaFormComponent } from './cita-form/cita-form.component';
     CitaFormComponent
   ],
   imports: [
-    SharedModule, // ✅ LAZY LOADING: Incluye LazyContentDirective y CommonModule
+    SharedModule,
     CitasRoutingModule,
   ]
 })

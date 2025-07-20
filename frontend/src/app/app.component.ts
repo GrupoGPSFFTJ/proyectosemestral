@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
   constructor(private quickPreloadService: QuickPreloadService) { }
 
   ngOnInit(): void {
-    // ✅ OPTIMIZACIÓN: Precargar módulos críticos inmediatamente después de la inicialización
     setTimeout(() => {
       this.quickPreloadService.preloadCriticalModules();
     }, 500); // Delay mínimo para no bloquear la inicialización

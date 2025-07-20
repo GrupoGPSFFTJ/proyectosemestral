@@ -31,7 +31,6 @@ export class AuthService {
         private apiService: ApiService
     ) {
         this.checkSessionValidity();
-        // Check session validity every minute
         interval(60000).subscribe(() => this.checkSessionValidity());
     }
 
@@ -97,7 +96,6 @@ export class AuthService {
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
             this.userSubject.next(userInfo);
 
-            // Usar setTimeout para asegurar que el cambio de estado se propague
             setTimeout(() => {
                 this.router.navigate(['/dashboard']);
             }, 100);

@@ -27,13 +27,11 @@ export class MedicamentosDataService {
         }
     }
 
-    // Getter para mostrar nombre del medicamento
     getMedicamentoNombre(id: number): string {
         const medicamento = this.medicamentos.find(m => Number(m.id_medicamento) === Number(id));
         return medicamento ? medicamento.nombre : id.toString();
     }
 
-    // Getter para selector en formularios (solo ID y nombre)
     getMedicamentosForSelect(): MedicamentoSelect[] {
         return this.medicamentos.map(m => ({
             id: m.id_medicamento,
@@ -41,12 +39,10 @@ export class MedicamentosDataService {
         }));
     }
 
-    // Getter para obtener todos los medicamentos (para la tabla principal)
     getAllMedicamentos(): any[] {
         return this.medicamentos;
     }
 
-    // Método para refrescar datos después de crear/actualizar/eliminar
     async refreshData(): Promise<void> {
         this.isLoaded = false;
         await this.loadStaticData();

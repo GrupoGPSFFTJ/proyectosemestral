@@ -1,4 +1,3 @@
-// Interface principal de Despacho
 export interface Despacho {
     id_despacho: number;
     fecha_despacho: string;
@@ -6,7 +5,6 @@ export interface Despacho {
     id_receta_med: number;
 }
 
-// Interfaces para entidades relacionadas
 export interface RecetaMedicamento {
     id_receta_medicamento: number;
     dosis: string;

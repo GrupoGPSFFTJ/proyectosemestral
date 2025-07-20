@@ -42,7 +42,6 @@ export class FamiliaFormComponent {
 
   async onSubmit() {
     if (this.familia) {
-      // Al actualizar, mantener fecha_creacion original
       const familiaData = {
         ...this.familiaForm.value,
         fecha_creacion: this.familia.fecha_creacion
@@ -51,7 +50,6 @@ export class FamiliaFormComponent {
       alert('Familia actualizada correctamente');
       this.onUpdate.emit(familia);
     } else {
-      // Al crear, asignar solo la fecha actual (YYYY-MM-DD)
       const today = new Date();
       const familiaData = {
         ...this.familiaForm.value,

@@ -35,13 +35,11 @@ export class RecetasComponent implements OnInit {
 
   async loadAllData(): Promise<void> {
     try {
-      // ✅ OPTIMIZACIÓN: Cargar datos principales Y estáticos EN PARALELO
       const [recetasData] = await Promise.all([
         this.apiService.getRecetas(),
-        this.recetasDataService.loadStaticData() // Se ejecuta en paralelo, no bloquea
+        this.recetasDataService.loadStaticData()
       ]);
 
-      // Mostrar las recetas inmediatamente
       this.recetas = recetasData;
       this.loading = false;
     } catch (error) {
@@ -50,7 +48,6 @@ export class RecetasComponent implements OnInit {
     }
   }
 
-  // Métodos para obtener nombres
   getPacienteNombre(id_paciente: number): string {
     return this.recetasDataService.getPacienteNombre(id_paciente);
   }
@@ -94,7 +91,6 @@ export class RecetasComponent implements OnInit {
     try {
       const response = await this.recetasDataService.getRecMedByReceta(receta.id_receta);
 
-      // Asegurar que siempre sea un array
       let items: RecetaMedicamento[];
       if (Array.isArray(response)) {
         items = response;

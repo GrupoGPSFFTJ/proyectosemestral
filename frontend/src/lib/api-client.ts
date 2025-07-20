@@ -18,16 +18,8 @@ export class ApiClient {
         return headers;
     }
 
-    /**
-     * Determina la URL base según el prefijo del path
-     * @param path Ruta del endpoint
-     * @returns URL base del servicio correspondiente
-     */
     private getServiceUrl(path: string): string {
-        // Extraer el prefijo del servicio del path
         const servicePrefix = path.split('/')[1];
-        
-        // Mapear prefijos a servicios
         const serviceMapping: { [key: string]: keyof typeof environment.services } = {
             'core': 'core',
             'clinical': 'clinical',
@@ -37,26 +29,14 @@ export class ApiClient {
             'pharmacy': 'pharmacy',
             'vaccination': 'vaccination'
         };
-
-        // Si el prefijo corresponde a un servicio, usar la URL directa
         if (servicePrefix && serviceMapping[servicePrefix]) {
             return environment.services[serviceMapping[servicePrefix]];
         }
-
-        // Si no es un servicio conocido, lanzar error
         throw new Error(`Servicio no encontrado para el path: ${path}`);
     }
-
-    /**
-     * Limpia el path removiendo el prefijo del servicio para llamadas directas
-     * @param path Ruta original
-     * @returns Ruta limpia sin prefijo de servicio
-     */
     private cleanPath(path: string): string {
         const servicePrefix = path.split('/')[1];
         const serviceMapping = ['core', 'clinical', 'nutrition', 'odonto', 'patient', 'pharmacy', 'vaccination'];
-        
-        // Si el prefijo es un servicio conocido, remover el prefijo
         if (servicePrefix && serviceMapping.includes(servicePrefix)) {
             return path.replace(`/${servicePrefix}`, '');
         }
@@ -73,9 +53,6 @@ export class ApiClient {
         const serviceUrl = this.getServiceUrl(path);
         const cleanedPath = this.cleanPath(path);
         const fullUrl = `${serviceUrl}${cleanedPath}`;
-
-        console.log(`🔗 ${method} ${fullUrl}`); // Log para debugging
-
         const res = await fetch(fullUrl, {
             method,
             headers: this.getHeaders(withToken),

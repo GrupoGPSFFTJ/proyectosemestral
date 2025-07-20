@@ -1,4 +1,3 @@
-// Exportaciones centralizadas de todos los data services
 export { CitasDataService } from './citas-data.service';
 export { PacientesDataService } from './pacientes-data.service';
 export { RecetasDataService } from './recetas-data.service';

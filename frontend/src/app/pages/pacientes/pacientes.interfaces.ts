@@ -1,4 +1,3 @@
-// Interface principal de Paciente
 export interface Paciente {
     id_paciente: number;
     direccion: string;

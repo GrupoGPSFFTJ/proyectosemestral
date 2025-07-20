@@ -10,7 +10,6 @@ export class LazyComponentLoader {
         viewContainer: ViewContainerRef
     ): Promise<ComponentRef<T>> {
 
-        // Mostrar loading mientras carga
         viewContainer.clear();
         const loadingElement = viewContainer.element.nativeElement.parentElement;
         if (loadingElement) {
@@ -18,15 +17,12 @@ export class LazyComponentLoader {
         }
 
         try {
-            // Cargar el componente dinámicamente
             const component = await componentFactory();
 
-            // Limpiar loading
             if (loadingElement) {
                 loadingElement.innerHTML = '';
             }
 
-            // Crear el componente
             const componentRef = viewContainer.createComponent(component);
 
             return componentRef;

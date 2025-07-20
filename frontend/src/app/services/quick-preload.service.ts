@@ -8,22 +8,16 @@ export class QuickPreloadService {
     private preloadingModules = new Set<string>();
 
     constructor(private router: Router) { }
-
-    /**
-     * ✅ OPTIMIZACIÓN: Precargar módulo inmediatamente cuando se detecta intención de navegación
-     */
     async preloadOnDemand(routePath: string): Promise<void> {
         if (this.preloadingModules.has(routePath)) {
-            return; // Ya se está precargando
+            return;
         }
 
         this.preloadingModules.add(routePath);
 
         try {
-            // Usar el router para precargar el módulo
             const route = this.router.config.find(r => r.path === routePath);
             if (route && route.loadChildren) {
-                // Esto precarga el módulo inmediatamente
                 await (route.loadChildren as any)();
             }
         } catch (error) {
@@ -33,9 +27,6 @@ export class QuickPreloadService {
         }
     }
 
-    /**
-     * ✅ OPTIMIZACIÓN: Precargar múltiples módulos críticos al mismo tiempo
-     */
     async preloadCriticalModules(): Promise<void> {
         const criticalModules = ['pacientes', 'citas', 'recetas'];
         const preloadPromises = criticalModules.map(module => this.preloadOnDemand(module));

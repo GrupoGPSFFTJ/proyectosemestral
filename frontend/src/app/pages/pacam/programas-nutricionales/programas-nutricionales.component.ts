@@ -42,7 +42,6 @@ export class ProgramasNutricionalesComponent implements OnInit {
     }
   }
 
-  // Modal methods
   openCreateModal(): void {
     this.editingPrograma = null;
     this.showModal = true;
@@ -58,7 +57,6 @@ export class ProgramasNutricionalesComponent implements OnInit {
     this.showModal = false;
   }
 
-  // CRUD operations
   async handleSave(programa: ProgramasNutricionales): Promise<void> {
     try {
       const newPrograma = await this.apiService.createProgramaNutricional(programa);
@@ -98,7 +96,6 @@ export class ProgramasNutricionalesComponent implements OnInit {
     }
   }
 
-  // Utility methods
   formatFecha(fecha: string): string {
     if (!fecha) return '';
     const [year, month, day] = fecha.split('-').map(Number);

@@ -1,4 +1,5 @@
 
+
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FichaClinica } from '../fichas-clinica.interfaces';
@@ -16,10 +17,8 @@ export class FichaClinicaFormComponent implements OnChanges {
   @Output() onClose = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<FichaClinica>();
   @Output() onUpdate = new EventEmitter<FichaClinica>();
-
   fichaForm: FormGroup;
   data: FichasClinicaDataService;
-
   constructor(private fb: FormBuilder, dataService: FichasClinicaDataService) {
     this.data = dataService;
     this.fichaForm = this.fb.group({
@@ -31,7 +30,6 @@ export class FichaClinicaFormComponent implements OnChanges {
       observacion: ['']
     });
   }
-
   ngOnChanges(changes: SimpleChanges) {
     if (this.isOpen) {
       if (this.ficha) {
@@ -56,7 +54,6 @@ export class FichaClinicaFormComponent implements OnChanges {
       this.fichaForm.markAsUntouched();
     }
   }
-
   async onSubmit() {
     if (this.ficha) {
       const fichaActualizada = { ...this.ficha, ...this.fichaForm.value };
@@ -65,7 +62,6 @@ export class FichaClinicaFormComponent implements OnChanges {
       this.onSave.emit(this.fichaForm.value);
     }
   }
-
   onModalClose() {
     this.onClose.emit();
   }

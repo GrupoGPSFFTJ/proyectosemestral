@@ -21,7 +21,7 @@ export class AuthGateComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.subscription = this.authService.user$.subscribe(user => {
             this.isAuthenticated = !!user;
-            this.cdr.detectChanges(); // Forzar detección de cambios
+            this.cdr.detectChanges();
         });
     }
 
