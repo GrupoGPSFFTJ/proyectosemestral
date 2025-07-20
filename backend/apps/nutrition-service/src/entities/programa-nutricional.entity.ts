@@ -19,6 +19,6 @@ export class ProgramaNutricional {
   })
   descripcion: string;
 
-  @Column({ name: 'activo', type: 'char', length: 1, nullable: false })
-  activo: string;
+  @Column({ name: 'activo', type: 'boolean', nullable: false, default: true })
+  activo: boolean;
 }

@@ -1,0 +1,65 @@
+<app-modal [isOpen]="isOpen" [title]="!receta ? 'Crear Receta' : 'Editar Receta'" (closeModal)="onModalClose()">
+  <form [formGroup]="recetaForm">
+    <div class="form-field">
+      <label class="form-label">Paciente</label>
+      <select formControlName="id_paciente" class="form-select">
+        <option value="">Seleccione un Paciente</option>
+        <option *ngFor="let p of data.getPacientesForSelect()" [value]="p.id">{{ p.nombre }}</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Médico</label>
+      <select formControlName="id_medico" class="form-select">
+        <option value="">Seleccione un Médico</option>
+        <option *ngFor="let u of data.getUsuariosForSelect()" [value]="u.id">{{ u.nombre }}</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Indicaciones generales</label>
+      <textarea formControlName="indicacion" class="form-textarea" rows="2"
+        placeholder="(Opcional)"></textarea>
+    </div>
+    <h3 class="spa">Medicamentos</h3>
+    <div class="form-row">
+      <div *ngFor="let item of items.controls; let idx = index" [formGroup]="$any(item)"
+        class="recetas-medicamento-item">
+        <div class="form-field-half">
+          <label class="form-label">Nombre</label>
+          <select formControlName="id_medicamento" class="form-select">
+            <option value="">Seleccione Medicamento</option>
+            <option *ngFor="let m of data.getMedicamentosForSelect()" [value]="m.id">{{ m.nombre }}</option>
+          </select>
+        </div>
+        <div class="form-field-half">
+          <label class="form-label">Dosis</label>
+          <input type="number" min="1" formControlName="dosis_cantidad" placeholder="Cantidad" class="form-input" />
+        </div>
+        <div class="form-field-half">
+          <label class="form-label">Unidad de medida</label>
+          <select formControlName="dosis_unidad" class="form-select">
+            <option class="placeholder" value="">Seleccione</option>
+            <option *ngFor="let unidad of UNIDADES_DOSIS" [value]="unidad">{{ unidad }}</option>
+          </select>
+        </div>
+        <div class="form-field-half">
+          <label class="form-label">Frecuencia</label>
+          <input type="number" min="1" formControlName="frecuencia_horas" placeholder="Horas"
+            class="form-input" />
+        </div>
+        <div class="form-field-half">
+          <label class="form-label">Periodo</label>
+          <input type="number" min="1" formControlName="duracion_dias" placeholder="Días" class="form-input" />
+        </div>
+        <div class="form-field-half">
+          <button class="recetas-medicamento-remove" (click)="removeItem(idx)">x</button>
+        </div>
+      </div>
+      <button type="button" (click)="addItem()">Agregar Medicamento</button>
+    </div>
+  </form>
+  <div slot="footer" class="button-group">
+    <button (click)="onModalClose()" class="btn-secondary">Cancelar</button>
+    <button (click)="onSubmit()" [disabled]="!recetaForm.valid || items.length === 0"
+      class="btn-primary">Guardar</button>
+  </div>
+</app-modal>

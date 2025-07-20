@@ -1,0 +1,66 @@
+<div *ngIf="loading">Cargando datos...</div>
+
+<div *ngIf="!loading" class="p-6">
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Recetas</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Receta</span>
+        </button>
+    </div>
+
+    <app-receta-form [isOpen]="showModal" [receta]="editingReceta" (onClose)="closeModal()"
+        (onSave)="saveReceta($event)" (onUpdate)="updateReceta($event)">
+    </app-receta-form>
+
+    <div *ngIf="recetas && recetas.length === 0" class="no-data"
+        style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay recetas registradas
+    </div>
+
+    <table *ngIf="recetas && recetas.length > 0" class="table-unified">
+        <thead>
+            <tr>
+                <th class="table-unified-th">Paciente</th>
+                <th class="table-unified-th">Médico</th>
+                <th class="table-unified-th">Fecha Emisión</th>
+                <th class="table-unified-th">Indicación</th>
+                <th class="table-unified-th">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let receta of recetas">
+                <td class="table-unified-td">{{ getPacienteNombre(receta.id_paciente) }}</td>
+                <td class="table-unified-td">{{ getMedicoNombre(receta.id_medico) }}</td>
+                <td class="table-unified-td">{{ formatFecha(receta.fecha_emision) }}</td>
+                <td class="table-unified-td">{{ receta.indicacion }}</td>
+                <td class="table-unified-td">
+                    <button (click)="handleVerDetalle(receta)" title="detalle">
+                        Detalle
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <app-modal [isOpen]="showDetalle" [title]="detalleTitulo" (closeModal)="handleCerrarDetalle()" size="large">
+        <table class="recetas-detalle-table">
+            <thead>
+                <tr>
+                    <th>Medicamento</th>
+                    <th>Dosis</th>
+                    <th>Frecuencia</th>
+                    <th>Duración (días)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of detalleReceta">
+                    <td>{{ getMedicamentoNombre(item.id_medicamento) }}</td>
+                    <td>{{ item.dosis }}</td>
+                    <td>{{ item.frecuencia }}</td>
+                    <td>{{ item.duracion_dias }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </app-modal>
+</div>

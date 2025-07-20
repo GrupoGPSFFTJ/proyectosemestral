@@ -28,7 +28,7 @@ export class RecetaMedicamentoController {
   @Get('receta/:id')
   findByReceta(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<RecetaMedicamento> {
+  ): Promise<RecetaMedicamento[]> {
     return this.service.findByReceta(id);
   }
 

@@ -15,7 +15,7 @@ export class FactorRiesgoService {
   }
 
   async findAll(): Promise<FactorRiesgo[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_factor_riesgo: 'ASC' } });
   }
 
   async findOne(id: number): Promise<FactorRiesgo> {

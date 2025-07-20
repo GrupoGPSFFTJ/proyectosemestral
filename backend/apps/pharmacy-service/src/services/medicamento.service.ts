@@ -16,7 +16,7 @@ export class MedicamentoService {
   }
 
   findAll(): Promise<Medicamento[]> {
-    return this.repo.find();
+    return this.repo.find( { order: { id_medicamento: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Medicamento> {

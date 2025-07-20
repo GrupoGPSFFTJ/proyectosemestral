@@ -16,7 +16,7 @@ export class RegistroVacunacionService {
   }
 
   findAll(): Promise<RegistroVacunacion[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_registro_vacunacion: 'ASC' } });
   }
 
   async findOne(id: number): Promise<RegistroVacunacion> {

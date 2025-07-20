@@ -1,0 +1,22 @@
+<app-modal [isOpen]="isOpen" [title]="!this.familia ? 'Crear Familia' : 'Editar Familia'" (closeModal)="onModalClose()">
+    <form [formGroup]="familiaForm">
+        <div class="form-field">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="nombre" id="nombre" class="form-input" 
+                   placeholder="Ingrese el nombre de la familia" />
+            <div *ngIf="familiaForm.get('nombre')?.invalid && familiaForm.get('nombre')?.touched"
+                class="error-message">
+                El nombre de la familia es requerido
+            </div>
+        </div>
+    </form>
+
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="!familiaForm.valid" class="btn-primary">
+            Guardar Datos
+        </button>
+    </div>
+</app-modal>

@@ -18,3 +18,8 @@ spec:
         image: johnsondavisv45/core-service:latest
         ports:
         - containerPort: 3001
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 100%

@@ -18,7 +18,7 @@ export class EstratificacionRiesgoService {
   }
 
   findAll(): Promise<EstratificacionRiesgo[]> {
-    return this.repo.find();
+    return this.repo.find(); // Enum, no aplica orden por ID
   }
 
   async findOne(id: number): Promise<EstratificacionRiesgo> {

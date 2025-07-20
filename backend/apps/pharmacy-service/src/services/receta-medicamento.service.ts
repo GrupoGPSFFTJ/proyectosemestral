@@ -42,11 +42,10 @@ export class RecetaMedicamentoService {
     return entity;
   }
 
-  async findByReceta(id: number) {
-    const receta = await this.repo.findOneBy({ id_receta: id });
-    if (!receta) {
-      throw new NotFoundException(`Receta con id ${id} no encontrada`);
-    }
-    return receta;
+  async findByReceta(id: number): Promise<RecetaMedicamento[]> {
+    const medicamentos = await this.repo.find({ 
+      where: { id_receta: id } 
+    });
+    return medicamentos;
   }
 }

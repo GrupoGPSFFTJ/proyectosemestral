@@ -16,7 +16,7 @@ export class ProgramaNutricionalService {
   }
 
   findAll(): Promise<ProgramaNutricional[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_programa_nutricional: 'ASC' } });
   }
 
   async findOne(id: number): Promise<ProgramaNutricional> {

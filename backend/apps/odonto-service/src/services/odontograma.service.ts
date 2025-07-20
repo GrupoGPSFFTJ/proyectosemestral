@@ -16,7 +16,7 @@ export class OdontogramaService {
   }
 
   findAll(): Promise<Odontograma[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_odontograma: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Odontograma> {

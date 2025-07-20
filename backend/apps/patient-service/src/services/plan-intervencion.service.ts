@@ -15,7 +15,7 @@ export class PlanIntervencionService {
   }
 
   async findAll(): Promise<PlanIntervencion[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_plan_intervencion: 'ASC' } });
   }
 
   async findOne(id: number): Promise<PlanIntervencion> {

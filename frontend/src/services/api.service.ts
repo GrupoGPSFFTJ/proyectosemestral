@@ -259,4 +259,68 @@ export class ApiService {
     private getCount(schema: string, table: string): Promise<any[]> {
         return this.api.get<any[]>(`/${schema}/${table}/count`);
     }
+
+    getControlesDesembolso() {
+        return this.api.get<any[]>('/nutrition/control-desembolso');
+    }
+
+    createControlDesembolso(data: any) {
+        return this.api.post<any>('/nutrition/control-desembolso', data);
+    }
+
+    updateControlDesembolso(id: number, data: any) {
+        return this.api.put<any>(`/nutrition/control-desembolso/${id}`, data);
+    }
+
+    deleteControlDesembolso(id: number) {
+        return this.api.delete<any>(`/nutrition/control-desembolso/${id}`);
+    }
+
+    getInscripcionesPacam() {
+        return this.api.get<any[]>('/nutrition/inscripcion-pacam');
+    }
+
+    createInscripcionPacam(data: any) {
+        return this.api.post<any>('/nutrition/inscripcion-pacam', data);
+    }
+
+    updateInscripcionPacam(id: number, data: any) {
+        return this.api.put<any>(`/nutrition/inscripcion-pacam/${id}`, data);
+    }
+
+    deleteInscripcionPacam(id: number) {
+        return this.api.delete<any>(`/nutrition/inscripcion-pacam/${id}`);
+    }
+
+    getInformesPacam() {
+        return this.api.get<any[]>('/nutrition/informe-pacam');
+    }
+
+    createInformePacam(data: any) {
+        return this.api.post<any>('/nutrition/informe-pacam', data);
+    }
+
+    updateInformePacam(id: number, data: any) {
+        return this.api.put<any>(`/nutrition/informe-pacam/${id}`, data);
+    }
+
+    deleteInformePacam(id: number) {
+        return this.api.delete<any>(`/nutrition/informe-pacam/${id}`);
+    }
+
+    getProgramasNutricionales(): any {
+        return this.api.get<any[]>('/nutrition/programa-nutricional');
+    }
+
+    createProgramaNutricional(data: any): Promise<any> {
+        return this.api.post<any>('/nutrition/programa-nutricional', data);
+    }
+    
+    updateProgramaNutricional(id: number, data: any): Promise<any> {
+        return this.api.put<any>(`/nutrition/programa-nutricional/${id}`, data);
+    }
+    
+    deleteProgramaNutricional(id: number): Promise<any> {
+        return this.api.delete<any>(`/nutrition/programa-nutricional/${id}`);
+    }
 }

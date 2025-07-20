@@ -18,7 +18,7 @@ export class InscripcionPacam {
   @Column({ name: 'estado', type: 'char', length: 1, nullable: false })
   estado: string;
 
-  @Column({ name: 'id_paciente', type: 'int', nullable: true })
+  @Column({ name: 'id_paciente', type: 'int', nullable: false })
   id_paciente: number | null;
 
   @Column({ name: 'id_centro_salud', type: 'int', nullable: false })

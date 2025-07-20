@@ -11,7 +11,6 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ModalComponent } from './components/modal/modal.component';
-import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +18,7 @@ import { TestComponent } from './test/test.component';
     AuthGateComponent,
     LoginFormComponent,
     RegisterFormComponent,
-    NavbarComponent,
-    TestComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,45 @@
+<div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">⏳ Cargando datos de informes...</div>
+</div>
+
+<div *ngIf="!loading" class="p-6">
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Informes PACAM</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Informe</span>
+        </button>
+    </div>
+
+    <app-informe-form [isOpen]="showModal" [informe]="editingInforme" (onClose)="closeModal()" (onSave)="saveInforme($event)"
+        (onUpdate)="updateInforme($event)"></app-informe-form>
+
+    <div *ngIf="informes && informes.length === 0" class="no-data" style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay informes registrados
+    </div>
+
+    <table *ngIf="informes && informes.length > 0" class="table-unified">
+        <thead>
+            <tr>
+                <th class="table-unified-th">Fecha Informe</th>
+                <th class="table-unified-th">Total Beneficiarios</th>
+                <th class="table-unified-th">Total Desembolso</th>
+                <th class="table-unified-th">Programa Nutricional</th>
+                <th class="table-unified-th">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of informes">
+                <td class="table-unified-td">{{formatFecha(i.fecha_informe)}}</td>
+                <td class="table-unified-td">{{formatTotal(i.total_beneficiario)}}</td>
+                <td class="table-unified-td">{{formatTotal(i.total_desembolso)}}</td>
+                <td class="table-unified-td">{{getInformeLabel(i.id_programa_nutricional)}}</td>
+                <td class="table-unified-td">
+                    <button (click)="openEditModal(i)" title="Editar">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

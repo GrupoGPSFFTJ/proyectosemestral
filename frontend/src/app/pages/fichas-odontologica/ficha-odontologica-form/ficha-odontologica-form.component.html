@@ -1,0 +1,49 @@
+<app-modal [isOpen]="isOpen" [title]="!ficha ? 'Crear Ficha Odontológica' : 'Editar Ficha Odontológica'" (closeModal)="onModalClose()">
+  <form [formGroup]="fichaForm">
+    <div class="form-field">
+      <label class="form-label">Paciente</label>
+      <select formControlName="id_paciente" class="form-select">
+        <option value="">Seleccione un Paciente</option>
+        <option *ngFor="let paciente of data.getPacientesForSelect()" [value]="paciente.id">{{ paciente.nombre }}</option>
+      </select>
+      <div *ngIf="fichaForm.get('id_paciente')?.invalid && fichaForm.get('id_paciente')?.touched" class="error-message">Paciente es requerido</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Programa Salud Oral</label>
+      <select formControlName="id_programa_salud_oral" class="form-select">
+        <option value="">Seleccione un Programa</option>
+        <option *ngFor="let programa of data.getProgramasForSelect()" [value]="programa.id">{{ programa.nombre }}</option>
+      </select>
+      <div *ngIf="fichaForm.get('id_programa_salud_oral')?.invalid && fichaForm.get('id_programa_salud_oral')?.touched" class="error-message">Programa es requerido</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Centro de Salud</label>
+      <select formControlName="id_centro_salud" class="form-select">
+        <option value="">Seleccione un Centro de Salud</option>
+        <option *ngFor="let centro of data.getCentrosForSelect()" [value]="centro.id">{{ centro.nombre }}</option>
+      </select>
+      <div *ngIf="fichaForm.get('id_centro_salud')?.invalid && fichaForm.get('id_centro_salud')?.touched" class="error-message">Centro de Salud es requerido</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Usuario Responsable</label>
+      <select formControlName="id_usuario_responsable" class="form-select">
+        <option value="">Seleccione un Usuario</option>
+        <option *ngFor="let usuario of data.getUsuariosForSelect()" [value]="usuario.id">{{ usuario.nombre }}</option>
+      </select>
+      <div *ngIf="fichaForm.get('id_usuario_responsable')?.invalid && fichaForm.get('id_usuario_responsable')?.touched" class="error-message">Usuario responsable es requerido</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Fecha Control</label>
+      <input type="date" formControlName="fecha_control" class="form-input" />
+      <div *ngIf="fichaForm.get('fecha_control')?.invalid && fichaForm.get('fecha_control')?.touched" class="error-message">Fecha es requerida</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Observación</label>
+      <textarea formControlName="observacion" class="form-textarea" rows="2" placeholder="(Opcional)"></textarea>
+    </div>
+  </form>
+  <div slot="footer" class="button-group">
+    <button (click)="onModalClose()" class="btn-secondary">Cancelar</button>
+    <button (click)="onSubmit()" [disabled]="!fichaForm.valid" class="btn-primary">{{ ficha ? 'Actualizar' : 'Crear' }}</button>
+  </div>
+</app-modal>

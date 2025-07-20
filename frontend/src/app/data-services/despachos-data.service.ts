@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { RecetaMedicamento, Medicamento } from '../despachos/despachos.interfaces';
+import { RecetaMedicamento, Medicamento } from '../pages/despachos/despachos.interfaces';
 
 @Injectable({
     providedIn: 'root'

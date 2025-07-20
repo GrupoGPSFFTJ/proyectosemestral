@@ -1,0 +1,41 @@
+<app-modal [isOpen]="isOpen" [title]="!desembolso ? 'Crear Desembolso' : 'Editar Desembolso'" (closeModal)="onModalClose()">
+    <form [formGroup]="desembolsoForm">
+        <div class="form-field">
+            <label class="form-label">Fecha de Entrega</label>
+            <input id="fecha_entrega" formControlName="fecha_entrega" type="date" class="form-input" />
+            <div *ngIf="desembolsoForm.get('fecha_entrega')?.invalid && desembolsoForm.get('fecha_entrega')?.touched" class="error-message">
+                Fecha de entrega es requerida.
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Cantidad Entregada</label>
+            <input id="cantidad_entregada" formControlName="cantidad_entregada" placeholder="Ingrese una cantidad" type="number" class="form-input" />
+            <div *ngIf="desembolsoForm.get('cantidad_entregada')?.invalid && desembolsoForm.get('cantidad_entregada')?.touched" class="error-message">
+                Cantidad entregada debe ser mayor a 0.
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Inscripción PACAM</label>
+            <select formControlName="id_inscripcion_pacam" id="id_inscripcion_pacam" class="form-input">
+                <option value="">Seleccione una Inscripción</option>
+                <option *ngFor="let inscripcion of data.getInscripcionesForSelect()" [value]="inscripcion.id">
+                    {{ inscripcion.nombre }}
+                </option>
+            </select>
+            <div *ngIf="desembolsoForm.get('id_inscripcion_pacam')?.invalid && desembolsoForm.get('id_inscripcion_pacam')?.touched" class="error-message">
+                Inscripción PACAM es requerida.
+            </div>
+        </div>
+    </form>
+
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="desembolsoForm.invalid" class="btn-primary">
+            Guardar
+        </button>
+    </div>
+</app-modal>

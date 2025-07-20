@@ -15,7 +15,7 @@ export class PacienteService {
   }
 
   async findAll(): Promise<Paciente[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_paciente: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Paciente> {

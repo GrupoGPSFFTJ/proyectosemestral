@@ -1,0 +1,55 @@
+<app-modal [isOpen]="isOpen" [title]="!informe ? 'Crear Informe' : 'Editar Informe'" (closeModal)="onModalClose()">
+    <form [formGroup]="informeForm">
+        <div class="form-field">
+            <label class="form-label">Fecha del Informe</label>
+            <input id="fecha_informe" formControlName="fecha_informe" type="date" class="form-input" />
+            <div *ngIf="informeForm.get('fecha_informe')?.invalid && informeForm.get('fecha_informe')?.touched"
+                class="error-message">
+                Fecha del informe es requerida.
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Total Beneficiarios</label>
+            <input id="total_beneficiario" formControlName="total_beneficiario"
+                placeholder="Ingrese un Total de Beneficiarios" type="number" class="form-input" />
+            <div *ngIf="informeForm.get('total_beneficiario')?.invalid && informeForm.get('total_beneficiario')?.touched"
+                class="error-message">
+                Total de beneficiarios debe ser mayor o igual a 0.
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Total Desembolso</label>
+            <input id="total_desembolso" formControlName="total_desembolso" placeholder="Ingrese un Total de Desembolso"
+                type="number" class="form-input" />
+            <div *ngIf="informeForm.get('total_desembolso')?.invalid && informeForm.get('total_desembolso')?.touched"
+                class="error-message">
+                Total de desembolso debe ser mayor o igual a 0.
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Programa Nutricional</label>
+            <select formControlName="id_programa_nutricional" id="id_programa_nutricional" class="form-input">
+                <option value="">Seleccione un Programa</option>
+                <option *ngFor="let programa of data.getProgramasNutricionalesForSelect()" [value]="programa.id">
+                    {{ programa.nombre }}
+                </option>
+            </select>
+            <div *ngIf="informeForm.get('id_programa_nutricional')?.invalid && informeForm.get('id_programa_nutricional')?.touched"
+                class="error-message">
+                Programa nutricional es requerido.
+            </div>
+        </div>
+    </form>
+
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="informeForm.invalid" class="btn-primary">
+            Guardar
+        </button>
+    </div>
+</app-modal>

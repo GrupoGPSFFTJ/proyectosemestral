@@ -1,0 +1,47 @@
+<div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">⏳ Cargando datos de inscripciones...</div>
+</div>
+
+<div *ngIf="!loading" class="p-6">
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Inscripciones PACAM</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Inscripción</span>
+        </button>
+    </div>
+
+    <app-inscripcion-form [isOpen]="showModal" [inscripcion]="editingInscripcion" (onClose)="closeModal()" (onSave)="saveInscripcion($event)"
+        (onUpdate)="updateInscripcion($event)"></app-inscripcion-form>
+
+    <div *ngIf="inscripciones && inscripciones.length === 0" class="no-data" style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay inscripciones registradas
+    </div>
+
+    <table *ngIf="inscripciones && inscripciones.length > 0" class="table-unified">
+        <thead>
+            <tr>
+                <th class="table-unified-th">Fecha Inscripción</th>
+                <th class="table-unified-th">Estado</th>
+                <th class="table-unified-th">Paciente</th>
+                <th class="table-unified-th">Centro Salud</th>
+                <th class="table-unified-th">Programa Nutricional</th>
+                <th class="table-unified-th">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ins of inscripciones">
+                <td class="table-unified-td">{{formatFecha(ins.fecha_inscripcion)}}</td>
+                <td class="table-unified-td">{{formatEstado(ins.estado)}}</td>
+                <td class="table-unified-td">{{getPacienteLabel(ins.id_paciente)}}</td>
+                <td class="table-unified-td">{{getCentroLabel(ins.id_centro_salud)}}</td>
+                <td class="table-unified-td">{{getProgramaLabel(ins.id_programa_nutricional)}}</td>
+                <td class="table-unified-td">
+                    <button (click)="openEditModal(ins)" title="Editar">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

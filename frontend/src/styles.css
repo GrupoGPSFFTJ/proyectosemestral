@@ -37,7 +37,7 @@ main {
     background: #fff;
     color: #000;
     min-height: calc(100vh - 4rem);
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 /* Formularios globales */
@@ -345,4 +345,11 @@ tr:hover {
 .form-row .form-field-half {
     display: flex;
     flex-direction: column;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-center;
+    margin-top: 8px;
 }

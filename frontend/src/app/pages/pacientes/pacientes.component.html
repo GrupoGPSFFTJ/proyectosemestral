@@ -1,0 +1,55 @@
+<div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">⏳ Cargando datos de Pacientes...</div>
+</div>
+
+<div *ngIf="!loading" class="p-6">
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Pacientes</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Paciente</span>
+        </button>
+    </div>
+
+    <app-paciente-form [isOpen]="showForm" [paciente]="editingPaciente" (onClose)="closeModal()"
+        (onSave)="savePaciente($event)" (onUpdate)="updatePaciente($event)"></app-paciente-form>
+
+    <div *ngIf="pacientes && pacientes.length === 0" class="no-data"
+        style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay pacientes registrados
+    </div>
+
+    <table *ngIf="pacientes && pacientes.length > 0" class="table-unified">
+        <thead>
+            <tr>
+                <th class="table-unified-th">Nombre</th>
+                <th class="table-unified-th">Apellido Paterno</th>
+                <th class="table-unified-th">Apellido Materno</th>
+                <th class="table-unified-th">RUT</th>
+                <th class="table-unified-th">F. Nac.</th>
+                <th class="table-unified-th">Género</th>
+                <th class="table-unified-th">Teléfono</th>
+                <th class="table-unified-th">Dirección</th>
+                <th class="table-unified-th">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of pacientes">
+                <td class="table-unified-td">{{ capitalizeWords(p.nombre) }}</td>
+                <td class="table-unified-td">{{ capitalizeWords(p.apellido_paterno) }}</td>
+                <td class="table-unified-td">{{ capitalizeWords(p.apellido_materno) }}</td>
+                <td class="table-unified-td">{{ p.rut }}</td>
+                <td class="table-unified-td">{{ formatFecha(p.fecha_nacimiento) }}</td>
+                <td class="table-unified-td">{{ capitalizeWords(p.genero) }}</td>
+                <td class="table-unified-td">{{ p.telefono }}</td>
+                <td class="table-unified-td">{{ capitalizeWords(p.direccion) }}</td>
+                <td class="table-unified-td">
+                    <div class="button-group">
+                        <button (click)="openEditModal(p)">Editar</button>
+                        <button (click)="handleDelete(p.id_paciente)">Eliminar</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

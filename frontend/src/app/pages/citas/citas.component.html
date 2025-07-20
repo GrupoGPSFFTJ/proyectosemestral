@@ -1,0 +1,53 @@
+<div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">⏳ Cargando datos de citas...</div>
+</div>
+
+<div *ngIf="!loading" class="p-6">
+    <div class="header-row"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1 class="page_header" style="margin: 0;">Citas</h1>
+        <button (click)="openCreateModal()" class="btn-crear">
+            <span class="btn-text">Crear Cita</span>
+        </button>
+    </div>
+
+    <app-cita-form [isOpen]="showModal" [cita]="editingCita" (onClose)="closeModal()" (onSave)="saveCita($event)"
+        (onUpdate)="updateCita($event)"></app-cita-form>
+
+    <div *ngIf="citas && citas.length === 0" class="no-data" style="text-align: center; padding: 2rem; color: #666;">
+        📭 No hay citas registradas
+    </div>
+
+    <table *ngIf="citas && citas.length > 0" class="table-unified">
+        <thead>
+            <tr>
+                <th class="table-unified-th">Paciente</th>
+                <th class="table-unified-th">Médico</th>
+                <th class="table-unified-th">Fecha</th>
+                <th class="table-unified-th">Hora</th>
+                <th class="table-unified-th">Tipo de Cita</th>
+                <th class="table-unified-th">Centro Salud</th>
+                <th class="table-unified-th">Observación</th>
+                <th class="table-unified-th">Estado</th>
+                <th class="table-unified-th">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of citas">
+                <td class="table-unified-td">{{getPacienteNombre(c.id_paciente)}}</td>
+                <td class="table-unified-td">{{getUsuarioNombre(c.id_usuario)}}</td>
+                <td class="table-unified-td">{{formatFecha(c.fecha)}}</td>
+                <td class="table-unified-td">{{formatHora(c.hora)}}</td>
+                <td class="table-unified-td">{{getTipoLabel(c.tipo_cita)}}</td>
+                <td class="table-unified-td">{{getCentroNombre(c.id_centro_salud)}}</td>
+                <td class="table-unified-td">{{c.observacion}}</td>
+                <td class="table-unified-td">{{getEstadoLabel(c.estado)}}</td>
+                <td class="table-unified-td">
+                    <button (click)="openEditModal(c)" title="Editar">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

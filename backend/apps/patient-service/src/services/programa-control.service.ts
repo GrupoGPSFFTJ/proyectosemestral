@@ -15,7 +15,7 @@ export class ProgramaControlService {
   }
 
   async findAll(): Promise<ProgramaControl[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_programa_control: 'ASC' } });
   }
 
   async findOne(id: number): Promise<ProgramaControl> {

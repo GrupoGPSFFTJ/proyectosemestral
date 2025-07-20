@@ -16,7 +16,7 @@ export class InscripcionPacamService {
   }
 
   findAll(): Promise<InscripcionPacam[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_inscripcion_pacam: 'ASC' } });
   }
 
   async findOne(id: number): Promise<InscripcionPacam> {

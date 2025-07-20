@@ -16,7 +16,7 @@ export class ControlDesembolsoService {
   }
 
   findAll(): Promise<ControlDesembolso[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_control_desembolso: 'ASC' } });
   }
 
   async findOne(id: number): Promise<ControlDesembolso> {

@@ -1,43 +1,63 @@
-<!-- navbar.component.html -->
-<nav class="navbar" *ngIf="currentUser">
-    <a routerLink="/dashboard" class="home-link" aria-label="Ir al Dashboard">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 9.5L12 2l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z" />
-        </svg>
-    </a>
-
-    <div class="links-container">
-        <a routerLink="/pacientes" class="nav-link">Pacientes</a>
-        <a routerLink="/familias" class="nav-link">Familias</a>
-        <a routerLink="/fichas-clinica" class="nav-link">Fichas Clínicas</a>
-        <a routerLink="/fichas-odontologica" class="nav-link">Fichas Odontológicas</a>
-        <a routerLink="/citas" class="nav-link">Citas</a>
-        <a routerLink="/recetas" class="nav-link">Recetas</a>
-        <a routerLink="/medicamentos" class="nav-link">Medicamentos</a>
-        <a routerLink="/despachos" class="nav-link">Despachos</a>
-    </div>
-
-    <div class="user-container" #dropdownContainer>
-        <button (click)="toggleDropdown()" class="user-button" aria-label="Abrir menú de usuario">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" />
+<nav class="navbar-root" *ngIf="currentUser">
+    <div class="navbar-container">
+        <a routerLink="/dashboard" class="navbar-logo">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 9.5L12 2l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z" />
             </svg>
-        </button>
+        </a>
 
-        <div *ngIf="dropdownOpen" class="dropdown-menu">
-            <div class="dropdown-header">
-                <div class="user-name-text">
-                    {{ currentUser.nombre || currentUser.username || 'Usuario' }}
+        <div class="navbar-links">
+            <a routerLink="/pacientes" class="navbar-link" routerLinkActive="router-link-active">Pacientes</a>
+            <a routerLink="/familias" class="navbar-link" routerLinkActive="router-link-active">Familias</a>
+            <a routerLink="/fichas-clinica" class="navbar-link" routerLinkActive="router-link-active">Fichas
+                Clínicas</a>
+            <a routerLink="/fichas-odontologica" class="navbar-link" routerLinkActive="router-link-active">Fichas
+                Odontológicas</a>
+            <a routerLink="/citas" class="navbar-link" routerLinkActive="router-link-active">Citas</a>
+            <a routerLink="/recetas" class="navbar-link" routerLinkActive="router-link-active">Recetas</a>
+            <a routerLink="/medicamentos" class="navbar-link" routerLinkActive="router-link-active">Medicamentos</a>
+            <a routerLink="/despachos" class="navbar-link" routerLinkActive="router-link-active">Despachos</a>
+            <!-- Dropdown PACAM -->
+            <div class="navbar-dropdown">
+                <button (click)="togglePacam()" class="navbar-dropdown-btn" [class.open]="pacamOpen">
+                    PACAM
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div *ngIf="pacamOpen" class="navbar-user-menu">
+                    <a routerLink="/pacam/programas-nutricionales" (click)="closeDropdowns()"
+                        class="navbar-dropdown-link">Programas nutricionales</a>
+                    <a routerLink="/pacam/inscripciones" (click)="closeDropdowns()"
+                        class="navbar-dropdown-link">Inscripciones</a>
+                    <a routerLink="/pacam/informes" (click)="closeDropdowns()" class="navbar-dropdown-link">Informes</a>
+                    <a routerLink="/pacam/control-desembolso" (click)="closeDropdowns()"
+                        class="navbar-dropdown-link">Control Desembolso</a>
+
                 </div>
-                <span *ngIf="currentUser.email" class="user-email-text">
-                    {{ currentUser.email }}
-                </span>
             </div>
-            <div class="dropdown-divider"></div>
-            <button (click)="logout()" class="logout-item">
-                Cerrar sesión
-            </button>
+        </div>
+
+        <div class="navbar-user">
+            <div class="navbar-dropdown">
+                <button (click)="toggleUser()" class="navbar-user-btn">
+                    <div>
+                        <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
+                            <circle _ngcontent-ng-c1780290109="" cx="12" cy="8" r="4"></circle>
+                            <path fill-rule="evenodd" d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </button>
+                <div *ngIf="userOpen" class="navbar-user-menu">
+                    <div class="navbar-user-info">
+                        <div class="navbar-user-name">{{currentUser.nombre || 'Usuario'}}</div>
+                        <div class="navbar-user-email">{{currentUser.email || 'usuario@example.com'}}</div>
+                    </div>
+                    <button (click)="logout()" class="navbar-logout-btn">Cerrar sesión</button>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

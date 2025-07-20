@@ -15,7 +15,7 @@ export class FichaControlService {
   }
 
   async findAll(): Promise<FichaControl[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_ficha_control: 'ASC' } });
   }
 
   async findOne(id: number): Promise<FichaControl> {
