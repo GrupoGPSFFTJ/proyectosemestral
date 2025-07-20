@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 
@@ -12,7 +12,7 @@ const routes: Routes = [
         DashboardComponent
     ],
     imports: [
-        CommonModule,
+        SharedModule,
         RouterModule.forChild(routes)
     ]
 })
