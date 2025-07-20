@@ -9,7 +9,7 @@ import {
     MedicamentoSelect,
     RecetaMedicamentoForm,
     RecetaMedicamento
-} from '../recetas/recetas.interfaces';
+} from '../pages/recetas/recetas.interfaces';
 
 @Injectable({
     providedIn: 'root'

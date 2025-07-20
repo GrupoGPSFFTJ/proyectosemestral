@@ -9,7 +9,7 @@ import {
     ProgramaSelect,
     CentroSelect,
     UsuarioSelect
-} from '../fichas-clinica/fichas-clinica.interfaces';
+} from '../pages/fichas-clinica/fichas-clinica.interfaces';
 
 @Injectable({
     providedIn: 'root'

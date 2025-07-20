@@ -9,7 +9,7 @@ import {
     PacienteSelect,
     UsuarioSelect,
     CentroSelect
-} from '../citas/citas.interfaces';
+} from '../pages/citas/citas.interfaces';
 
 @Injectable({
     providedIn: 'root'

@@ -9,7 +9,7 @@ import {
     ProgramaSelect,
     CentroSelect,
     UsuarioSelect
-} from '../fichas-odontologica/fichas-odontologica.interfaces';
+} from '../pages/fichas-odontologica/fichas-odontologica.interfaces';
 
 @Injectable({
     providedIn: 'root'
