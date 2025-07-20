@@ -10,7 +10,7 @@
 
         <div class="form-field">
             <label class="form-label">Cantidad Entregada</label>
-            <input id="cantidad_entregada" formControlName="cantidad_entregada" type="number" class="form-input" />
+            <input id="cantidad_entregada" formControlName="cantidad_entregada" placeholder="Ingrese una cantidad" type="number" class="form-input" />
             <div *ngIf="desembolsoForm.get('cantidad_entregada')?.invalid && desembolsoForm.get('cantidad_entregada')?.touched" class="error-message">
                 Cantidad entregada debe ser mayor a 0.
             </div>

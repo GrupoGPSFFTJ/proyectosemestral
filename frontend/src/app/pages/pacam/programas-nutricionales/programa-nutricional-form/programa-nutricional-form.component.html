@@ -1,0 +1,53 @@
+<app-modal [isOpen]="isOpen" [title]="!this.programa ? 'Crear Programa Nutricional' : 'Editar Programa Nutricional'"
+    (closeModal)="onModalClose()">
+
+    <form [formGroup]="programaForm">
+        <div class="form-field">
+            <label class="form-label">Código</label>
+            <input type="text" formControlName="codigo" id="codigo" class="form-input"
+                placeholder="Código del programa" />
+            <div *ngIf="programaForm.get('codigo')?.invalid && programaForm.get('codigo')?.touched"
+                class="error-message">
+                El código es requerido
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="nombre" id="nombre" class="form-input"
+                placeholder="Nombre del programa nutricional" />
+            <div *ngIf="programaForm.get('nombre')?.invalid && programaForm.get('nombre')?.touched"
+                class="error-message">
+                El nombre es requerido
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Estado</label>
+            <select formControlName="activo" id="activo" class="form-input">
+                <option value="">Seleccione un Estado</option>
+                <option [value]="true">Activo</option>
+                <option [value]="false">Inactivo</option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Descripción</label>
+            <textarea formControlName="descripcion" class="form-textarea" rows="3"
+                placeholder="Descripción del programa nutricional"></textarea>
+            <div *ngIf="programaForm.get('descripcion')?.invalid && programaForm.get('descripcion')?.touched"
+                class="error-message">
+                La descripción es requerida
+            </div>
+        </div>
+    </form>
+
+    <div slot="footer" class="button-group">
+        <button (click)="onModalClose()" class="btn-secondary">
+            Cancelar
+        </button>
+        <button (click)="onSubmit()" [disabled]="!programaForm.valid" class="btn-primary">
+            Guardar Datos
+        </button>
+    </div>
+</app-modal>

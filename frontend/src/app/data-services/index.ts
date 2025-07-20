@@ -7,3 +7,7 @@ export { DespachosDataService } from './despachos-data.service';
 export { FamiliasDataService } from './familias-data.service';
 export { FichasClinicaDataService } from './fichas-clinica-data.service';
 export { FichasOdontologicaDataService } from './fichas-odontologica-data.service';
+export { InscripcionPacamDataService } from './inscripcion-pacam-data.service';
+export { InformePacamDataService } from './informe-pacam-data.service';
+export { ControlDesembolsoDataService } from './control-desembolso-data.service';
+export { ProgramasNutricionalesDataService } from './programas-nutricionales-data.service';

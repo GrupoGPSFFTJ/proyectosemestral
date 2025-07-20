@@ -12,13 +12,12 @@ export class InformePacamDataService {
 
   async loadStaticData(): Promise<void> {
     if (this.isLoaded) return;
-    this.informes = await this.apiService.getInformesPacam();
-    // Para los programas nutricionales, usaremos IDs genéricos por ahora
-    this.programasNutricionales = [
-      { id_programa_nutricional: 1, nombre: 'Programa Infantil' },
-      { id_programa_nutricional: 2, nombre: 'Programa Adulto Mayor' },
-      { id_programa_nutricional: 3, nombre: 'Programa Materno' }
-    ];
+    const [informes, programasNutricionales] = await Promise.all([
+      this.apiService.getInformesPacam(),
+      this.apiService.getProgramasNutricionales()
+    ]);
+    this.informes = informes;
+    this.programasNutricionales = programasNutricionales;
     this.isLoaded = true;
   }
 
