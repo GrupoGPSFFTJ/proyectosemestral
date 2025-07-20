@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { ProgramaSaludOralService } from './services/programa-salud-oral.service';
 import { FichaOdontologicaService } from './services/ficha-odontologica.service';
 import { OdontogramaService } from './services/odontograma.service';
@@ -19,6 +20,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    PrometheusModule.register(),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`${process.cwd()}/.env`],

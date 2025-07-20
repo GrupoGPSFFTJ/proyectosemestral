@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { VacunaService } from './services/vacuna.service';
 import { CalendarioVacunaService } from './services/calendario-vacuna.service';
 import { RegistroVacunacionService } from './services/registro-vacunacion.service';
@@ -19,6 +20,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    PrometheusModule.register(),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`${process.cwd()}/.env`],
