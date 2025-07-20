@@ -16,7 +16,7 @@ export class CitaService {
   }
 
   findAll(): Promise<Cita[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_cita: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Cita> {

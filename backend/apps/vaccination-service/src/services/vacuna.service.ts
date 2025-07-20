@@ -16,7 +16,7 @@ export class VacunaService {
   }
 
   findAll(): Promise<Vacuna[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_vacuna: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Vacuna> {

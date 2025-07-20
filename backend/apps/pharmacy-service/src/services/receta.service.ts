@@ -16,7 +16,7 @@ export class RecetaService {
   }
 
   findAll(): Promise<Receta[]> {
-    return this.repo.find();
+    return this.repo.find( { order: { id_receta: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Receta> {

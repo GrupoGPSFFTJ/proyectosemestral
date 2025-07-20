@@ -11,7 +11,7 @@ export class CentroSaludService {
   ) {}
 
   findAll(): Promise<CentroSalud[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_centro_salud: 'ASC' } });
   }
 
   async findOne(id: number): Promise<CentroSalud> {

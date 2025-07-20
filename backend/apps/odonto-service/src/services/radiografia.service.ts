@@ -16,7 +16,7 @@ export class RadiografiaService {
   }
 
   findAll(): Promise<Radiografia[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_radiografia: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Radiografia> {

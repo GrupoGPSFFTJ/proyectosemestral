@@ -15,7 +15,7 @@ export class TipoRelacionService {
   }
 
   async findAll(): Promise<TipoRelacion[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_tipo_relacion: 'ASC' } });
   }
 
   async findOne(id: number): Promise<TipoRelacion> {

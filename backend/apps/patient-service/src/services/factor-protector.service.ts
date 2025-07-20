@@ -15,7 +15,7 @@ export class FactorProtectorService {
   }
 
   async findAll(): Promise<FactorProtector[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_factor_protector: 'ASC' } });
   }
 
   async findOne(id: number): Promise<FactorProtector> {

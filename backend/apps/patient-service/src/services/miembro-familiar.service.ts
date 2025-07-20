@@ -15,7 +15,7 @@ export class MiembroFamiliarService {
   }
 
   async findAll(): Promise<MiembroFamiliar[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_miembro_familiar: 'ASC' } });
   }
 
   async findOne(id: number): Promise<MiembroFamiliar> {

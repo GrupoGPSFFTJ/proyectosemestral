@@ -17,7 +17,7 @@ export class HistorialResultadoService {
   }
 
   async findAll(): Promise<HistorialResultado[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_historial_resultado: 'ASC' } });
   }
 
   async findOne(id: number): Promise<HistorialResultado> {

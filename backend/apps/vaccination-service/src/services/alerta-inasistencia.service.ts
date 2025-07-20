@@ -16,7 +16,7 @@ export class AlertaInasistenciaService {
   }
 
   findAll(): Promise<AlertaInasistencia[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_alerta_inasistencia: 'ASC' } });
   }
 
   async findOne(id: number): Promise<AlertaInasistencia> {

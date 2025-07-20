@@ -15,7 +15,7 @@ export class FamiliaService {
   }
 
   async findAll(): Promise<Familia[]> {
-    return await this.repo.find();
+    return await this.repo.find({ order: { id_familia: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Familia> {

@@ -11,7 +11,7 @@ export class UsuarioService {
   ) {}
 
   findAll(): Promise<Usuario[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_usuario: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Usuario> {

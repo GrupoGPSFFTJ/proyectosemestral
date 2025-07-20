@@ -11,7 +11,7 @@ export class RolService {
   ) {}
 
   findAll(): Promise<Rol[]> {
-    return this.repo.find();
+    return this.repo.find({ order: { id_rol: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Rol> {
